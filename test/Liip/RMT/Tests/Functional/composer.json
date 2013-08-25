@@ -34,9 +34,13 @@
          "prerequisites": [
             "working-copy-check"
          ],
-         "preReleaseActions": null,
-         "versionPersister": null,
-         "postReleaseActions": null
+         "preReleaseActions": [
+            
+         ],
+         "versionPersister": "vcs-tag",
+         "postReleaseActions": [
+            
+         ]
       }
    }
 }
