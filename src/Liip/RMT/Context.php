@@ -86,6 +86,13 @@ class Context
         }
     }
 
+    /**
+     * Returns a service.
+     * 
+     * @param string $id
+     * @return object
+     * @throws \InvalidArgumentException
+     */
     public function getService($id)
     {
         if (!isset($this->services[$id])){
