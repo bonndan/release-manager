@@ -41,7 +41,7 @@
               "vcs-commit"
              ],
             "versionPersister" : "vcs-tag",
-            "postReleaseActions": ["vcs-publish"]
+            "postReleaseActions": []
         }
     }
 }
