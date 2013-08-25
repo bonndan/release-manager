@@ -34,9 +34,11 @@ class Config
         $config = new Config;
         foreach ($data as $key => $entry) {
             if (method_exists($config, 'get' . $key)) {
-                $this->$$key = $entry;
+                $config->$key = $entry;
             }
         }
+        
+        return $config;
     }
     
     public function getVcs()
