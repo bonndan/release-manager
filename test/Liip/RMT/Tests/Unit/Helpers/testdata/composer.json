@@ -1,0 +1,26 @@
+{
+    "name": "bonndan/ReleaseManager",
+    "version": "0.2.0",
+    "description": "Release Manager",
+    "keywords": ["release", "version", "semantic versioning", "vcs tag"],
+    "homepage": "http://github.com/bonndan/ReleaseManager",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Pozzi",
+            "email": "bonndan76@googlemail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php"             : ">=5.3.3",
+        "symfony/console" : "~2.0",
+        "vierbergenlars/php-semver": "2.0.5"
+    },
+    "autoload": {
+        "psr-0": {
+            "Liip": "src"
+        }
+    },
+    "minimum-stability": "beta"
+}
