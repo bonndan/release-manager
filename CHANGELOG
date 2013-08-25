@@ -2,3 +2,7 @@
 VERSION 0  FIRST BETA
 =====================
 
+   Version 0.2 - Removed tag prefixing
+      25/08/2013 13:06  0.2.0  initial release
+         3195a76 removed references to tag prefixing
+         5de9531 removed tag prefixing, using vierbergenlars/semver for tag validation (ensures semantic version tagging)
