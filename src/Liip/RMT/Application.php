@@ -2,13 +2,12 @@
 
 namespace Liip\RMT;
 
-define('RMT_VERSION', '0.2.0');
+require_once realpath(__DIR__ . '/../../../') . '/version.php';
 
 use Liip\RMT\Command\ReleaseCommand;
 use Liip\RMT\Command\CurrentCommand;
 use Liip\RMT\Command\InitCommand;
 use Liip\RMT\Output\Output;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as BaseApplication;
@@ -33,12 +32,11 @@ class Application extends BaseApplication
             // Add the default command
             $this->add($this->createCommand('InitCommand'));
             // Add command that require the config file
-            if (file_exists($this->getConfigFilePath())){
+            if ($this->getConfig(true)) {
                 $this->add($this->createCommand('ReleaseCommand'));
                 $this->add($this->createCommand('CurrentCommand'));
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $output = new \Liip\RMT\Output\Output();
             $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
             $this->renderException($e, $output);
@@ -53,10 +51,9 @@ class Application extends BaseApplication
 
     public function getProjectRootDir()
     {
-        if (defined('RMT_ROOT_DIR')){
+        if (defined('RMT_ROOT_DIR')) {
             return RMT_ROOT_DIR;
-        }
-        else {
+        } else {
             return getcwd();
         }
     }
@@ -73,29 +70,42 @@ class Application extends BaseApplication
         $command = new $classname($commandClass, $this);
         return $command;
     }
-    
+
+    /**
+     * Returns the path and name of the composer config file.
+     * 
+     * @return string
+     */
     public function getConfigFilePath()
     {
-        return $this->getProjectRootDir().'/rmt.json';
+        return $this->getProjectRootDir() . '/composer.json';
     }
 
-    public function getConfig()
+    /**
+     * Returns the configuration.
+     * 
+     * @param boolean $graceful
+     * @return object
+     * @throws \Exception
+     */
+    public function getConfig($graceful = false)
     {
-        $configFile = $this->getConfigFilePath();
-        if (!is_file($configFile)){
-            throw new \Exception("Impossible to locate the config file rmt.json at $configFile. If it's the first time you
+        $helper = new Helpers\ComposerConfig();
+        $helper->setComposerFile($this->getProjectRootDir() . '/composer.json');
+        $config = $helper->getRMTConfigSection();
+
+        if (!$config === null) {
+            if ($graceful == true) {
+                return null;
+            }
+            
+            throw new \Exception("Impossible to locate the config section in composer.json. If it's the first time you
                 are using this tool, you setup your project using the [RMT init] command"
             );
         }
 
-        $config = json_decode(file_get_contents($configFile), true);
-        if (!is_array($config)){
-            throw new \Exception("Impossible to parse your config file ($configFile), you probably have an error in the JSON syntax");
-        }
-
         return $config;
     }
-
 
     /**
      * @inheritdoc
@@ -105,7 +115,7 @@ class Application extends BaseApplication
         $messages = array();
 
         // Title
-        $title = 'RMT '.$this->getLongVersion();
+        $title = 'RMT ' . $this->getLongVersion();
         $messages[] = '';
         $messages[] = $title;
         $messages[] = str_pad('', 41, '-'); // strlen is not working here...
@@ -125,7 +135,7 @@ class Application extends BaseApplication
         }
         $width += 2;
         foreach ($commands as $name => $command) {
-            if (in_array($name, array('list', 'help'))){
+            if (in_array($name, array('list', 'help'))) {
                 continue;
             }
             $messages[] = sprintf("  <info>%-${width}s</info> %s", $name, $command->getDescription());
@@ -135,13 +145,10 @@ class Application extends BaseApplication
         // Options
         $messages[] = '<comment>Common options:</comment>';
         foreach ($this->getDefinition()->getOptions() as $option) {
-            if (in_array($option->getName(), array('help', 'ansi', 'no-ansi', 'no-interaction', 'version'))){
+            if (in_array($option->getName(), array('help', 'ansi', 'no-ansi', 'no-interaction', 'version'))) {
                 continue;
             }
-            $messages[] = sprintf('  %-29s %s %s',
-                '<info>--'.$option->getName().'</info>',
-                $option->getShortcut() ? '<info>-'.$option->getShortcut().'</info>' : '  ',
-                $option->getDescription()
+            $messages[] = sprintf('  %-29s %s %s', '<info>--' . $option->getName() . '</info>', $option->getShortcut() ? '<info>-' . $option->getShortcut() . '</info>' : '  ', $option->getDescription()
             );
         }
         $messages[] = '';
@@ -149,7 +156,7 @@ class Application extends BaseApplication
         // Help
         $messages[] = '<comment>Help:</comment>';
         $messages[] = '   To get more information about a given command, you can use the help option:';
-        $messages[] = sprintf('     %-26s %s %s','<info>--help</info>', '<info>-h</info>', 'Provide help for the given command');
+        $messages[] = sprintf('     %-26s %s %s', '<info>--help</info>', '<info>-h</info>', 'Provide help for the given command');
         $messages[] = '';
 
         return implode(PHP_EOL, $messages);

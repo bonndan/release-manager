@@ -22,5 +22,26 @@
             "Liip": "src"
         }
     },
-    "minimum-stability": "beta"
+    "minimum-stability": "beta",
+    "extra" : {
+        "rmt" : {
+            "vcs":"git",
+            "prerequisites": ["working-copy-check", "display-last-changes"],
+            "preReleaseActions": [
+              {
+                  "name": "version-stamp",
+                  "const": "RMT_VERSION",
+              },
+              "composer-update",
+              {
+                "name": "changelog-update",
+                "format": "semantic",
+                "dump-commits": true
+              },
+              "vcs-commit"
+             ],
+            "versionPersister" : "vcs-tag",
+            "postReleaseActions": ["vcs-publish"]
+        }
+    }
 }
