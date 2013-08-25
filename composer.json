@@ -1,22 +1,16 @@
 {
-    "name": "liip/rmt",
-    "version": "0.9.7",
-    "description": "Release Managment Tool",
+    "name": "bonndan/ReleaseManager",
+    "version": "0.1.0",
+    "description": "Release Manager",
     "keywords": ["release", "version", "semantic versioning", "vcs tag"],
-    "homepage": "http://github.com/liip/RMT",
+    "homepage": "http://github.com/bonndan/ReleaseManager",
     "license": "MIT",
     "authors": [
         {
-            "name": "Laurent Prodon",
-            "email": "laurent.prodon@liip.ch",
-            "role": "Developer"
-        },
-        {
-            "name": "David Jeanmonod",
-            "email": "david.jeanmonod@liip.ch",
+            "name": "Daniel Pozzi",
+            "email": "bonndan76@googlemail.com",
             "role": "Developer"
         }
-
     ],
     "require": {
         "php": ">=5.3.3",
