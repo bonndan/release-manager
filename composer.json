@@ -1,6 +1,6 @@
 {
     "name": "bonndan/ReleaseManager",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Release Manager",
     "keywords": ["release", "version", "semantic versioning", "vcs tag"],
     "homepage": "http://github.com/bonndan/ReleaseManager",
@@ -13,8 +13,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/console": "~2.0"
+        "php"             : ">=5.3.3",
+        "symfony/console" : "~2.0",
+        "vierbergenlars/php-semver": "2.0.5"
     },
     "autoload": {
         "psr-0": {

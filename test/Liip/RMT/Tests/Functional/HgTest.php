@@ -32,25 +32,6 @@ class HgTest extends RMTFunctionalTestBase
         $this->assertEquals(array('tip', '2.2.0', '2.1.19'), static::cleanTags($tags));
     }
 
-    public function testTagPrefix()
-    {
-        $this->initHg();
-        exec('hg tag 0.0.2');
-        exec('hg tag v_0.0.1');
-        $this->createJsonConfig('semantic', array('name' => 'vcs-tag', 'tag-prefix' => 'v_'), array('vcs' => 'hg'));
-        exec('./RMT release -n');
-        exec('hg tags', $tags);
-        $this->assertEquals(array('tip', 'v_0.0.2', 'v_0.0.1', '0.0.2'), static::cleanTags($tags));
-    }
-
-    public function testTagPrefixWithBranchNamePlaceHolder()
-    {
-        $this->initHg();
-        $this->createJsonConfig('semantic', array('name' => 'vcs-tag', 'tag-prefix' => '_{branch-name}_'), array('vcs' => 'hg'));
-        exec('./RMT release -n --confirm-first');
-        exec('hg tags', $tags);
-        $this->assertEquals(array('tip', '_default_0.0.1'), static::cleanTags($tags));
-    }
 
     protected function initHg()
     {
