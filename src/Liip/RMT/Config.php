@@ -16,13 +16,22 @@ class Config
      */
     private $vcs;
     
-    private $prerequisites;
+    /**
+     * prereq. actions
+     * 
+     * @var array
+     */
+    private $prerequisites = array();
     
-    private $preReleaseActions;
+    private $preReleaseActions = array();
     
     private $versionPersister;
     
-    private $postReleaseActions;
+    /**
+     * post-release actions
+     * @var array
+     */
+    private $postReleaseActions  = array();
     
     /**
      * Factory method.
@@ -33,7 +42,7 @@ class Config
     {
         $config = new Config;
         foreach ($data as $key => $entry) {
-            if (method_exists($config, 'get' . $key)) {
+            if (method_exists($config, 'get' . $key) && $entry !== null) {
                 $config->$key = $entry;
             }
         }
