@@ -33,11 +33,7 @@ class Context
         $builder = new Helpers\ServiceBuilder($context);
 
         // Select a branch specific config if a VCS is in use
-        if ($config->getVcs() == 'git') {
-            $context->setService('vcs', $builder->getService('git', 'vcs'));
-        } elseif ($config->getVcs() == 'git') {
-            $context->setService('vcs', $builder->getService('hg', 'vcs'));
-        }
+        $context->setService('vcs', $builder->getService($config->getVcs(), 'vcs'));
 
         // Store the config for latter usage
         $context->setParameter('config', $config);
@@ -188,13 +184,23 @@ class Context
     }
 
     /**
-     * Returns the configured version generator.
+     * Returns the semantic version generator.
      * 
-     * @return \Liip\RMT\Version\Generator\GeneratorInterface
+     * @return \Liip\RMT\Version\Generator\SemanticGenerator
      */
     public function getVersionGenerator()
     {
         return $this->get('version-generator');
+    }
+    
+    /**
+     * Returns the configured version persister.
+     * 
+     * @return \Liip\RMT\Version\Persister\PersisterInterface
+     */
+    public function getVersionPersister()
+    {
+        return $this->get('version-persister');
     }
 
     /**
