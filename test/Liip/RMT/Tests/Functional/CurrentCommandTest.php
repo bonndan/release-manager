@@ -5,16 +5,6 @@ namespace Liip\RMT\Tests\Functional;
 
 class CurrentCommandTest extends RMTFunctionalTestBase
 {
-    public function testNormalWithFormatting()
-    {
-        $this->initGit();
-        $this->createJsonConfig('simple', 'vcs-tag', array('vcs'=>'git'));
-        exec('git tag 4');
-        $output = exec('./RMT current');
-        $version = substr($output, strlen("Current release is: "));
-        $this->assertEquals("\033[32m4\033[0m", $version);
-    }
-
     public function testRaw()
     {
         $this->initGit();

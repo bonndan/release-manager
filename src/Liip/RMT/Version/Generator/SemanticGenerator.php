@@ -11,6 +11,11 @@ use Liip\RMT\Context;
  */
 class SemanticGenerator implements GeneratorInterface, ContextAwareInterface
 {
+    /**
+     * the context.
+     * 
+     * @var Context
+     */
     private $context;
     
     /**
