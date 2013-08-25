@@ -5,17 +5,24 @@ namespace Liip\RMT\Tests\Functional;
 
 class InitCommandTest extends RMTFunctionalTestBase
 {
+    /**
+     * Ensures that the composer file is extended with the rmt config data.
+     * 
+     */
     public function testInitConfig()
     {
-        unlink('rmt.json');
-        $this->assertFileNotExists('rmt.json');
-//        $this->manualDebug();
-        exec('./RMT init --vcs=git --generator=semantic-versioning --persister=vcs-tag -n');
-        $this->assertFileExists('rmt.json');
-        $config = json_decode(file_get_contents('rmt.json'), true);
-        $this->assertEquals('git', $config['vcs']);
-        $this->assertEquals('vcs-tag', $config['version-persister']);
-        $this->assertEquals('semantic', $config['version-generator']);
+        copy(__DIR__ . '/composer_no_rmt.json', $this->tempDir .'/composer.json');
+        $helper = new \Liip\RMT\Helpers\ComposerConfig();
+        $helper->setComposerFile($this->tempDir .'/composer.json');
+        $this->assertNull($helper->getRMTConfigSection());
+        
+        exec('./RMT init --vcs=git --persister=vcs-tag -n', $output, $returnVar);
+        $this->assertEquals(0, $returnVar);
+        $config = $helper->getRMTConfigSection();
+        
+        $this->assertNotNull($config);
+        $this->assertEquals('git', $config->getVcs());
+        $this->assertEquals('vcs-tag', $config->getVersionPersister());
     }
 }
 

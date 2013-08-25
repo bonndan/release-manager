@@ -15,7 +15,7 @@ class ChangelogTest extends RMTFunctionalTestBase
         $this->executeTest('major', 'Second major', '2.0.0');
         $this->executeTest('minor', 'test_minor', '2.1.0');
     }
-
+    
     protected function createChangelog($format)
     {
         $file = $this->tempDir . '/CHANGELOG';
@@ -34,12 +34,7 @@ class ChangelogTest extends RMTFunctionalTestBase
      */
     protected function executeTest($semanticType, $comment, $expectedVersion)
     {
-//        $this->manualDebug();
-        if (is_null($semanticType)) {
-            exec('./RMT release -n --comment="' . $comment . '"');
-        } else {
-            exec('./RMT release -n --type=' . $semanticType . ' --comment="' . $comment . '"');
-        }
+        exec('./RMT release -n --type=' . $semanticType . ' --comment="' . $comment . '"');
         $changelog = file_get_contents($this->tempDir . '/CHANGELOG');
         $this->assertRegExp('/' . $expectedVersion . '/', $changelog);
         $this->assertRegExp('/' . $comment . '/', $changelog);

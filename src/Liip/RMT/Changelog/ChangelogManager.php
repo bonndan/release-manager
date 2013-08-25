@@ -25,21 +25,18 @@ class ChangelogManager
      * Constructor
      * 
      * @param string $filePath
-     * @param string $format formatter class name part
      * @throws \Liip\RMT\Exception
      * @throws \Exception
      */
-    public function __construct($filePath, $format)
+    public function __construct($filePath)
     {
         // Store the filePath
         if (!file_exists($filePath)) {
             throw new \Liip\RMT\Exception("Invalid changelog location: $filePath");
         }
         $this->filePath = $filePath;
-
-        // Store the formatter
-        $this->format = $format;
-        $formatterClass = 'Liip\\RMT\\Changelog\\Formatter\\' . ucfirst($format) . 'ChangelogFormatter';
+        $this->format   = 'semantic';
+        $formatterClass = 'Liip\\RMT\\Changelog\\Formatter\\SemanticChangelogFormatter';
         if (!class_exists($formatterClass)) {
             throw new \Exception("There is no formatter for [$format]");
         }

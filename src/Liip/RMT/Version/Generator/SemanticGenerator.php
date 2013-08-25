@@ -9,7 +9,7 @@ use Liip\RMT\Context;
  * Generator based on the Semantic Versioning defined by Tom Preston-Werner
  * Description available here: http://semver.org/
  */
-class SemanticGenerator implements GeneratorInterface, ContextAwareInterface
+class SemanticGenerator implements ContextAwareInterface
 {
     /**
      * the context.

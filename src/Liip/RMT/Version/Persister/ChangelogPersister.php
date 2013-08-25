@@ -85,14 +85,9 @@ class ChangelogPersister implements PersisterInterface, ContextAwareInterface
     private function getChangelogManager()
     {
         if ($this->changelogManager === null) {
-        // The changelog format is related to the version-generator
-            $config = $this->context->getParam('config');
-            preg_match('/([^\\\]+)Generator/', $config['version-generator']['class'], $match);
-            $format = $match[1];
-
             // Create the changelog manager
             $this->changelogManager = new ChangelogManager(
-                $this->context->getParam('project-root') . '/' . $this->options['location'], $format
+                $this->context->getParam('project-root') . '/' . $this->options['location']
             );
         }
         
