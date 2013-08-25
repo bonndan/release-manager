@@ -40,10 +40,18 @@ class Context
         // Store the config for latter usage
         $context->setParameter('config', $config);
 
-        // Populate the context
-        foreach (array("version-generator", "version-persister") as $service){
+        /*
+         * Populate the context the version generator
+         */
+        $generator =new \Liip\RMT\Version\Generator\SemanticGenerator();
+        $generator->setContext($context);
+        $context->setService("version-generator", $generator);
+        
+        //populate version persister
+        foreach (array("version-persister") as $service){
             $context->setService($service, $config[$service]['class'], $config[$service]['options']);
         }
+        
         foreach (array("prerequisites", "pre-release-actions", "post-release-actions") as $listName){
             $context->createEmptyList($listName);
             foreach ($config[$listName] as $service){
