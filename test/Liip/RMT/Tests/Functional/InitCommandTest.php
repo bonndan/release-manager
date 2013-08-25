@@ -16,10 +16,11 @@ class InitCommandTest extends RMTFunctionalTestBase
         $helper->setComposerFile($this->tempDir .'/composer.json');
         $this->assertNull($helper->getRMTConfigSection());
         
-        exec('./RMT init --vcs=git --persister=vcs-tag -n');
-        
+        exec('./RMT init --vcs=git --persister=vcs-tag -n', $output, $returnVar);
+        $this->assertEquals(0, $returnVar);
         $config = $helper->getRMTConfigSection();
-        $this->assertNotNull();
+        
+        $this->assertNotNull($config);
         $this->assertEquals('git', $config->getVcs());
         $this->assertEquals('vcs-tag', $config->getVersionPersister());
     }
