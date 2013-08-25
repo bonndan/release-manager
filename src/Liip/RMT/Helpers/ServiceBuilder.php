@@ -3,6 +3,7 @@
 namespace Liip\RMT\Helpers;
 
 use Liip\RMT\Context;
+use Liip\RMT\ContextAwareInterface;
 
 /**
  * Helps finding the implementations for abbreviated service names in the configuration.
@@ -39,6 +40,10 @@ class ServiceBuilder
             return $this->getClassAndOptionsByString($rawConfig, $sectionName);
         } 
         
+        if (is_object($rawConfig)) {
+            $rawConfig = (array)$rawConfig;
+        }
+        
         if (is_array($rawConfig)) {
             if (!isset($rawConfig['name'])) {
                 throw new \Liip\RMT\Config\Exception("Missing information for [$sectionName], you must provide a [name] value");
@@ -50,7 +55,10 @@ class ServiceBuilder
             
         }
         
-        throw new \Liip\RMT\Config\Exception("Invalid configuration for [$sectionName] should be a object name or an array with name and options");
+        throw new \Liip\RMT\Config\Exception(
+            "Invalid configuration for [$sectionName] must be a class name or an array with name and options."
+            . ' Is: ' . var_export($rawConfig, true)
+        );
     }
     
     /**
