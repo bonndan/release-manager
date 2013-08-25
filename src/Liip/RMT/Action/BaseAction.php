@@ -5,7 +5,7 @@ namespace Liip\RMT\Action;
 use Liip\RMT\Context;
 use Liip\RMT\ContextAwareInterface;
 
-abstract class BaseAction implements ContextAwareInterface
+abstract class BaseAction implements ContextAwareInterface, ActionInterface
 {
     /**
      * the context

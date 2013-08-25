@@ -48,11 +48,11 @@ class ReleaseCommand extends BaseCommand
         }
 
         // Register options of the release tasks
-        $ic->registerRequests($this->getContext()->get('version-generator')->getInformationRequests());
+        $ic->registerRequests($this->getContext()->getVersionGenerator()->getInformationRequests());
         $ic->registerRequests($this->getContext()->get('version-persister')->getInformationRequests());
 
         // Register options of all lists (prerequistes and actions)
-        foreach (array('prerequisites', 'pre-release-actions', 'post-release-actions') as $listName){
+        foreach (array('prerequisites', 'preReleaseActions', 'postReleaseActions') as $listName){
             foreach ($this->getContext()->getList($listName) as $listItem){
                 $ic->registerRequests($listItem->getInformationRequests());
             }
@@ -99,17 +99,17 @@ class ReleaseCommand extends BaseCommand
             if ($this->getContext()->get('information-collector')->getValueFor('confirm-first') == false){
                 throw $e;
             }
-            $currentVersion = $this->getContext()->get('version-generator')->getInitialVersion();
+            $currentVersion = $this->getContext()->getVersionGenerator()->getInitialVersion();
         }
         $this->getContext()->setParameter('current-version', $currentVersion);
 
         // Generate and save the new version number
-        $newVersion = $this->getContext()->get('version-generator')->generateNextVersion(
+        $newVersion = $this->getContext()->getVersionGenerator()->generateNextVersion(
             $this->getContext()->getParam('current-version')
         );
         $this->getContext()->setParameter('new-version', $newVersion);
 
-        $this->executeActionListIfExist('pre-release-actions');
+        $this->executeActionListIfExist('preReleaseActions');
 
         $this->writeSmallTitle('Release process');
         $this->getOutput()->indent();
@@ -120,7 +120,7 @@ class ReleaseCommand extends BaseCommand
 
         $this->getOutput()->unIndent();
 
-        $this->executeActionListIfExist('post-release-actions');
+        $this->executeActionListIfExist('postReleaseActions');
     }
 
     protected function executeActionListIfExist($name, $title=null)

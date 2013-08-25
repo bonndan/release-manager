@@ -53,11 +53,11 @@ class ContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The class [Bar] does not exist
+     * 
      */
     public function testSetServiceWithInvalidClass()
     {
+        $this->setExpectedException("\Liip\RMT\Config\Exception");
         $this->context->setService('foo', 'Bar');
     }
 
@@ -92,20 +92,12 @@ class ContextTest extends \PHPUnit_Framework_TestCase
 
     public function testAddToList()
     {
-        $this->context->addToList('prerequisites', '\Liip\RMT\Tests\Unit\ServiceClass');
-        $this->context->addToList('prerequisites', '\Liip\RMT\Context');
+        $this->context->addToList('prerequisites', new \Liip\RMT\Action\ComposerUpdateAction());
+        $this->context->addToList('prerequisites', new \Liip\RMT\Action\ComposerUpdateAction());
         $objects = $this->context->getList('prerequisites');
         $this->assertCount(2, $objects);
-        $this->assertInstanceOf('\Liip\RMT\Tests\Unit\ServiceClass', $objects[0]);
-        $this->assertInstanceOf('\Liip\RMT\Context', $objects[1]);
-    }
-
-    public function testAddToListWithOptions()
-    {
-        $options = array('pi'=>3.14);
-        $this->context->addToList('foo', '\Liip\RMT\Tests\Unit\ServiceClass', $options);
-        $objects = $this->context->getList('foo');
-        $this->assertEquals($options, $objects[0]->getOptions());
+        $this->assertInstanceOf('\Liip\RMT\Action\ComposerUpdateAction', $objects[0]);
+        $this->assertInstanceOf('\Liip\RMT\Action\ComposerUpdateAction', $objects[1]);
     }
 
     /**
@@ -116,16 +108,6 @@ class ContextTest extends \PHPUnit_Framework_TestCase
     {
         $this->context->getList('abc');
     }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The class [Bar] does not exist
-     */
-    public function testAddToListWithInvalidClass()
-    {
-        $this->context->addToList('foo', 'Bar');
-    }
-
 
     public function testEmptyList()
     {

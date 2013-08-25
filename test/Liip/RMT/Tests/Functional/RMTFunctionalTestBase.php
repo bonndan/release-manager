@@ -4,34 +4,52 @@ namespace Liip\RMT\Tests\Functional;
 
 class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
 {
+
     protected $tempDir;
 
-    protected function setUp() {
+    /**
+     * Test setup: add composer file and append config.
+     */
+    protected function setUp()
+    {
 
         // Create a temp folder
-        $this->tempDir = tempnam(sys_get_temp_dir(),'');
+        $this->tempDir = tempnam(sys_get_temp_dir(), '');
         if (file_exists($this->tempDir)) {
             unlink($this->tempDir);
         }
         mkdir($this->tempDir);
         chdir($this->tempDir);
 
+        copy(__DIR__ . '/composer_no_rmt.json', $this->tempDir .'/composer.json');
+        
         // Create the executable task inside
-        $rmtDir = realpath(__DIR__.'/../../../../../');
-        exec("php $rmtDir/command.php init --generator=basic-increment --persister=vcs-tag --vcs=git");
+        $rmtDir = realpath(__DIR__ . '/../../../../../');
+        exec("php $rmtDir/command.php init --persister=vcs-tag --vcs=git");
     }
 
-    protected function createJsonConfig($generator, $persister, $otherConfig=array()) {
+    /**
+     * 
+     * @param type $generator
+     * @param type $persister
+     * @param type $otherConfig
+     */
+    protected function createJsonConfig($generator, $persister, $otherConfig = array())
+    {
+        $helper = new \Liip\RMT\Helpers\ComposerConfig();
+        $helper->setComposerFile($this->tempDir . '/composer.json');
         $allConfig = array_merge($otherConfig, array(
-            'version-persister'=>$persister,
-            'version-generator'=>$generator
+            'versionPersister' => $persister,
         ));
-        file_put_contents('rmt.json', json_encode($allConfig));
+        $config = \Liip\RMT\Config::create($allConfig);
+        $helper->addRMTConfigSection($config);
+        
+        return $helper->getRMTConfigSection();
     }
 
     protected function tearDown()
     {
-        exec('rm -rf '.$this->tempDir);
+        exec('rm -rf ' . $this->tempDir);
     }
 
     protected function initGit()
@@ -41,9 +59,11 @@ class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
         exec('git commit -m "First commit"');
     }
 
-    protected function  manualDebug()
+    protected function manualDebug($output = '')
     {
-        echo "\n\nMANUAL DEBUG Go to:\n > cd ".$this->tempDir."\n\n"; exit();
+        echo "\n\nMANUAL DEBUG Go to:\n > cd " . $this->tempDir . "\n\n";
+        echo $output;
+        exit();
     }
 
 }

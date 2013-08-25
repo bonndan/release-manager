@@ -8,7 +8,7 @@ a closer integration to composer related workflows. Project targets are:
 
 * allow only semantic versioning, which is encouraged by composer
 * move configuration to composer.json
-* remove hardcoded action names
+* allow custom classes as actions
 * allow usage in combination with git-flow (react on existing version tags).
 
 Kudos to the original authors for this tool.
@@ -25,7 +25,7 @@ Installation
 
 In order to use RMT your project should use [Composer](http://getcomposer.org/) as RMT will be installed as a dev-dependency. Just go on your project root directory and execute:
 
-    php composer.phar require --dev bonndan/ReleaseManager 0.1.*         # lastest beta
+    php composer.phar require --dev bonndan/ReleaseManager 0.2.*         # lastest beta
     # or
     php composer.phar require --dev bonndan/ReleaseManager dev-master    # lastest unstable
 
@@ -33,11 +33,13 @@ Then you must initialize RMT by running the following command:
 
     php vendor/bonndan/ReleaseManager/command.php init
 
-This command will create for you a `rmt.json` config file and a `RMT` executable script in your root folder. For that point you can start using RMT, just execute it:
+This command will create for you a `extra/rmt` section in your composer.json. 
+From that point on you can start using RMT, just execute it:
 
     ./RMT
 
-Once here, the best is to pick one of the [configuration example](#configuration-examples) below and to adapt it to your needs.
+Once here, the best is to pick one of the [configuration example](#configuration-examples) 
+below and to adapt it to your needs.
 
 
 Usage
@@ -78,11 +80,9 @@ All the entry of this config (except the `branch-specific`) are all working the 
 
 * The config array, example:  `"version-persister": {"name": "vcs-tag"}` when you have to provide parameters to the class.
 
-### Version generator
+### Semantic Version Generator
 
-Version number generation strategy
-
-* semantic: A generator who implements (Semantic versioning)[http://semver.org]
+ReleaseManager only allows semantic version without prefixes. See (Semantic versioning)[http://semver.org]
 
 ### Version persister
 
@@ -160,7 +160,8 @@ Most of the time, it will be easier for you to pick up and example bellow and to
 
 Contributing
 ------------
-If you would like to help, to submit one of your action script or just to report a bug: just go on the project page: https://github.com/liip/RMT
+If you would like to help, to submit one of your action script or just to report a bug:
+ just go on the project page: https://github.com/bonndan/ReleaseManager
 
 Requirements
 ------------

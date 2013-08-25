@@ -1,6 +1,6 @@
 {
     "name": "bonndan/ReleaseManager",
-    "version": "0.2.1",
+    "version": "0.2.0",
     "description": "Release Manager",
     "keywords": ["release", "version", "semantic versioning", "vcs tag"],
     "homepage": "http://github.com/bonndan/ReleaseManager",
@@ -27,11 +27,8 @@
         "rmt" : {
             "vcs":"git",
             "prerequisites": ["working-copy-check", "display-last-changes"],
-            "preReleaseActions": [
-              {
-                  "name": "version-stamp",
-                  "const": "RMT_VERSION"
-              },
+            "pre-release-actions": [
+              "bin/UpdateApplicationVersionCurrentVersion.php",
               "composer-update",
               {
                 "name": "changelog-update",
@@ -40,8 +37,8 @@
               },
               "vcs-commit"
              ],
-            "versionPersister" : "vcs-tag",
-            "postReleaseActions": []
+            "version-persister":"vcs-tag",
+            "post-release-actions": ["vcs-publish"]
         }
     }
 }
