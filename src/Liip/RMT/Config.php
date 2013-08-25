@@ -20,7 +20,7 @@ class Config
     
     private $preReleaseActions;
     
-    private $versionPersister = "vcs-tag";
+    private $versionPersister;
     
     private $postReleaseActions;
     
