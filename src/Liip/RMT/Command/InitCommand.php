@@ -127,6 +127,11 @@ class InitCommand extends BaseCommand
         $this->writeEmptyLine();
     }
 
+    /**
+     * Returns initial config data.
+     * 
+     * @return array
+     */
     public function getConfigData()
     {
         $config = array();
@@ -136,7 +141,7 @@ class InitCommand extends BaseCommand
             $config['vcs'] = $vcs;
         }
 
-        $config['version-persister'] = $this->informationCollector->getValueFor('persister');
+        $config['versionPersister'] = $this->informationCollector->getValueFor('persister');
 
         return $config;
     }
