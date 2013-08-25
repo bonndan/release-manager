@@ -43,7 +43,10 @@ class Context
          * The following services are config-dependent
          */
         if ($config !== null) {
-            $context->setService('vcs', $builder->getService($config->getVcs(), 'vcs'));
+            if ($config->getVcs()) {
+                $context->setService('vcs', $builder->getService($config->getVcs(), 'vcs'));
+            }
+            
             // Store the config for latter usage
             $context->setParameter('config', $config);
             /*
