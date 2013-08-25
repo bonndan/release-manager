@@ -12,8 +12,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 
+/**
+ * Release Manager application.
+ * 
+ */
 class Application extends BaseApplication
 {
+
     /**
      * Constructor.
      */
@@ -98,7 +103,7 @@ class Application extends BaseApplication
             if ($graceful == true) {
                 return null;
             }
-            
+
             throw new \Exception("Impossible to locate the config section in composer.json. If it's the first time you
                 are using this tool, you setup your project using the [RMT init] command"
             );
