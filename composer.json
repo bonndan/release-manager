@@ -13,8 +13,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/console": "~2.0"
+        "php"             : ">=5.3.3",
+        "symfony/console" : "~2.0",
+        "vierbergenlars/php-semver": "2.0.5"
     },
     "autoload": {
         "psr-0": {

@@ -1,26 +1,33 @@
 <?php
-
 namespace Liip\RMT\Version\Persister;
 
-use Liip\RMT\VCS\VCSInterface;
 use Liip\RMT\Context;
 use Liip\RMT\ContextAwareInterface;
 
+/**
+ * VCS tag persister.
+ * 
+ */
 class VcsTagPersister implements PersisterInterface, ContextAwareInterface
 {
+
     protected $options = array();
-    
     protected $versionRegex;
-    protected $vcs;
-    protected $prefix;
     
+    /**
+     * vcs instance
+     * 
+     * @var \Liip\RMT\VCS\VCSInterface
+     */
+    protected $vcs;
+
     /**
      * the context
      * 
      * @var Context
      */
     protected $context;
-    
+
     /**
      * Constructor.
      * 
@@ -30,7 +37,7 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
     {
         $this->options = $options;
     }
-    
+
     /**
      * Inject the context.
      * 
@@ -39,13 +46,11 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
     public function setContext(Context $context)
     {
         $this->context = $context;
-        $this->vcs = $this->context->get('vcs');
+        $this->vcs = $this->context->getVCS();
         $this->versionRegex = $this->context->getVersionGenerator()->getValidationRegex();
         if (isset($this->options['tag-pattern'])) {
             $this->versionRegex = $this->options['tag-pattern'];
         }
-        $this->prefix = $this->generatePrefix(
-            isset($this->options['tag-prefix']) ? $this->options['tag-prefix'] : '');
     }
 
     /**
@@ -53,10 +58,10 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
      */
     public function getCurrentVersion()
     {
-        $tags = $this->getValidVersionTags($this->versionRegex);
-        if (count($tags)===0){
+        $tags = $this->getValidVersionTags();
+        if (count($tags) === 0) {
             throw new \Liip\RMT\Exception\NoReleaseFoundException(
-                'No VCS tag matching the regex ['.$this->getTagPrefix().$this->versionRegex.']');
+            'No VCS tag matching the regex [' . $this->versionRegex . ']');
         }
 
         // Extract versions from tags and sort them
@@ -75,6 +80,7 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
 
     public function init()
     {
+        
     }
 
     public function getInformationRequests()
@@ -82,19 +88,14 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
         return array();
     }
 
-    public function getTagPrefix()
-    {
-        return $this->prefix;
-    }
-
     public function getTagFromVersion($versionName)
     {
-        return $this->getTagPrefix().$versionName;
+        return $versionName;
     }
 
     public function getVersionFromTag($tagName)
     {
-        return substr($tagName, strlen($this->getTagPrefix()));
+        return $tagName;
     }
 
     public function getVersionFromTags($tags)
@@ -106,7 +107,6 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
         return $versions;
     }
 
-
     public function getCurrentVersionTag()
     {
         return $this->getTagFromVersion($this->getCurrentVersion());
@@ -114,30 +114,13 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
 
     /**
      * Return all tags matching the versionRegex and prefix
-     * @param $versionRegex
+     * 
+     * @return array
      */
-    public function getValidVersionTags($versionRegex)
+    public function getValidVersionTags()
     {
-        $validator = new TagValidator($versionRegex, $this->getTagPrefix());
+        $validator = new TagValidator();
         return $validator->filtrateList($this->vcs->getTags());
     }
-
-    protected function generatePrefix($userTag){
-        preg_match_all('/\{([^\}]*)\}/', $userTag, $placeHolders);
-        foreach ($placeHolders[1] as $pos => $placeHolder){
-            if ($placeHolder == 'branch-name'){
-                $replacement = $this->vcs->getCurrentBranch();
-            }
-            else if ($placeHolder == 'date'){
-                $replacement = date('Y-m-d');
-            }
-            else {
-                throw new \Liip\RMT\Exception("There is no rules to process the prefix placeholder [$placeHolder]");
-            }
-            $userTag = str_replace($placeHolders[0][$pos], $replacement, $userTag);
-        }
-        return $userTag;
-    }
-
 
 }

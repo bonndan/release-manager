@@ -16,10 +16,9 @@ class CurrentCommandTest extends RMTFunctionalTestBase
     public function testVCSTag()
     {
         $this->initGit();
-        $this->createJsonConfig('semantic', array('name'=>'vcs-tag', 'tag-prefix'=>'toto_'), array('vcs'=>'git'));
-        exec('git tag toto_2.3.4');
+        $this->createJsonConfig('semantic', array('name'=>'vcs-tag'), array('vcs'=>'git'));
+        exec('git tag 2.3.4');
         $this->assertEquals("2.3.4", exec('./RMT current --raw'));
-        $this->assertEquals("toto_2.3.4", exec('./RMT current --raw --vcs-tag'));
     }
 
     public function testNumericCompare()
