@@ -1,6 +1,6 @@
 {
     "name": "bonndan/ReleaseManager",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Release Manager",
     "keywords": ["release", "version", "semantic versioning", "vcs tag"],
     "homepage": "http://github.com/bonndan/ReleaseManager",
@@ -41,7 +41,7 @@
               "vcs-commit"
              ],
             "versionPersister" : "vcs-tag",
-            "postReleaseActions": ["vcs-publish"]
+            "postReleaseActions": []
         }
     }
 }
