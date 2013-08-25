@@ -26,17 +26,11 @@ class Context
     public static function create(Application $application)
     {
         $rootDir = $application->getProjectRootDir();
-        $helper = new Helpers\ComposerConfig();
+        $helper  = new Helpers\ComposerConfig();
         $helper->setComposerFile($rootDir . '/composer.json');
-        $config = $helper->getRMTConfigSection();
+        $config  = $helper->getRMTConfigSection();
         $context = new Context();
         $builder = new Helpers\ServiceBuilder($context);
-
-        // Select a branch specific config if a VCS is in use
-        $context->setService('vcs', $builder->getService($config->getVcs(), 'vcs'));
-
-        // Store the config for latter usage
-        $context->setParameter('config', $config);
 
         /*
          * Populate the context the version generator
@@ -44,23 +38,33 @@ class Context
         $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
         $generator->setContext($context);
         $context->setService("version-generator", $generator);
-
+        
         /*
-         * populate version persister
+         * The following services are config-dependent
          */
-        $context->setService(
-            "version-persister", $builder->getService($config->getVersionPersister(), 'versionPersister')
-        );
-
-        /*
-         * 
-         */
-        foreach (array("prerequisites", "preReleaseActions", "postReleaseActions") as $listName) {
-            $context->createEmptyList($listName);
-            foreach ($config->$listName as $service) {
-                $context->addToList($listName, $builder->getService($service, $listName));
+        if ($config !== null) {
+            $context->setService('vcs', $builder->getService($config->getVcs(), 'vcs'));
+            // Store the config for latter usage
+            $context->setParameter('config', $config);
+            /*
+             * populate version persister
+             */
+            $context->setService(
+                "version-persister", $builder->getService($config->getVersionPersister(), 'versionPersister')
+            );
+            
+            /*
+             * popluate lists
+             */
+            foreach (array("prerequisites", "preReleaseActions", "postReleaseActions") as $listName) {
+                $context->createEmptyList($listName);
+                foreach ($config->$listName as $service) {
+                    $context->addToList($listName, $builder->getService($service, $listName));
+                }
             }
         }
+
+
 
         // Provide the root dir as a context parameter
         $context->setParameter('project-root', $rootDir);
