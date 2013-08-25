@@ -7,6 +7,9 @@ class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
 
     protected $tempDir;
 
+    /**
+     * Test setup: add composer file and append config.
+     */
     protected function setUp()
     {
 
@@ -18,6 +21,8 @@ class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
         mkdir($this->tempDir);
         chdir($this->tempDir);
 
+        copy(__DIR__ . '/composer_no_rmt.json', $this->tempDir .'/composer.json');
+        
         // Create the executable task inside
         $rmtDir = realpath(__DIR__ . '/../../../../../');
         exec("php $rmtDir/command.php init --persister=vcs-tag --vcs=git");
@@ -31,14 +36,15 @@ class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
      */
     protected function createJsonConfig($generator, $persister, $otherConfig = array())
     {
-
         $helper = new \Liip\RMT\Helpers\ComposerConfig();
-        $helper->setComposerFile(__DIR__ . '/composer.json');
+        $helper->setComposerFile($this->tempDir . '/composer.json');
         $allConfig = array_merge($otherConfig, array(
             'versionPersister' => $persister,
         ));
         $config = \Liip\RMT\Config::create($allConfig);
         $helper->addRMTConfigSection($config);
+        
+        return $helper->getRMTConfigSection();
     }
 
     protected function tearDown()
@@ -53,9 +59,10 @@ class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
         exec('git commit -m "First commit"');
     }
 
-    protected function manualDebug()
+    protected function manualDebug($output = '')
     {
         echo "\n\nMANUAL DEBUG Go to:\n > cd " . $this->tempDir . "\n\n";
+        echo $output;
         exit();
     }
 
