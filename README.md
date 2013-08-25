@@ -76,7 +76,7 @@ All RMT configuration have to be done in the `rmt.json`. The file is divided in 
 
 All the entry of this config (except the `branch-specific`) are all working the same. You have to specify the class you want to handle the action. There is two syntax available:
 
-* The config array, example:  `"version-persister": {"name": "vcs-tag", "tag-prefix": "v_"}` when you have to provide parameters to the class.
+* The config array, example:  `"version-persister": {"name": "vcs-tag"}` when you have to provide parameters to the class.
 
 ### Version generator
 
@@ -144,13 +144,12 @@ Most of the time, it will be easier for you to pick up and example bellow and to
 }
 ```
 
-### Using Git tags with prefix, semantic versioning and pushing automatically
+### Using Git tags with semantic versioning and pushing automatically
 ```
 {
     "vcs": "git",
     "version-persister": {
         "type" : "vcs-tag",
-        "prefix" : "v_"
     },
     "post-release-actions": [
        "vcs-publish"
