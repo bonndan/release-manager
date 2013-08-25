@@ -52,7 +52,7 @@ class ReleaseCommand extends BaseCommand
         $ic->registerRequests($this->getContext()->get('version-persister')->getInformationRequests());
 
         // Register options of all lists (prerequistes and actions)
-        foreach (array('prerequisites', 'pre-release-actions', 'post-release-actions') as $listName){
+        foreach (array('prerequisites', 'preReleaseActions', 'postReleaseActions') as $listName){
             foreach ($this->getContext()->getList($listName) as $listItem){
                 $ic->registerRequests($listItem->getInformationRequests());
             }
