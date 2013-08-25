@@ -3,6 +3,47 @@ VERSION 0  FIRST BETA
 =====================
 
    Version 0.2 - Removed tag prefixing
+      25/08/2013 22:51  0.2.1  Configuration is integrated into composer file
+         70c49ac Merge branch 'feature/composer_config' into develop
+         8526d9a test fixture
+         8caf99a changelog manager always uses semantic formatter
+         c1f17e1 context does not try to get vcs service if not configured
+         5cc8bbe fixed the changelog test
+         2fd6697 changelog persister always uses semantic formatter
+         00c0b95 removed deprecated interface
+         0042b2b fixed naming
+         4e5f7e6 fixed the current command test
+         ba7b1b9 removed deprecated files
+         f09e843 fixed the init command test
+         b39849a fixed a bug in the test file base class
+         6871e53 improved the config tests
+         36cdd91 config lists-properties are stored and returned as array
+         44b69c9 fixed init command typo
+         7b19bcf fixed context: not trying to create config-dependend services
+         93228dd fixed the init command test
+         6f32f26 code cleanup
+         d84abc5 code cleanup
+         259dfc5 composer test config
+         214a4d5 code cleanup
+         757be68 removed test where service creation was depended of other service
+         c786ca9 fixed list names
+         2be573b fixed service builder not injecting context
+         c9948ee fixed json typo
+         69083df changed init command not to ask for version generator options (left over from simple versioning removal)
+         8f42a1e refactored context to use the service builder and some typehints
+         25fb7d5 replaced inline version constant with version file
+         0df525f removed handler, reused tests from handlertest for servicebuilder tests
+         4e000e9 extracted a service builder class which resolves the abbreviations to class names
+         f721d50 base action implements action interface
+         7bccc26 added interface for actions
+         4036427 composer config helper can add config to composer.json
+         b828c58 removed config default value
+         7ea8816 config value object test
+         f744ceb config value object
+         f9e348d composer update action uses the composerconfig helper
+         f0c6563 implemented composer config helper
+         2dc5ff5 introduced composer config helper (reading data, modifies the version)
+         cd00fd8 Merge branch 'release/0.2.0' into develop
       25/08/2013 13:06  0.2.0  initial release
          3195a76 removed references to tag prefixing
          5de9531 removed tag prefixing, using vierbergenlars/semver for tag validation (ensures semantic version tagging)
