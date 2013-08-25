@@ -30,7 +30,7 @@
             "preReleaseActions": [
               {
                   "name": "version-stamp",
-                  "const": "RMT_VERSION",
+                  "const": "RMT_VERSION"
               },
               "composer-update",
               {
