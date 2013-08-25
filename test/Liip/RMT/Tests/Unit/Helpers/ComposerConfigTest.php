@@ -41,11 +41,28 @@ class ComposerConfigTest extends \PHPUnit_Framework_TestCase
         $this->helper = new ComposerConfig($context);
     }
     
+    /**
+     * Ensures that the contents of the extra/rmt  section are returned.
+     */
     public function testGetRmtConfigSection()
     {
-        
+        $data = $this->helper->getRMTConfigSection();
+        $this->assertInternalType('object', $data);
+        $this->assertEquals('git', $data->vcs);
     }
     
+    /**
+     * Ensures that null is returned if the config does not contain an rmt section
+     */
+    public function testGetRmtConfigSectionFails()
+    {
+        copy( __DIR__ . '/testdata/composer_no_rmt.json', sys_get_temp_dir() . '/composer.json');
+        $this->assertNull($this->helper->getRMTConfigSection());
+    }
+    
+    /**
+     * Ensures that the version string is replaced.
+     */
     public function testReplaceVersion()
     {
         $newVersion = 'abc';
