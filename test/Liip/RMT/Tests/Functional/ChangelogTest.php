@@ -5,14 +5,6 @@ namespace Liip\RMT\Tests\Functional;
 class ChangelogTest extends RMTFunctionalTestBase
 {
 
-    public function testSimple()
-    {
-        $this->createChangelog('simple');
-        $this->createJsonConfig("simple", "changelog");
-        $this->executeTest(null, 'comment1', '1');
-        $this->executeTest(null, 'comment2', '2');
-    }
-
     public function testSemantic()
     {
         $this->createChangelog('semantic');
