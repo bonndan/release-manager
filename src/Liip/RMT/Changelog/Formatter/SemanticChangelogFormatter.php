@@ -2,7 +2,12 @@
 
 namespace Liip\RMT\Changelog\Formatter;
 
-class SemanticChangelogFormatter implements ChangeLogFormatterInterface
+/**
+ * Changelog formatter
+ * 
+ * 
+ */
+class SemanticChangelogFormatter
 {
     public function updateExistingLines($lines, $version, $comment, array $options = null)
     {
