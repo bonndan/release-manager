@@ -3,8 +3,22 @@ namespace Liip\RMT\Tests\Unit;
 
 use Liip\RMT\Config;
 
+/**
+ * Test the config value object.
+ * 
+ * 
+ */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Ensures that the factory methods checks the keys.
+     */
+    public function testInvalidEntry()
+    {
+        $this->setExpectedException("\Liip\RMT\Config\Exception");
+        Config::create(array('unknown' => 'key'));
+    }
+    
     public function testFactoryReturnsConfig()
     {
         $config = Config::create($this->getConfigData());

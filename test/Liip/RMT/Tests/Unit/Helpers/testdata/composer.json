@@ -27,8 +27,7 @@
         "rmt" : {
             "vcs":"git",
             "prerequisites": ["working-copy-check", "display-last-changes"],
-            "pre-release-actions": [
-              "bin/UpdateApplicationVersionCurrentVersion.php",
+            "preReleaseActions": [
               "composer-update",
               {
                 "name": "changelog-update",
@@ -37,8 +36,8 @@
               },
               "vcs-commit"
              ],
-            "version-persister":"vcs-tag",
-            "post-release-actions": ["vcs-publish"]
+            "versionPersister":"vcs-tag",
+            "postReleaseActions": ["vcs-publish"]
         }
     }
 }
