@@ -53,7 +53,7 @@ class ComposerConfig
      */
     public function getRMTConfigSection()
     {
-        $json = json_decode(file_get_contents($this->composerFile));
+        $json = $this->getJson();
         if (!isset($json->extra->rmt)) {
             return null;
         }
