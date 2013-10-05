@@ -4,13 +4,10 @@ namespace Liip\RMT;
 
 require_once realpath(__DIR__ . '/../../../') . '/version.php';
 
-use Liip\RMT\Command\ReleaseCommand;
-use Liip\RMT\Command\CurrentCommand;
-use Liip\RMT\Command\InitCommand;
-use Liip\RMT\Output\Output;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as BaseApplication;
+use Liip\RMT\Exception\NoConfigurationException;
 
 /**
  * Release Manager application.
@@ -25,7 +22,7 @@ class Application extends BaseApplication
     public function __construct()
     {
         // Creation
-        parent::__construct('Release Management Tool', RMT_VERSION);
+        parent::__construct('Release Manager', RMT_VERSION);
 
         // Change the current directory in favor of the project root folder,
         // this allow to run the task from outside the project like:
@@ -36,10 +33,14 @@ class Application extends BaseApplication
         try {
             // Add the default command
             $this->add($this->createCommand('InitCommand'));
-            // Add command that require the config file
-            if ($this->getConfig(true)) {
+            
+            try {
+                $this->getConfig();
+                // Add command that require the config file
                 $this->add($this->createCommand('ReleaseCommand'));
                 $this->add($this->createCommand('CurrentCommand'));
+            } catch (NoConfigurationException $exception) {
+                echo $exception->getMessage();
             }
         } catch (\Exception $e) {
             $output = new \Liip\RMT\Output\Output();
@@ -89,23 +90,19 @@ class Application extends BaseApplication
     /**
      * Returns the configuration.
      * 
-     * @param boolean $graceful
      * @return object
-     * @throws \Exception
+     * @throws NoConfigurationException
      */
-    public function getConfig($graceful = false)
+    public function getConfig()
     {
         $helper = new Helpers\ComposerConfig();
-        $helper->setComposerFile($this->getProjectRootDir() . '/composer.json');
+        $file   = $this->getProjectRootDir() . '/composer.json';
+        $helper->setComposerFile($file);
         $config = $helper->getRMTConfigSection();
 
-        if (!$config === null) {
-            if ($graceful == true) {
-                return null;
-            }
-
-            throw new \Exception("Impossible to locate the config section in composer.json. If it's the first time you
-                are using this tool, you setup your project using the [RMT init] command"
+        if ($config === null) {
+            throw new NoConfigurationException("Impossible to locate the extra/rmt config section in $file. If it's the first time you
+                are using this tool, you need to setup your project using the [RMT init] command"
             );
         }
 
