@@ -22,7 +22,7 @@ class DisplayLastChanges extends BaseAction
             $this->context->get('output')->writeln('');
             $this->context->get('output')->writeln(
                 $this->context->get('vcs')->getAllModificationsSince(
-                    $this->context->get('version-persister')->getCurrentVersionTag()
+                    $this->context->getVersionPersister()->getCurrentVersion()
                 )
             );
         }
