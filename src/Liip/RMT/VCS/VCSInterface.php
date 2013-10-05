@@ -9,9 +9,17 @@ interface VCSInterface
      */
     public function getCurrentBranch();
 
-
+    /**
+     * Returns the hight valid version.
+     * 
+     * @return string
+     * @throws \Liip\RMT\Exception\NoReleaseFoundException
+     */
+    public function getCurrentVersion();
+    
     /**
      * Return all tags of the project
+     * 
      * @return array
      */
     public function getTags();

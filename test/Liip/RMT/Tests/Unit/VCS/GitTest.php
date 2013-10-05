@@ -50,6 +50,12 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $vcs = new Git();
         $this->assertEquals(array("1.0.0","1.1.0"), $vcs->getTags());
     }
+    
+    public function testGetCurrentVersion()
+    {
+        $vcs = new Git();
+        $this->assertEquals("1.1.0", $vcs->getCurrentVersion());
+    }
 
     public function testCreateTag()
     {
