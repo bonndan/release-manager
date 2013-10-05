@@ -48,8 +48,7 @@
          ],
          "versionPersister": "composer",
          "postReleaseActions": [
-            "vcs-commit",
-            "vcs-tag"
+            "vcs-commit"
          ]
       }
    }
