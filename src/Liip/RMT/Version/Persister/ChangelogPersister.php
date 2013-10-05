@@ -93,10 +93,4 @@ class ChangelogPersister implements PersisterInterface, ContextAwareInterface
         
         return $this->changelogManager;
     }
-    
-    public function init()
-    {
-        
-    }
 }
-

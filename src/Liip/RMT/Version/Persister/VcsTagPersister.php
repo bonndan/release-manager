@@ -79,11 +79,6 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
         $this->vcs->createTag($tagName);
     }
 
-    public function init()
-    {
-        
-    }
-
     public function getInformationRequests()
     {
         return array();
