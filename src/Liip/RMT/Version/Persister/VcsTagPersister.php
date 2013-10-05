@@ -1,20 +1,15 @@
 <?php
 namespace Liip\RMT\Version\Persister;
 
-use Liip\RMT\Context;
-use Liip\RMT\ContextAwareInterface;
 use Liip\RMT\Helpers\TagValidator;
+use Liip\RMT\Context;
 
 /**
  * VCS tag persister.
  * 
  */
-class VcsTagPersister implements PersisterInterface, ContextAwareInterface
+class VcsTagPersister extends AbstractPersister implements PersisterInterface
 {
-
-    protected $options = array();
-    protected $versionRegex;
-    
     /**
      * vcs instance
      * 
@@ -23,35 +18,14 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
     protected $vcs;
 
     /**
-     * the context
-     * 
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * Constructor.
-     * 
-     * @param array $options
-     */
-    public function __construct(array $options = array())
-    {
-        $this->options = $options;
-    }
-
-    /**
      * Inject the context.
      * 
      * @param \Liip\RMT\Context $context
      */
     public function setContext(Context $context)
     {
-        $this->context = $context;
+        parent::setContext($context);
         $this->vcs = $this->context->getVCS();
-        $this->versionRegex = $this->context->getVersionGenerator()->getValidationRegex();
-        if (isset($this->options['tag-pattern'])) {
-            $this->versionRegex = $this->options['tag-pattern'];
-        }
     }
 
     /**
@@ -62,7 +36,7 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
         $tags = $this->getValidVersionTags();
         if (count($tags) === 0) {
             throw new \Liip\RMT\Exception\NoReleaseFoundException(
-            'No VCS tag matching the regex [' . $this->versionRegex . ']');
+            'No VCS tag matching a semantic version.');
         }
 
         // Extract versions from tags and sort them
@@ -77,11 +51,6 @@ class VcsTagPersister implements PersisterInterface, ContextAwareInterface
         $tagName = $this->getTagFromVersion($versionNumber);
         $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$tagName</yellow>]");
         $this->vcs->createTag($tagName);
-    }
-
-    public function getInformationRequests()
-    {
-        return array();
     }
 
     public function getTagFromVersion($versionName)
