@@ -67,7 +67,7 @@ class ReleaseCommand extends BaseCommand
         $this->getContext()->setService('output', $this->output);
         $this->getContext()->get('information-collector')->handleCommandInput($input);
 
-        $this->writeBigTitle('Welcome to Release Management Tool');
+        $this->writeBigTitle('Welcome to Release Manager');
 
         $this->executeActionListIfExist('prerequisites');
     }
@@ -93,7 +93,7 @@ class ReleaseCommand extends BaseCommand
     {
         // Get the current version or generate a new one if the user has confirm that this is required
         try {
-            $currentVersion = $this->getContext()->get('version-persister')->getCurrentVersion();
+            $currentVersion = $this->getContext()->getVersionPersister()->getCurrentVersion();
         }
         catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
             if ($this->getContext()->get('information-collector')->getValueFor('confirm-first') == false){
