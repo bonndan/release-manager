@@ -48,14 +48,8 @@ class VcsTagPersister extends AbstractPersister implements PersisterInterface
 
     public function save($versionNumber)
     {
-        $tagName = $this->getTagFromVersion($versionNumber);
-        $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$tagName</yellow>]");
-        $this->vcs->createTag($tagName);
-    }
-
-    public function getTagFromVersion($versionName)
-    {
-        return $versionName;
+        $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$versionNumber</yellow>]");
+        $this->vcs->createTag($versionNumber);
     }
 
     public function getVersionFromTag($tagName)
@@ -74,7 +68,7 @@ class VcsTagPersister extends AbstractPersister implements PersisterInterface
 
     public function getCurrentVersionTag()
     {
-        return $this->getTagFromVersion($this->getCurrentVersion());
+        return $this->getCurrentVersion();
     }
 
     /**
