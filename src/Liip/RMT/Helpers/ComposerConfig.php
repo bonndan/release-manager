@@ -53,7 +53,7 @@ class ComposerConfig
      */
     public function getRMTConfigSection()
     {
-        $json = json_decode(file_get_contents($this->composerFile));
+        $json = $this->getJson();
         if (!isset($json->extra->rmt)) {
             return null;
         }
@@ -70,26 +70,61 @@ class ComposerConfig
      */
     public function addRMTConfigSection(Config $config)
     {
-        $json = json_decode(file_get_contents($this->composerFile));
+        $json = $this->getJson();
         if (!isset($json->extra)) {
             $json->extra = new \stdClass();
         }
         $json->extra->rmt = $config->toJson();
+        return $this->save($json);
+    }
+
+    /**
+     * Sets the new version
+     * 
+     * @param string $newVersion
+     */
+    public function setVersion($newVersion)
+    {
+        $json = $this->getJson();
+        $json->version = $newVersion;
+        return $this->save($json);
+    }
+
+    /**
+     * Returns the current version as stored in the composer file.
+     * 
+     * @return string|null
+     */
+    public function getCurrentVersion()
+    {
+        $json = $this->getJson();
+        if (!isset($json->version)) {
+            return null;
+        }
+        
+        return $json->version;
+    }
+    
+    /**
+     * Returns the decoded json.
+     * 
+     * @return object
+     */
+    private function getJson()
+    {
+        return json_decode(file_get_contents($this->composerFile));
+    }
+    
+    /**
+     * Saves the json object back to the composer file.
+     * 
+     * @param object $json
+     * @return string the serialized content
+     */
+    private function save($json)
+    {
         $serialized = JSONHelper::format(json_encode($json));
         file_put_contents($this->composerFile, $serialized);
         return $serialized;
     }
-
-    /**
-     * Replaces the version string using regex.
-     * 
-     * @param string $newVersion
-     */
-    public function replaceVersion($newVersion)
-    {
-        $fileContent = file_get_contents($this->composerFile);
-        $fileContent = preg_replace('/("version":[^,]*,)/', '"version": "' . $newVersion . '",', $fileContent);
-        file_put_contents($this->composerFile, $fileContent);
-    }
-
 }

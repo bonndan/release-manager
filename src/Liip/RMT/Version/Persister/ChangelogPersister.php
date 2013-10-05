@@ -3,15 +3,13 @@
 namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Version\Persister\PersisterInterface;
-use Liip\RMT\ContextAwareInterface;
-use Liip\RMT\Context;
 use Liip\RMT\Changelog\ChangelogManager;
 
 /**
  * Persists the changelog.
  * 
  */
-class ChangelogPersister implements PersisterInterface, ContextAwareInterface
+class ChangelogPersister extends AbstractPersister implements PersisterInterface
 {
     /**
      * changelog manager instance.
@@ -20,13 +18,6 @@ class ChangelogPersister implements PersisterInterface, ContextAwareInterface
      */
     protected $changelogManager;
 
-    /**
-     * the context
-     * 
-     * @var \Liip\RMT\Context 
-     */
-    private $context;
-    
     /**
      * constructor options
      * 
@@ -49,16 +40,6 @@ class ChangelogPersister implements PersisterInterface, ContextAwareInterface
         $this->options = $options;
     }
 
-    /**
-     * Inject the context.
-     * 
-     * @param \Liip\RMT\Context $context
-     */
-    public function setContext(Context $context)
-    {
-        $this->context = $context;
-    }
-    
     public function getCurrentVersion()
     {
         return $this->getChangelogManager()->getCurrentVersion();
@@ -93,10 +74,4 @@ class ChangelogPersister implements PersisterInterface, ContextAwareInterface
         
         return $this->changelogManager;
     }
-    
-    public function init()
-    {
-        
-    }
 }
-

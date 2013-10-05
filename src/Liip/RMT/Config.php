@@ -2,6 +2,8 @@
 
 namespace Liip\RMT;
 
+use Liip\RMT\Config\Exception as ConfigException;
+
 /**
  * Config value object.
  * 
@@ -19,12 +21,22 @@ class Config
     /**
      * prereq. actions
      * 
-     * @var array
+     * @var string[]
      */
     private $prerequisites = array();
     
+    /**
+     * Action class names or abbrevations.
+     * 
+     * @var string[]
+     */
     private $preReleaseActions = array();
     
+    /**
+     * Most likely "vcs-tag"
+     * 
+     * @var string
+     */
     private $versionPersister;
     
     /**
@@ -41,8 +53,14 @@ class Config
     public static function create($data)
     {
         $config = new Config;
+        
         foreach ($data as $key => $entry) {
-            if (method_exists($config, 'get' . $key) && $entry !== null) {
+            
+            if (!property_exists(__CLASS__, $key)) {
+                throw new ConfigException('The configuration entry ' . $key . ' is unknown.');
+            }
+            
+            if ($entry !== null) {
                 $config->$key = $entry;
             }
         }

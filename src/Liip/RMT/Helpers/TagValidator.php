@@ -1,6 +1,6 @@
 <?php
 
-namespace Liip\RMT\Version\Persister;
+namespace Liip\RMT\Helpers;
 
 use vierbergenlars\SemVer\version as SemanticVersion;
 use vierbergenlars\SemVer\SemVerException;

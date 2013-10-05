@@ -4,15 +4,13 @@ namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Exception\NoReleaseFoundException;
 
+/**
+ * Interface to version persister implementations.
+ * 
+ * The persisters must be able to set and to return the version number.
+ */
 interface PersisterInterface
 {
-    /**
-     * Constructor can take options.
-     * 
-     * @param array $options
-     */
-    public function __construct(array $options = array());
-
     /**
      * Return the current release name
      *
@@ -21,11 +19,15 @@ interface PersisterInterface
      * */
     public function getCurrentVersion();
 
+    /**
+     * Saves the version number.
+     * 
+     * @param string $versionNumber
+     */
     public function save($versionNumber);
 
+    /**
+     * @return array
+     */
     public function getInformationRequests();
-
-    // Use the very first time to init this persistence
-    public function init();
 }
-

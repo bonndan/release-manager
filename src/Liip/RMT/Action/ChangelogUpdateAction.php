@@ -26,7 +26,7 @@ class ChangelogUpdateAction extends BaseAction
     {
         if ($this->options['dump-commits'] == true) {
             $extraLines = $this->context->getVCS()->getAllModificationsSince(
-                $this->context->get('version-persister')->getCurrentVersionTag(),
+                $this->context->getVersionPersister()->getCurrentVersion(),
                 false
             );
             $this->options['extra-lines'] = $extraLines;

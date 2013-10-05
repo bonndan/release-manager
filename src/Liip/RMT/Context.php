@@ -35,9 +35,7 @@ class Context
         /*
          * Populate the context the version generator
          */
-        $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
-        $generator->setContext($context);
-        $context->setService("version-generator", $generator);
+        $context->setService("version-generator", new \Liip\RMT\Version\Generator\SemanticGenerator());
         
         /*
          * The following services are config-dependent

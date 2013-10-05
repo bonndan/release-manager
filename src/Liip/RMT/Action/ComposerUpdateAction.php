@@ -14,7 +14,7 @@ class ComposerUpdateAction extends \Liip\RMT\Action\BaseAction
     public function execute()
     {
         $helper = new \Liip\RMT\Helpers\ComposerConfig($this->context);
-        $helper->replaceVersion($this->context->getParam('new-version'));
+        $helper->setVersion($this->context->getParam('new-version'));
         $this->confirmSuccess();
     }
 

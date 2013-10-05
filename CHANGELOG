@@ -3,6 +3,41 @@ VERSION 0  FIRST BETA
 =====================
 
    Version 0.2 - Removed tag prefixing
+      05/10/2013 17:32  0.2.2  current vcs tag can be used
+         9cbcfd8 fixed the changelog updater action not to use a non-interface method
+         1f9973f fixed the semantic generator test
+         9291512 Merge branch 'feature/use_current_tag' into develop
+         c5c1eca "current-vcs" can be selected as version increment
+         f93f4b9 release command uses the last vcs tag as "current"
+         72532cc code cleanup
+         1a4493e composer can be configured as version-persister
+         24a4bf0 semantic version generator does not need context anymore
+         b93bfe9 display last changes task does not use method unknown to interface anymore
+         2383b64 changed version persister to composer
+         cf2d96b code cleanup
+         1621bd6 catching the noconfiguration exception
+         8aa3b75 removed "vcs-tag" option from current command
+         29bce43 new exception type
+         f8369a7 code cleanup
+         0379cd7 code cleanup
+         e06029f persister for composer files
+         cba9c90 refactored the composer config helper. can be used to read and write the version
+         25fad6f using the abstract persister class in vcs  persister
+         c7f0a2c semantic generator does not provide the regex anymore
+         9df07a3 using the abstract persister class in changelog persister
+         c811ce1 introdcued an abstract persister class
+         4a375aa removed the constructor and init() from the persister interface
+         69e9ecd moved the tag validator to helpers
+         555dbd2 Merge branch 'master' into develop
+         4a17f1c Merge branch 'hotfix/0.2.2' into develop
+         561c46c Merge branch 'hotfix/0.2.2'
+         6eb4316 changed min-stability to stable
+         fd0d723 update the readme
+         2c088be removed deprecated classes (simple changelog formatter, formatter interface)
+         31073cc code cleanup
+         fe09375 config value object checks the config keys
+         e0cb123 Merge branch 'master' into develop
+         eac93ca Merge branch 'release/0.2.1' into develop
       25/08/2013 22:51  0.2.1  Configuration is integrated into composer file
          70c49ac Merge branch 'feature/composer_config' into develop
          8526d9a test fixture

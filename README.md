@@ -1,5 +1,5 @@
-RMT - Release Management Tool
-=============================
+RMT - Release Manager
+=====================
 
 [![Build Status](https://secure.travis-ci.org/bonndan/ReleaseManager.png?branch=master)](https://travis-ci.org/bonndan/ReleaseManager)
 
@@ -9,7 +9,7 @@ a closer integration to composer related workflows. Project targets are:
 * allow only semantic versioning, which is encouraged by composer
 * move configuration to composer.json
 * allow custom classes as actions
-* allow usage in combination with git-flow (react on existing version tags).
+* promote usage in combination with git-flow.
 
 Kudos to the original authors for this tool.
 
@@ -25,21 +25,21 @@ Installation
 
 In order to use RMT your project should use [Composer](http://getcomposer.org/) as RMT will be installed as a dev-dependency. Just go on your project root directory and execute:
 
-    php composer.phar require --dev bonndan/ReleaseManager 0.2.*         # lastest beta
+    php composer.phar require --dev bonndan/ReleaseManager 0.2.*         # lastest stable
     # or
-    php composer.phar require --dev bonndan/ReleaseManager dev-master    # lastest unstable
+    php composer.phar require --dev bonndan/ReleaseManager dev-develop    # lastest unstable
 
 Then you must initialize RMT by running the following command:
 
     php vendor/bonndan/ReleaseManager/command.php init
 
-This command will create for you a `extra/rmt` section in your composer.json. 
+This command will create for you a `extra/rmt` section in your composer.json. You
+should adapt the configuration to your needs. A good example is the [composer file
+of this project] (https://github.com/bonndan/ReleaseManager/blob/master/composer.json).
+
 From that point on you can start using RMT, just execute it:
 
     ./RMT
-
-Once here, the best is to pick one of the [configuration example](#configuration-examples) 
-below and to adapt it to your needs.
 
 
 Usage
@@ -71,14 +71,14 @@ All RMT configuration have to be done in the `rmt.json`. The file is divided in 
 
 * `vcs`: The type of VCS you are using, can be `git`, `svn` or `none`
 * `prerequisites`: A list `[]` of prerequisites that must be matched before starting the release process
-* `pre-release-actions`: A list `[]` of actions that will be executed before the release process
-* `version-persister`: The persister to use to store the versions (mandatory)
-* `post-release-actions`: A list `[]` of actions that will be executed after the release
-* `branch-specific`: A list of config parameters that will be used to override the defaults from specific branches
+* `preReleaseActions`: A list `[]` of actions that will be executed before the release process
+* `versionPersister`: The persister to use to store the versions (mandatory)
+* `postReleaseActions`: A list `[]` of actions that will be executed after the release
 
-All the entry of this config (except the `branch-specific`) are all working the same. You have to specify the class you want to handle the action. There is two syntax available:
+All the entries of this config are working the same way: You have to specify the class you want
+ to handle the action or provide an abbrevation for classes provided by ReleaseManager.:
 
-* The config array, example:  `"version-persister": {"name": "vcs-tag"}` when you have to provide parameters to the class.
+* The config array, example:  `"versionPersister": {"name": "vcs-tag"}` when you have to provide parameters to the class.
 
 ### Semantic Version Generator
 
@@ -111,13 +111,11 @@ Actions can be used for pre or post release parts.
 Extend it
 ---------
 
-RMT is providing a large bunch of existing actions, generator and persister. But if you need, you can create your own. Just create a PHP script in your project, and reference it in the configuration with it's relative path:
+RMT is providing a large bunch of existing actions, generator and persister. But if you need, 
+you can create your own. Make sure it implements Liip\RMT\Action\ActionInterface.
 
-    "version-generator": "bin/myOwnGenerator.php"
-    
-or with parameters:
 
-    "version-persister": {"file": "bin/myOwnGenerator.php", "parameter1": "value1"}
+    "versionPersister": {"name": "\\My\\Namespace\\FooAction", "parameter1": "value1"}
 
 
 Configuration examples
@@ -128,7 +126,7 @@ Most of the time, it will be easier for you to pick up and example bellow and to
 
 ```
 {
-    "version-persister": "changelog"
+    "versionPersister": "changelog"
 }
 ```
 
@@ -136,7 +134,7 @@ Most of the time, it will be easier for you to pick up and example bellow and to
 ```
 {
     "vcs": "git",
-    "version-persister": "vcs-tag",  
+    "versionPersister": "vcs-tag",  
     "prerequisites": [
         "working-copy-check",
         "display-last-changes"
@@ -148,10 +146,10 @@ Most of the time, it will be easier for you to pick up and example bellow and to
 ```
 {
     "vcs": "git",
-    "version-persister": {
+    "versionPersister": {
         "type" : "vcs-tag",
     },
-    "post-release-actions": [
+    "postReleaseActions": [
        "vcs-publish"
     ],
 }

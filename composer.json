@@ -1,47 +1,56 @@
 {
-    "name": "bonndan/ReleaseManager",
-    "version": "0.2.1",
-    "description": "Release Manager",
-    "keywords": ["release", "version", "semantic versioning", "vcs tag"],
-    "homepage": "http://github.com/bonndan/ReleaseManager",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Daniel Pozzi",
-            "email": "bonndan76@googlemail.com",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php"             : ">=5.3.3",
-        "symfony/console" : "~2.0",
-        "vierbergenlars/php-semver": "~2.0"
-    },
-    "autoload": {
-        "psr-0": {
-            "Liip": "src"
-        }
-    },
-    "minimum-stability": "stable",
-    "extra" : {
-        "rmt" : {
-            "vcs":"git",
-            "prerequisites": ["working-copy-check", "display-last-changes"],
-            "preReleaseActions": [
-              {
-                  "name": "version-stamp",
-                  "const": "RMT_VERSION"
-              },
-              "composer-update",
-              {
-                "name": "changelog-update",
-                "format": "semantic",
-                "dump-commits": true
-              },
-              "vcs-commit"
-             ],
-            "versionPersister" : "vcs-tag",
-            "postReleaseActions": []
-        }
-    }
+   "name": "bonndan\/ReleaseManager",
+   "version": "0.2.2",
+   "description": "Release Manager",
+   "keywords": [
+      "release",
+      "version",
+      "semantic versioning",
+      "vcs tag"
+   ],
+   "homepage": "http:\/\/github.com\/bonndan\/ReleaseManager",
+   "license": "MIT",
+   "authors": [
+      {
+         "name": "Daniel Pozzi",
+         "email": "bonndan76@googlemail.com",
+         "role": "Developer"
+      }
+   ],
+   "require": {
+      "php": ">=5.3.3",
+      "symfony\/console": "~2.0",
+      "vierbergenlars\/php-semver": "~2.0"
+   },
+   "autoload": {
+      "psr-0": {
+         "Liip": "src"
+      }
+   },
+   "minimum-stability": "stable",
+   "extra": {
+      "rmt": {
+         "vcs": "git",
+         "prerequisites": [
+            "working-copy-check",
+            "display-last-changes"
+         ],
+         "preReleaseActions": [
+            {
+               "name": "version-stamp",
+               "const": "RMT_VERSION"
+            },
+            {
+               "name": "changelog-update",
+               "format": "semantic",
+               "dump-commits": true
+            }
+         ],
+         "versionPersister": "composer",
+         "postReleaseActions": [
+            "vcs-commit",
+            "vcs-tag"
+         ]
+      }
+   }
 }
