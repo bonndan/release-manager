@@ -2,40 +2,23 @@
 
 namespace Liip\RMT\Version\Generator;
 
-use Liip\RMT\ContextAwareInterface;
-use Liip\RMT\Context;
-
 /**
  * Generator based on the Semantic Versioning defined by Tom Preston-Werner
  * Description available here: http://semver.org/
  */
-class SemanticGenerator implements ContextAwareInterface
+class SemanticGenerator
 {
-    /**
-     * the context.
-     * 
-     * @var Context
-     */
-    private $context;
-    
     /**
      * {@inheritDoc}
      * @throws \InvalidArgumentException
      */
-    public function generateNextVersion($currentVersion, $options = array())
+    public function generateNextVersion($currentVersion, $increment)
     {
-        if (isset($options['type'])) {
-            $type = $options['type'];
-        }
-        else {
-            $type = $this->context->get('information-collector')->getValueFor('type');
-        }
-
         // Type validation
         $validTypes = array('patch', 'minor', 'major');
-        if (!in_array($type, $validTypes)){
+        if (!in_array($increment, $validTypes)){
             throw new \InvalidArgumentException(
-                "The option [type] must be one of: {".implode($validTypes, ', ')."}, \"$type\" given"
+                "The option [type] must be one of: {".implode($validTypes, ', ')."}, \"$increment\" given"
             );
         }
 
@@ -45,11 +28,11 @@ class SemanticGenerator implements ContextAwareInterface
 
         // Increment
         list($major, $minor, $patch) = explode('.', $currentVersion);
-        if ($type === 'major') {
+        if ($increment === 'major') {
             $major += 1;
             $patch = $minor = 0;
         }
-        else if ($type === 'minor') {
+        else if ($increment === 'minor') {
             $minor += 1;
             $patch = 0;
         }
@@ -65,7 +48,7 @@ class SemanticGenerator implements ContextAwareInterface
         return array('type');
     }
 
-    public function getValidationRegex()
+    protected function getValidationRegex()
     {
         return '\d+\.\d+\.\d+';
     }
@@ -89,10 +72,4 @@ class SemanticGenerator implements ContextAwareInterface
         }
         return 0;
     }
-    
-    public function setContext(Context $context)
-    {
-        $this->context = $context;
-    }
 }
-

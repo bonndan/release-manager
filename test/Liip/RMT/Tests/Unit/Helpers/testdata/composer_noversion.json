@@ -1,6 +1,5 @@
 {
     "name": "bonndan/ReleaseManager",
-    "version": "0.2.1",
     "description": "Release Manager",
     "keywords": ["release", "version", "semantic versioning", "vcs tag"],
     "homepage": "http://github.com/bonndan/ReleaseManager",
@@ -15,34 +14,29 @@
     "require": {
         "php"             : ">=5.3.3",
         "symfony/console" : "~2.0",
-        "vierbergenlars/php-semver": "~2.0"
+        "vierbergenlars/php-semver": "2.0.5"
     },
     "autoload": {
         "psr-0": {
             "Liip": "src"
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "extra" : {
         "rmt" : {
             "vcs":"git",
             "prerequisites": ["working-copy-check", "display-last-changes"],
             "preReleaseActions": [
-              {
-                  "name": "version-stamp",
-                  "const": "RMT_VERSION"
-              },
+              "composer-update",
               {
                 "name": "changelog-update",
                 "format": "semantic",
                 "dump-commits": true
-              }
+              },
+              "vcs-commit"
              ],
-            "versionPersister" : "composer",
-            "postReleaseActions": [
-                "vcs-commit",
-                "vcs-tag"
-            ]
+            "versionPersister":"vcs-tag",
+            "postReleaseActions": ["vcs-publish"]
         }
     }
 }

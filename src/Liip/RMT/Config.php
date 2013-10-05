@@ -2,7 +2,7 @@
 
 namespace Liip\RMT;
 
-use Liip\RMT\Config\Exception;
+use Liip\RMT\Config\Exception as ConfigException;
 
 /**
  * Config value object.
@@ -57,7 +57,7 @@ class Config
         foreach ($data as $key => $entry) {
             
             if (!property_exists(__CLASS__, $key)) {
-                throw new Exception('The configuration entry ' . $key . ' is unknown.');
+                throw new ConfigException('The configuration entry ' . $key . ' is unknown.');
             }
             
             if ($entry !== null) {
