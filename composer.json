@@ -32,16 +32,17 @@
                   "name": "version-stamp",
                   "const": "RMT_VERSION"
               },
-              "composer-update",
               {
                 "name": "changelog-update",
                 "format": "semantic",
                 "dump-commits": true
-              },
-              "vcs-commit"
+              }
              ],
-            "versionPersister" : "vcs-tag",
-            "postReleaseActions": []
+            "versionPersister" : "composer",
+            "postReleaseActions": [
+                "vcs-commit",
+                "vcs-tag"
+            ]
         }
     }
 }
