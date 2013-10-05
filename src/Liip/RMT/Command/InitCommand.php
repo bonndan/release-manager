@@ -66,8 +66,8 @@ class InitCommand extends BaseCommand
             new InformationRequest('persister', array(
                 'description' => 'The strategy to use to persist the current version value',
                 'type' => 'choice',
-                'choices' => array('vcs-tag', 'changelog'),
-                'choices_shortcuts' => array('t' => 'vcs-tag', 'c' => 'changelog'),
+                'choices' => array('vcs-tag', 'changelog', 'composer'),
+                'choices_shortcuts' => array('t' => 'vcs-tag', 'c' => 'composer', 'l' => 'changelog'),
                 'command_argument' => true,
                 'interactive' => true
                 ))
@@ -80,7 +80,7 @@ class InitCommand extends BaseCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->informationCollector->handleCommandInput($input);
-        $this->writeBigTitle('Welcome to Release Management Tool Initialization');
+        $this->writeBigTitle('Welcome to Release Manager Initialization');
         $this->writeEmptyLine();
 
         // Guessing elements path
