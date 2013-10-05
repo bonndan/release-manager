@@ -16,6 +16,11 @@ use Liip\RMT\Context;
  */
 class ReleaseCommand extends BaseCommand
 {
+    const INCREMENT_MAJOR   = 'major';
+    const INCREMENT_MINOR   = 'minor';
+    const INCREMENT_PATCH   = 'patch';
+    const INCREMENT_CURRENT = 'current-vcs';
+    
     protected function configure()
     {
         $this->setName('release');
@@ -36,7 +41,7 @@ class ReleaseCommand extends BaseCommand
 
         // Add a specific option if it's the first release
         try {
-            $this->getContext()->get('version-persister')->getCurrentVersion();
+            $this->getContext()->getVersionPersister()->getCurrentVersion();
         }
         catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
             $ic->registerRequest(
@@ -49,7 +54,7 @@ class ReleaseCommand extends BaseCommand
 
         // Register options of the release tasks
         $ic->registerRequests($this->getContext()->getVersionGenerator()->getInformationRequests());
-        $ic->registerRequests($this->getContext()->get('version-persister')->getInformationRequests());
+        $ic->registerRequests($this->getContext()->getVersionPersister()->getInformationRequests());
 
         // Register options of all lists (prerequistes and actions)
         foreach (array('prerequisites', 'preReleaseActions', 'postReleaseActions') as $listName){
@@ -104,9 +109,17 @@ class ReleaseCommand extends BaseCommand
         $this->getContext()->setParameter('current-version', $currentVersion);
 
         // Generate and save the new version number
-        $newVersion = $this->getContext()->getVersionGenerator()->generateNextVersion(
-            $this->getContext()->getParam('current-version')
-        );
+        $increment  = $this->getContext()->get('information-collector')->getValueFor('type');
+        if ($increment == self::INCREMENT_CURRENT) {
+            $vcs        = $this->getContext()->getVCS();
+            $validator  = new \Liip\RMT\Helpers\TagValidator();
+            $tags       = $validator->filtrateList($vcs->getTags());
+            $newVersion = $tags[count($tags)-1];
+        } else {
+            $newVersion = $this->getContext()->getVersionGenerator()->generateNextVersion(
+                $this->getContext()->getParam('current-version'), $increment
+            );
+        }
         $this->getContext()->setParameter('new-version', $newVersion);
 
         $this->executeActionListIfExist('preReleaseActions');
@@ -115,7 +128,7 @@ class ReleaseCommand extends BaseCommand
         $this->getOutput()->indent();
 
         $this->getOutput()->writeln("A new version named [<yellow>$newVersion</yellow>] is going to be released");
-        $this->getContext()->get('version-persister')->save($newVersion);
+        $this->getContext()->getVersionPersister()->save($newVersion);
         $this->getOutput()->writeln("Release: <green>Success</green>");
 
         $this->getOutput()->unIndent();
