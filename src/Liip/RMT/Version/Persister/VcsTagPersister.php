@@ -3,6 +3,7 @@ namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Context;
 use Liip\RMT\ContextAwareInterface;
+use Liip\RMT\Helpers\TagValidator;
 
 /**
  * VCS tag persister.
