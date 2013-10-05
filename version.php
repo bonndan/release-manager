@@ -1,2 +1,2 @@
 <?php
-define('RMT_VERSION', '0.2.1');
+define('RMT_VERSION', '0.2.2');
