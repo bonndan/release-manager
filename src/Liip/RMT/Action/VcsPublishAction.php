@@ -17,11 +17,7 @@ class VcsPublishAction extends BaseAction
         }
 
         $this->context->getVCS()->publishChanges();
-        $this->context->getVCS()->publishTag(
-            $this->context->get('version-persister')->getTagFromVersion(
-                $this->context->getParam('new-version')
-            )
-        );
+        $this->context->getVCS()->publishTag($this->context->getParam('new-version'));
 
         $this->confirmSuccess();
     }
