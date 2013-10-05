@@ -65,10 +65,10 @@ class ComposerConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * Ensures that the version string is replaced.
      */
-    public function testReplaceVersion()
+    public function testSetVersion()
     {
         $newVersion = 'abc';
-        $this->helper->replaceVersion($newVersion);
+        $this->helper->setVersion($newVersion);
 
         $contents = file_get_contents(sys_get_temp_dir() . '/composer.json');
         $this->assertContains('"version": "abc"', $contents);
@@ -92,5 +92,24 @@ class ComposerConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('git', $config->getVcs(), var_export($config, true));
     }
 
+    /**
+     * Ensures that the current version can be read.
+     */
+    public function testGetCurrentVersion()
+    {
+        $this->assertEquals("0.2.0", $this->helper->getCurrentVersion());
+    }
+    
+    public function testGetCurrentVersionFails()
+    {
+        copy(__DIR__ . '/testdata/composer_noversion.json', sys_get_temp_dir() . '/composer.json');
+        $context = new \Liip\RMT\Context();
+        $context->setParameter('project-root', sys_get_temp_dir());
+
+        $this->helper = new ComposerConfig($context);
+        
+        $this->assertNull($this->helper->getCurrentVersion());
+    }
+    
 }
 
