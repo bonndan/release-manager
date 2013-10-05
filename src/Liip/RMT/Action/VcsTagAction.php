@@ -8,11 +8,7 @@ class VcsTagAction extends BaseAction
 {
     public function execute()
     {
-        $this->context->getVCS()->createTag(
-            $this->context->getVCS()->getTagFromVersion(
-                $this->context->getParam('new-version')
-            )
-        );
+        $this->context->getVCS()->createTag($this->context->getParam('new-version'));
         $this->confirmSuccess();
     }
 }
