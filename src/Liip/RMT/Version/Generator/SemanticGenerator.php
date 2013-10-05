@@ -65,7 +65,7 @@ class SemanticGenerator implements ContextAwareInterface
         return array('type');
     }
 
-    public function getValidationRegex()
+    protected function getValidationRegex()
     {
         return '\d+\.\d+\.\d+';
     }
