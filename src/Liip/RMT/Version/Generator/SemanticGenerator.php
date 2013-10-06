@@ -23,7 +23,7 @@ class SemanticGenerator
             return $version->inc($increment);
         } catch (SemVerException $exception) {
             throw new \InvalidArgumentException(
-                'The option [type] must be one of: {patch, minor, major}, "' . $increment.'" given.',
+                'The option [type] must be one of: {patch, minor, major, build}, "' . $increment.'" given.',
                 500,
                 $exception
             );

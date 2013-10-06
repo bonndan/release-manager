@@ -2,8 +2,6 @@
 
 namespace Liip\RMT\Tests\Unit\Version;
 
-use Liip\RMT\Context;
-
 class SemanticGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -23,13 +21,14 @@ class SemanticGeneratorTest extends \PHPUnit_Framework_TestCase
             array('1.1.19', 'minor', '1.2.0'),
             array('1.0.0',  'major',  '2.0.0'),
             array('1.19.3', 'major',  '2.0.0'),
-            array('3.3.3',  'major',  '4.0.0')
+            array('3.3.3',  'major',  '4.0.0'),
+            array('3.3.3-100',  'build',  '3.3.3-101')
         );
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The option [type] must be one of: {patch, minor, major}, "full" given
+     * @expectedExceptionMessage The option [type] must be one of: {patch, minor, major, build}, "full" given
      */
     public function testIncrementWithInvalidType()
     {
