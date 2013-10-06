@@ -111,10 +111,7 @@ class ReleaseCommand extends BaseCommand
         // Generate and save the new version number
         $increment  = $this->getContext()->get('information-collector')->getValueFor('type');
         if ($increment == self::INCREMENT_CURRENT) {
-            $vcs        = $this->getContext()->getVCS();
-            $validator  = new \Liip\RMT\Helpers\TagValidator();
-            $tags       = $validator->filtrateList($vcs->getTags());
-            $newVersion = $tags[count($tags)-1];
+            $newVersion = $this->getContext()->getVCS()->getCurrentVersion();
         } else {
             $newVersion = $this->getContext()->getVersionGenerator()->generateNextVersion(
                 $this->getContext()->getParam('current-version'), $increment

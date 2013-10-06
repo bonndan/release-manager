@@ -2,7 +2,6 @@
 namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Helpers\TagValidator;
-use Liip\RMT\Context;
 
 /**
  * VCS tag persister.
@@ -11,64 +10,21 @@ use Liip\RMT\Context;
 class VcsTagPersister extends AbstractPersister implements PersisterInterface
 {
     /**
-     * vcs instance
-     * 
-     * @var \Liip\RMT\VCS\VCSInterface
-     */
-    protected $vcs;
-
-    /**
-     * Inject the context.
-     * 
-     * @param \Liip\RMT\Context $context
-     */
-    public function setContext(Context $context)
-    {
-        parent::setContext($context);
-        $this->vcs = $this->context->getVCS();
-    }
-
-    /**
      * @inheritdoc
      */
     public function getCurrentVersion()
     {
-        $tags = $this->getValidVersionTags();
-        if (count($tags) === 0) {
-            throw new \Liip\RMT\Exception\NoReleaseFoundException(
-            'No VCS tag matching a semantic version.');
-        }
-
-        // Extract versions from tags and sort them
-        $versions = $this->getVersionFromTags($tags);
-        usort($versions, array($this->context->getVersionGenerator(), 'compareTwoVersions'));
-
-        return array_pop($versions);
+        return $this->getVCS()->getCurrentVersion();
     }
 
+    /**
+     * 
+     * @param type $versionNumber
+     */
     public function save($versionNumber)
     {
         $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$versionNumber</yellow>]");
-        $this->vcs->createTag($versionNumber);
-    }
-
-    public function getVersionFromTag($tagName)
-    {
-        return $tagName;
-    }
-
-    public function getVersionFromTags($tags)
-    {
-        $versions = array();
-        foreach ($tags as $tag) {
-            $versions[] = $this->getVersionFromTag($tag);
-        }
-        return $versions;
-    }
-
-    public function getCurrentVersionTag()
-    {
-        return $this->getCurrentVersion();
+        $this->getVCS()->createTag($versionNumber);
     }
 
     /**
@@ -79,7 +35,16 @@ class VcsTagPersister extends AbstractPersister implements PersisterInterface
     public function getValidVersionTags()
     {
         $validator = new TagValidator();
-        return $validator->filtrateList($this->vcs->getTags());
+        return $validator->filtrateList($this->getVCS()->getTags());
     }
-
+    
+    /**
+     * Returns the vcs.
+     * 
+     * @return \Liip\RMT\VCS\VCSInterface
+     */
+    private function getVCS()
+    {
+        return $this->context->getVCS();
+    }
 }

@@ -50,6 +50,12 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $vcs = new Git();
         $this->assertEquals(array("1.0.0","1.1.0"), $vcs->getTags());
     }
+    
+    public function testGetCurrentVersion()
+    {
+        $vcs = new Git();
+        $this->assertEquals("1.1.0", $vcs->getCurrentVersion());
+    }
 
     public function testCreateTag()
     {
@@ -90,6 +96,14 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $vcs->getCurrentBranch();
     }
 
+    public function testCompare()
+    {
+        $vcs = new Git();
+        $this->assertEquals(-1, $vcs->compareTwoVersions('1.0.0', '1.0.1'));
+        $this->assertEquals(0, $vcs->compareTwoVersions('1.0.0', '1.0.0'));
+        $this->assertEquals(1, $vcs->compareTwoVersions('1.0.1', '1.0.0'));
+        $this->assertEquals(1, $vcs->compareTwoVersions('1.0.11', '1.0.1'));
+    }
 
     protected function tearDown()
     {
