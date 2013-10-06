@@ -3,6 +3,15 @@ VERSION 0  FIRST BETA
 =====================
 
    Version 0.2 - Removed tag prefixing
+      06/10/2013 08:02  0.2.2-1  sdf
+         94ff8f9 semantic generator supports build increments
+         275b7f9 information collections provides "build" as increment option
+         96c1845 using semver lib to increase versions, removed code
+         2f18e75 testing basevcs compare versions
+         d1ffd73 vcs tag persister cleanup
+         3ebe32c vcs can provide current version
+         35a70b8 removed the vcs-tag post release action, since this is done by git flow
+         b27def1 Merge branch 'release/0.2.2' into develop
       05/10/2013 17:32  0.2.2  current vcs tag can be used
          9cbcfd8 fixed the changelog updater action not to use a non-interface method
          1f9973f fixed the semantic generator test

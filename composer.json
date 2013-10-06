@@ -1,6 +1,8 @@
 {
    "name": "bonndan\/ReleaseManager",
-   "version": "0.2.2",
+   "version": {
+      
+   },
    "description": "Release Manager",
    "keywords": [
       "release",

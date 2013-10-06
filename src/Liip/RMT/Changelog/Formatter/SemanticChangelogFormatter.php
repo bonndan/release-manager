@@ -15,8 +15,13 @@ class SemanticChangelogFormatter
             throw new \InvalidArgumentException("Option [type] in mandatory");
         }
         $type = $options['type'];
-        if (!in_array($type, array('patch', 'minor', 'major'))) {
+        if (!in_array($type, array('patch', 'minor', 'major', 'build'))) {
             throw new \InvalidArgumentException("Invalid type [$type]");
+        }
+        
+        //build is treated like patch
+        if ($type == 'build') {
+            $type = 'patch';
         }
 
         // Specific case for new Changelog file. We always have to write down a major
