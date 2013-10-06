@@ -3,7 +3,7 @@ VERSION 0  FIRST BETA
 =====================
 
    Version 0.2 - Removed tag prefixing
-      06/10/2013 08:02  0.2.2-1  sdf
+      06/10/2013 08:02  0.2.2-1  Test
          94ff8f9 semantic generator supports build increments
          275b7f9 information collections provides "build" as increment option
          96c1845 using semver lib to increase versions, removed code
