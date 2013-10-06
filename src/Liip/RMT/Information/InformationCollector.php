@@ -16,10 +16,10 @@ class InformationCollector
             'type' => 'text'
         ),
         'type' => array(
-            'description' => 'Release type, can be major, minor, patch or current tag.',
+            'description' => 'Release type, can be major, minor, patch, build or current vcs tag.',
             'type' => 'choice',
-            'choices' => array('major', 'minor', 'patch', 'current-vcs'),
-            'choices_shortcuts' => array('m' => 'major', 'i' => 'minor', 'p' => 'patch', 'c' => 'current-vcs'),
+            'choices' => array('major', 'minor', 'patch', 'build', 'current-vcs'),
+            'choices_shortcuts' => array('m' => 'major', 'i' => 'minor', 'p' => 'patch', 'b' => 'build', 'c' => 'current-vcs'),
             'default' => 'patch'
         )
     );
