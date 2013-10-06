@@ -1,23 +1,17 @@
-RMT - Release Manager
-=====================
+Release Manager
+===============
 
 [![Build Status](https://secure.travis-ci.org/bonndan/ReleaseManager.png?branch=master)](https://travis-ci.org/bonndan/ReleaseManager)
 
-This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). It has been created to provide
-a closer integration to composer related workflows. Project targets are:
+Release Manager is a simple PHP tool to help releasing new semantic versions. It uses your composer
+file to store and retrieve information.
 
-* allow only semantic versioning, which is encouraged by composer
-* move configuration to composer.json
-* allow custom classes as actions
-* promote usage in combination with git-flow.
-
-Kudos to the original authors for this tool.
+You can define a list of actions that will be executed and before or after the release of a new version
+ and where you want to store the version (in a changelog file, as a VCS tag, etc…).
 
 
-About
------
+This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). Kudos to the original authors for this tool.
 
-RMT is a simple tool to help releasing new version of your software. You can define the type of version generator you want o use (example: semantic versioning), where you want to store the version (in a changelog file, as a VCS tag, etc…) and a list of action that will be executed and before or after the release of a new version.
 
 
 Installation
@@ -37,7 +31,7 @@ This command will create for you a `extra/rmt` section in your composer.json. Yo
 should adapt the configuration to your needs. A good example is the [composer file
 of this project] (https://github.com/bonndan/ReleaseManager/blob/master/composer.json).
 
-From that point on you can start using RMT, just execute it:
+From that point on you can start using it, just execute it:
 
     ./RMT
 
