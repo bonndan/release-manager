@@ -46,10 +46,8 @@
                "dump-commits": true
             }
          ],
-         "versionPersister": "composer",
          "postReleaseActions": [
-            "vcs-commit",
-            "vcs-tag"
+            "vcs-commit"
          ]
       }
    }

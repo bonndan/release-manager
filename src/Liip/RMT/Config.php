@@ -33,11 +33,11 @@ class Config
     private $preReleaseActions = array();
     
     /**
-     * Most likely "vcs-tag"
+     * version persister name
      * 
      * @var string
      */
-    private $versionPersister;
+    private $versionPersister = 'composer';
     
     /**
      * post-release actions
