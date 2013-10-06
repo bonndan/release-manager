@@ -86,7 +86,7 @@ class ComposerConfig
     public function setVersion($newVersion)
     {
         $json = $this->getJson();
-        $json->version = $newVersion;
+        $json->version = (string)$newVersion;
         return $this->save($json);
     }
 
