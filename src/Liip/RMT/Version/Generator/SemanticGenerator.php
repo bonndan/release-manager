@@ -2,6 +2,9 @@
 
 namespace Liip\RMT\Version\Generator;
 
+use vierbergenlars\SemVer\version as Version;
+use vierbergenlars\SemVer\SemVerException;
+
 /**
  * Generator based on the Semantic Versioning defined by Tom Preston-Werner
  * Description available here: http://semver.org/
@@ -14,33 +17,17 @@ class SemanticGenerator
      */
     public function generateNextVersion($currentVersion, $increment)
     {
-        // Type validation
-        $validTypes = array('patch', 'minor', 'major');
-        if (!in_array($increment, $validTypes)){
+        $version = new Version($currentVersion);
+        
+        try {
+            return $version->inc($increment);
+        } catch (SemVerException $exception) {
             throw new \InvalidArgumentException(
-                "The option [type] must be one of: {".implode($validTypes, ', ')."}, \"$increment\" given"
+                'The option [type] must be one of: {patch, minor, major}, "' . $increment.'" given.',
+                500,
+                $exception
             );
         }
-
-        if (!preg_match('#^'.$this->getValidationRegex().'$#', $currentVersion) ){
-            throw new \Exception('Current version format is invalid (' . $currentVersion . '). It should be major.minor.patch');
-        }
-
-        // Increment
-        list($major, $minor, $patch) = explode('.', $currentVersion);
-        if ($increment === 'major') {
-            $major += 1;
-            $patch = $minor = 0;
-        }
-        else if ($increment === 'minor') {
-            $minor += 1;
-            $patch = 0;
-        }
-        else {
-            $patch += 1;
-        }
-
-        return implode(array($major, $minor, $patch), '.');
     }
 
     public function getInformationRequests()
@@ -48,28 +35,13 @@ class SemanticGenerator
         return array('type');
     }
 
-    protected function getValidationRegex()
-    {
-        return '\d+\.\d+\.\d+';
-    }
-
+    /**
+     * Returns 0.0.0
+     * 
+     * @return string
+     */
     public function getInitialVersion()
     {
         return '0.0.0';
-    }
-
-    public function compareTwoVersions($a, $b) {
-        list($majorA, $minorA, $patchA) = explode('.', $a);
-        list($majorB, $minorB, $patchB) = explode('.', $b);
-        if ($majorA !== $majorB) {
-            return $majorA < $majorB ? -1 : 1 ;
-        }
-        if ($minorA !== $minorB) {
-            return $minorA < $minorB ? -1 : 1 ;
-        }
-        if ($patchA !== $patchB) {
-            return $patchA < $patchB ? -1 : 1 ;
-        }
-        return 0;
     }
 }
