@@ -82,14 +82,21 @@ All the entries of this config are working the same way: You have to specify the
 
 ### Semantic Version Generator
 
-ReleaseManager only allows semantic version without prefixes. See (Semantic versioning)[http://semver.org]
+ReleaseManager only allows semantic versions without prefixes. See (Semantic versioning)[http://semver.org].
+The release version can be increased by:
+
+* major
+* minor
+* patch
+* build number
 
 ### Version persister
 
 Class is charged of saving/retrieving the version number
 
 * vcs-tag: Save the version as a VCS tag
-* changelog: Save the version in the changelog file 
+* changelog: Save the version in the changelog file
+* composer: uses the version from the composer file
 
 ### Prerequisite actions
 
