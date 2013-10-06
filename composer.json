@@ -1,8 +1,6 @@
 {
    "name": "bonndan\/ReleaseManager",
-   "version": {
-      
-   },
+   "version": "0.2.2",
    "description": "Release Manager",
    "keywords": [
       "release",
@@ -48,7 +46,6 @@
                "dump-commits": true
             }
          ],
-         "versionPersister": "composer",
          "postReleaseActions": [
             "vcs-commit"
          ]
