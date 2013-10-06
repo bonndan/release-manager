@@ -1,14 +1,14 @@
 {
-   "name": "bonndan\/ReleaseManager",
-   "version": "0.2.3",
-   "description": "Release Manager",
+   "name": "bonndan\/release-manager",
+   "version": "0.2.4",
+   "description": "Release Manager for semantic version release of composer packages and projects.",
    "keywords": [
       "release",
       "version",
       "semantic versioning",
       "vcs tag"
    ],
-   "homepage": "http:\/\/github.com\/bonndan\/ReleaseManager",
+   "homepage": "http:\/\/github.com\/bonndan\/release-manager",
    "license": "MIT",
    "authors": [
       {

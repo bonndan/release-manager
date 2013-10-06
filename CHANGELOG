@@ -3,6 +3,9 @@ VERSION 0  FIRST BETA
 =====================
 
    Version 0.2 - Removed tag prefixing
+      06/10/2013 13:06  0.2.4  Changed package and repo name
+         c008dc0 Changed to package name according to packagist.org conventions
+         6e7818c Merge branch 'release/0.2.3' into develop
       06/10/2013 08:30  0.2.3  Code cleanups, allowing build number increasings
          16c667d Merge branch 'feature/cleanups' into develop
          6d4c0f6 updated readme
