@@ -45,7 +45,8 @@ class ExecuteAction extends BaseAction
         $returnCode = 0;
         ob_start();
         ob_implicit_flush(false);
-        $lastLine   = system($this->options['script'], $returnCode);
+        system($this->options['script'], $returnCode);
+        $lastLine = ob_get_contents(); 
         ob_end_clean();
         
         if ($returnCode > 0) {
