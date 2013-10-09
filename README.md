@@ -1,7 +1,7 @@
 Release Manager
 ===============
 
-[![Build Status](https://secure.travis-ci.org/bonndan/ReleaseManager.png?branch=master)](https://travis-ci.org/bonndan/ReleaseManager)
+[![Build Status](https://secure.travis-ci.org/bonndan/release-manager.png?branch=master)](https://travis-ci.org/bonndan/release-manager)
 
 Release Manager is a simple PHP tool to help releasing new semantic versions. It uses your composer
 file to store and retrieve information.
@@ -19,17 +19,17 @@ Installation
 
 In order to use RMT your project should use [Composer](http://getcomposer.org/) as RMT will be installed as a dev-dependency. Just go on your project root directory and execute:
 
-    php composer.phar require --dev bonndan/ReleaseManager 0.2.*         # lastest stable
+    php composer.phar require --dev bonndan/release-manager 0.2.*         # lastest stable
     # or
-    php composer.phar require --dev bonndan/ReleaseManager dev-develop    # lastest unstable
+    php composer.phar require --dev bonndan/release-manager dev-develop    # lastest unstable
 
 Then you must initialize RMT by running the following command:
 
-    php vendor/bonndan/ReleaseManager/command.php init
+    php vendor/bonndan/release-manager/command.php init
 
 This command will create for you a `extra/rmt` section in your composer.json. You
 should adapt the configuration to your needs. A good example is the [composer file
-of this project] (https://github.com/bonndan/ReleaseManager/blob/master/composer.json).
+of this project] (https://github.com/bonndan/release-manager/blob/master/composer.json).
 
 From that point on you can start using it, just execute it:
 
@@ -70,13 +70,13 @@ All RMT configuration have to be done in the `rmt.json`. The file is divided in 
 * `postReleaseActions`: A list `[]` of actions that will be executed after the release
 
 All the entries of this config are working the same way: You have to specify the class you want
- to handle the action or provide an abbrevation for classes provided by ReleaseManager.:
+ to handle the action or provide an abbrevation for classes provided by Release Manager.:
 
 * The config array, example:  `"versionPersister": {"name": "vcs-tag"}` when you have to provide parameters to the class.
 
 ### Semantic Version Generator
 
-ReleaseManager only allows semantic versions without prefixes. See (Semantic versioning)[http://semver.org].
+Release Manager only allows semantic versions without prefixes. See (Semantic versioning)[http://semver.org].
 The release version can be increased by:
 
 * major
@@ -180,7 +180,7 @@ Most of the time, it will be easier for you to pick up and example bellow and to
 Contributing
 ------------
 If you would like to help, to submit one of your action script or just to report a bug:
- just go on the project page: https://github.com/bonndan/ReleaseManager
+ just go on the project page: https://github.com/bonndan/release-manager
 
 Requirements
 ------------
