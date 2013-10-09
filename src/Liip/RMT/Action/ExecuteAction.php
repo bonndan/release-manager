@@ -39,7 +39,7 @@ class ExecuteAction extends BaseAction
         ob_end_clean();
         
         if ($returnCode > 0) {
-            throw new \RuntimeException('Execution of script failed.');
+            throw new \RuntimeException('Execution of script "' . $this->options['script'] . '" failed.');
         }
         
         $this->context->get('output')->writeln('<info>OK ' . $lastLine . '</info>');
