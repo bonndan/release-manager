@@ -26,6 +26,16 @@ class ExecuteAction extends BaseAction
     }
     
     /**
+     * Return the name of the action
+     * 
+     * @return string
+     */
+    public function getTitle()
+    {
+        return 'Execute "' . $this->options['script'] . '"';
+    }
+    
+    /**
      * Execute replacement.
      * 
      * @throws \RuntimeException
