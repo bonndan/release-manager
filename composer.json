@@ -37,6 +37,10 @@
          ],
          "preReleaseActions": [
             {
+               "name": "execute",
+               "script": "phpunit test"
+            },
+            {
                "name": "version-stamp",
                "const": "RMT_VERSION"
             },
