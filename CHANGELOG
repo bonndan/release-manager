@@ -2,6 +2,19 @@
 VERSION 0  FIRST BETA
 =====================
 
+   Version 0.3 - Script execution action
+      09/10/2013 19:07  0.3.0  initial release
+         9679d29 Merge branch 'feature/script_action' into develop
+         e666b8b added phpunit as prerelease action
+         3f0d7fd execute action returns the output
+         f1e07d6 added comments
+         285e17a showing script command in action title
+         3fbcdd1 improved error message
+         9cb46f3 #1 added action to execute arbitrary scripts
+         4f2f9a0 Merge branch 'master' into develop
+         3617586 Updated the project urls in the readme
+         41a098f Merge branch 'release/0.2.4' into develop
+
    Version 0.2 - Removed tag prefixing
       06/10/2013 13:06  0.2.4  Changed package and repo name
          c008dc0 Changed to package name according to packagist.org conventions
