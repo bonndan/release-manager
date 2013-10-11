@@ -9,6 +9,8 @@ file to store and retrieve information.
 You can define a list of actions that will be executed and before or after the release of a new version
  and where you want to store the version (in a changelog file, as a VCS tag, etc…).
 
+![screenshot](https://github.com/bonndan/release-manager/raw/master/doc/screen.png "In-Dev Screenshot")
+
 
 This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). Kudos to the original authors for this tool.
 
@@ -136,9 +138,10 @@ Most of the time, it will be easier for you to pick up and example bellow and to
                "const": "RMT_VERSION"
             },
             {
-               "name": "changelog-update",
-               "format": "semantic",
-               "dump-commits": true
+               "name": "changelog-update"
+            },
+            {
+               "name": "changelog-render"
             }
          ],
          "postReleaseActions": [
