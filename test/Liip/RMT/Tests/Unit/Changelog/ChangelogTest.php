@@ -29,6 +29,23 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("First version", $version1->getElementsByTagName('title')->item(0)->nodeValue);
     }
     
+    public function testGetCurrentVersion()
+    {
+        $file = __DIR__ . '/changelog.xml';
+        $changelog = new Changelog($file);
+        $current = $changelog->getCurrentVersion();
+        $this->assertEquals('0.1.0', $current);
+    }
+    
+    public function testGetCurrentVersionFails()
+    {
+        $file = sys_get_temp_dir(). '/test.xml';
+        @unlink($file);
+        $changelog = new Changelog($file);
+        $current = $changelog->getCurrentVersion();
+        $this->assertNull($current);
+    }
+    
     public function testAddVersion()
     {
         $file = sys_get_temp_dir(). '/test.xml';

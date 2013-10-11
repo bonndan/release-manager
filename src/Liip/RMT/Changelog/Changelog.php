@@ -71,6 +71,33 @@ class Changelog
     }
     
     /**
+     * Returns the current version.
+     * 
+     * @return string|null
+     */
+    public function getCurrentVersion()
+    {
+        $nodes = $this->getVersions();
+        $versions = array();
+        foreach ($nodes as $node) {
+            $versions[] = $this->getVersionNumberFrom($node);
+        }
+        \usort($versions, '\\vierbergenlars\\SemVer\\version::compare');
+        return array_pop($versions);
+    }
+    
+    /**
+     * Returns the version number from a version dom node.
+     * 
+     * @param \DOMNode $version
+     * @return string
+     */
+    private function getVersionNumberFrom(\DOMNode $version)
+    {
+        return $version->attributes->getNamedItem('version')->nodeValue;
+    }
+    
+    /**
      * Loads the xml.
      * 
      * @return \DOMDocument
