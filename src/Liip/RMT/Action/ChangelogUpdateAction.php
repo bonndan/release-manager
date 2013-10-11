@@ -48,7 +48,7 @@ class ChangelogUpdateAction extends BaseAction
             false
         );
         $commits = array();
-        foreach (explode(PHP_EOL, $rawCommits) as $line) {
+        foreach ($rawCommits as $line) {
             $tmp = explode(' ', $line);
             $hash = array_shift($tmp);
             $commits[$hash] = trim(implode(' ', $tmp));

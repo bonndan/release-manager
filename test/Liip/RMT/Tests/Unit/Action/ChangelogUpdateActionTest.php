@@ -31,7 +31,7 @@ class ChangelogUpdateActionTest extends \PHPUnit_Framework_TestCase
 ";
         $vcs->expects($this->once())
             ->method('getAllModificationsSince')
-            ->will($this->returnValue($rawLines));
+            ->will($this->returnValue(explode(PHP_EOL, $rawLines)));
         
         $action->execute();
     }
