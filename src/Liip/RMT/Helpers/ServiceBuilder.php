@@ -93,7 +93,7 @@ class ServiceBuilder
         $namespacesByType = array(
             '' => '',
             'vcs' => 'Liip\RMT\VCS',
-            'prerequisites' => 'Liip\RMT\Prerequisite',
+            'prerequisites' => 'Liip\RMT\Action',
             'preReleaseActions' => 'Liip\RMT\Action',
             'postReleaseActions' => 'Liip\RMT\Action',
             "versionPersister" => 'Liip\RMT\Version\Persister'

@@ -1,6 +1,6 @@
 <?php
 
-namespace Liip\RMT\Prerequisite;
+namespace Liip\RMT\Action;
 
 use Liip\RMT\Information\InformationRequest;
 use Liip\RMT\Action\BaseAction;
