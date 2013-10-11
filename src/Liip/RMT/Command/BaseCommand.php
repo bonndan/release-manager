@@ -5,7 +5,6 @@ namespace Liip\RMT\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Liip\RMT\Config\Handler;
 use Liip\RMT\Context;
 use Liip\RMT\Application;
 use Liip\RMT\Information\InteractiveQuestion;
@@ -15,7 +14,18 @@ use Liip\RMT\Information\InteractiveQuestion;
  */
 abstract class BaseCommand extends Command
 {
+    /**
+     * console input
+     * 
+     * @var \Symfony\Component\Console\Input\InputInterface
+     */
     protected $input;
+    
+    /**
+     * console output
+     * 
+     * @var \Liip\RMT\Output\Output 
+     */
     protected $output;
 
     /**
