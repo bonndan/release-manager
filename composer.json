@@ -44,13 +44,8 @@
                "name": "version-stamp",
                "const": "RMT_VERSION"
             },
-            {
-               "name": "changelog-update",
-               "file": "changelog.xml"
-            },
-            {
-               "name": "changelog-render",
-            }
+            "changelog-update",
+            "changelog-render"
          ],
          "postReleaseActions": [
             "vcs-commit"
