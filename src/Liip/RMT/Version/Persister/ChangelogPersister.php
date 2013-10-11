@@ -3,7 +3,7 @@
 namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Version\Persister\PersisterInterface;
-use Liip\RMT\Changelog\ChangelogManager;
+use Liip\RMT\Changelog\Changelog;
 
 /**
  * Persists the changelog.
@@ -14,9 +14,9 @@ class ChangelogPersister extends AbstractPersister implements PersisterInterface
     /**
      * changelog manager instance.
      * 
-     * @var ChangelogManager
+     * @var Changelog
      */
-    protected $changelogManager;
+    private $changelog;
 
     /**
      * constructor options
@@ -42,14 +42,14 @@ class ChangelogPersister extends AbstractPersister implements PersisterInterface
 
     public function getCurrentVersion()
     {
-        return $this->getChangelogManager()->getCurrentVersion();
+        return $this->getChangelog()->getCurrentVersion();
     }
 
     public function save($versionNumber)
     {
         $comment = $this->context->get('information-collector')->getValueFor('comment');
         $type = $this->context->get('information-collector')->getValueFor('type', null);
-        $this->changelogManager->update($versionNumber, $comment, array('type' => $type));
+        $this->changelog->addVersion($versionNumber, $comment, array());
     }
 
     public function getInformationRequests()
@@ -63,15 +63,15 @@ class ChangelogPersister extends AbstractPersister implements PersisterInterface
      * @todo refactor: inject.
      * @return ChangelogManager
      */
-    private function getChangelogManager()
+    private function getChangelog()
     {
-        if ($this->changelogManager === null) {
+        if ($this->changelog === null) {
             // Create the changelog manager
-            $this->changelogManager = new ChangelogManager(
+            $this->changelog = new Changelog(
                 $this->context->getParam('project-root') . '/' . $this->options['location']
             );
         }
         
-        return $this->changelogManager;
+        return $this->changelog;
     }
 }

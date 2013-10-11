@@ -46,8 +46,10 @@
             },
             {
                "name": "changelog-update",
-               "format": "semantic",
-               "dump-commits": true
+               "file": "changelog.xml"
+            },
+            {
+               "name": "changelog-render",
             }
          ],
          "postReleaseActions": [

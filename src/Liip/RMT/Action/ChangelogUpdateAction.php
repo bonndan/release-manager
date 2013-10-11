@@ -2,12 +2,12 @@
 
 namespace Liip\RMT\Action;
 
-use Liip\RMT\Changelog\ChangelogManager;
+use Liip\RMT\Changelog\Changelog;
 
 /**
  * Update the changelog file.
  * 
- * The default file name is "CHANGELOG".
+ * The default file name is "changelog.xml".
  */
 class ChangelogUpdateAction extends BaseAction
 {
@@ -16,38 +16,45 @@ class ChangelogUpdateAction extends BaseAction
     public function __construct($options)
     {
         $this->options = array_merge(array(
-            'dump-commits' => false,
-            'format' => 'simple',
-            'file' => 'CHANGELOG'
+            'file' => 'changelog.xml'
         ), $options);
     }
 
     public function execute()
     {
-        if ($this->options['dump-commits'] == true) {
-            $extraLines = $this->context->getVCS()->getAllModificationsSince(
-                $this->context->getVersionPersister()->getCurrentVersion(),
-                false
-            );
-            $this->options['extra-lines'] = $extraLines;
-            unset($this->options['dump-commits']);
-        }
-
-        $manager = new ChangelogManager($this->options['file'], $this->options['format']);
-        $manager->update(
+        $changelog = new Changelog($this->options['file']);
+        $changelog->addVersion(
             $this->context->getParam('new-version'),
             $this->context->getInformationCollector()->getValueFor('comment'),
-            array_merge(
-                array('type' => $this->context->getInformationCollector()->getValueFor('type', null)),
-                $this->options
-            )
+            $this->getCommits()
         );
+        
         $this->confirmSuccess();
     }
 
     public function getInformationRequests()
     {
         return array('comment');
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    private function getCommits()
+    {
+        $rawCommits = $this->context->getVCS()->getAllModificationsSince(
+            $this->context->getVersionPersister()->getCurrentVersion(),
+            false
+        );
+        $commits = array();
+        foreach (explode(PHP_EOL, $rawCommits) as $line) {
+            $tmp = explode(' ', $line);
+            $hash = array_shift($tmp);
+            $commits[$hash] = trim(implode(' ', $tmp));
+        }
+
+        return $commits;
     }
 }
 

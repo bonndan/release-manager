@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelog>
+    <version version="0.2.4" date="06/10/2013">
+        <title>Changed package and repo name</title>
+        <commit hash="c008dc0">Changed to package name according to packagist.org conventions</commit>
+    </version>
+    <version version="0.3.0" date="11/10/2013 06:29">
+        <title>Script execution action</title>
+        <commit hash="17e9b86">updated the readme</commit>
+    </version>
+</changelog>

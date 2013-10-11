@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelog>
+    <version version="0.0.0">
+        <title>First version</title>
+        <commit hash="abcdef">Fixed something</commit>
+        <commit hash="245g2g">Fixed something again</commit>
+        <commit hash="abcd42tbef">Fixed nothing</commit>
+    </version>
+    <version version="0.1.0">
+        <title>Second version</title>
+        <commit hash="245g2g">Broke something</commit>
+        <commit hash="abcd42tbef">Fixed nothing</commit>
+    </version>
+</changelog>
