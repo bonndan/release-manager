@@ -138,9 +138,10 @@ Most of the time, it will be easier for you to pick up and example bellow and to
                "const": "RMT_VERSION"
             },
             {
-               "name": "changelog-update",
-               "format": "semantic",
-               "dump-commits": true
+               "name": "changelog-update"
+            },
+            {
+               "name": "changelog-render"
             }
          ],
          "postReleaseActions": [
