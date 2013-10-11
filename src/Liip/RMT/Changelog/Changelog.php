@@ -2,6 +2,11 @@
 
 namespace Liip\RMT\Changelog;
 
+/**
+ * Changelog file representation.
+ * 
+ * @author Daniel Pozzi <bonndan76@googlemail.com>
+ */
 class Changelog
 {
     /**
