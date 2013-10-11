@@ -60,5 +60,6 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
         
         $this->assertContains('version="0.1.0"', file_get_contents($file));
         $versions = $changelog->getVersions();
+        $this->assertEquals(1, $versions->length);
     }
 }
