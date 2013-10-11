@@ -34,7 +34,7 @@ class SimpleMarkdown
             
             $commits = Changelog::getCommitsFromVersion($version);
             foreach ($commits as $hash => $message) {
-                $buffer .= '* ' . $message . "[$hash]" . PHP_EOL;
+                $buffer .= '* ' . $message . " [$hash]" . PHP_EOL;
             }
         }
         
