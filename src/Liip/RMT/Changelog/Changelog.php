@@ -80,7 +80,7 @@ class Changelog
         $nodes = $this->getVersions();
         $versions = array();
         foreach ($nodes as $node) {
-            $versions[] = $this->getVersionNumberFrom($node);
+            $versions[] = self::getVersionNumberFromVersion($node);
         }
         \usort($versions, '\\vierbergenlars\\SemVer\\version::compare');
         return array_pop($versions);
@@ -92,9 +92,39 @@ class Changelog
      * @param \DOMNode $version
      * @return string
      */
-    private function getVersionNumberFrom(\DOMNode $version)
+    public static function getVersionNumberFromVersion(\DOMNode $version)
     {
         return $version->attributes->getNamedItem('version')->nodeValue;
+    }
+    
+    /**
+     * Returns the version number from a version dom node.
+     * 
+     * @param \DOMNode $version
+     * @return string
+     */
+    public static function getTitleFromVersion(\DOMNode $version)
+    {
+        return $version->getElementsByTagName('title')->item(0)->nodeValue;
+    }
+    
+    /**
+     * Returns the version number from a version dom node.
+     * 
+     * @param \DOMNode $version
+     * @return array
+     */
+    public static function getCommitsFromVersion(\DOMNode $version)
+    {
+        $list = $version->getElementsByTagName('commit');
+        $commits = array();
+        foreach ($list as $node) {
+            /* @var $node \DomNode */
+            $hash = $node->attributes->getNamedItem('hash')->nodeValue;
+            $commits[$hash] = $node->nodeValue;
+        }
+        
+        return $commits;
     }
     
     /**

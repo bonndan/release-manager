@@ -29,6 +29,19 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("First version", $version1->getElementsByTagName('title')->item(0)->nodeValue);
     }
     
+    public function testGetCommitsFromVersion()
+    {
+        $file = __DIR__ . '/changelog.xml';
+        $changelog = new Changelog($file);
+        $versions = $changelog->getVersions();
+        $version1 = $versions->item(0);
+        $commits = Changelog::getCommitsFromVersion($version1);
+        $this->assertInternalType('array', $commits);
+        $this->assertNotEmpty($commits);
+        $this->assertArrayHasKey('abcdef', $commits);
+        $this->assertContains('Fixed something', $commits);
+    }
+    
     public function testGetCurrentVersion()
     {
         $file = __DIR__ . '/changelog.xml';
