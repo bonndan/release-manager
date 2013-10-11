@@ -105,7 +105,7 @@ class Context
     public function getService($id)
     {
         if (!isset($this->services[$id])) {
-            throw new \InvalidArgumentException("There is no service define with id [$id]");
+            throw new \InvalidArgumentException("There is no service defined with id [$id]");
         }
         if (is_array($this->services[$id])) {
             $this->services[$id] = $this->instanciateObject($this->services[$id]);
