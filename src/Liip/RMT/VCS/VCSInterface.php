@@ -39,6 +39,7 @@ interface VCSInterface
 
     /**
      * Return the list of all modifications from the given tag until now
+     * 
      * @param $tag
      * @param bool $color
      * @return array

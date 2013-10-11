@@ -9,6 +9,8 @@ file to store and retrieve information.
 You can define a list of actions that will be executed and before or after the release of a new version
  and where you want to store the version (in a changelog file, as a VCS tag, etc…).
 
+![screenshot](https://github.com/bonndan/release-manager/raw/master/doc/screen.png "In-Dev Screenshot")
+
 
 This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). Kudos to the original authors for this tool.
 
@@ -56,17 +58,18 @@ RMT will then do the following tasks:
 The `release` command is the main behavior of the tool, but some extra commands are available:
 
 * `current` will show your project current version number
+* `changes` will show the last which would be part of the next release
 * `init` create a config section in your composer.json file
 
 Configuration
 -------------
 
-All RMT configuration have to be done in the `rmt.json`. The file is divided in 5 root elements:
+All RMT configuration have to be done in the `composer.json`. The file is divided in 5 root elements:
 
 * `vcs`: The type of VCS you are using, can be `git`, `svn` or `none`
 * `prerequisites`: A list `[]` of prerequisites that must be matched before starting the release process
 * `preReleaseActions`: A list `[]` of actions that will be executed before the release process
-* `versionPersister`: The persister to use to store the versions (mandatory)
+* `versionPersister`: The persister to use to store the versions
 * `postReleaseActions`: A list `[]` of actions that will be executed after the release
 
 All the entries of this config are working the same way: You have to specify the class you want
@@ -135,9 +138,10 @@ Most of the time, it will be easier for you to pick up and example bellow and to
                "const": "RMT_VERSION"
             },
             {
-               "name": "changelog-update",
-               "format": "semantic",
-               "dump-commits": true
+               "name": "changelog-update"
+            },
+            {
+               "name": "changelog-render"
             }
          ],
          "postReleaseActions": [

@@ -1,6 +1,6 @@
 {
    "name": "bonndan\/release-manager",
-   "version": "0.3.0",
+   "version": "0.4.0",
    "description": "Release Manager for semantic version release of composer packages and projects.",
    "keywords": [
       "release",
@@ -44,11 +44,8 @@
                "name": "version-stamp",
                "const": "RMT_VERSION"
             },
-            {
-               "name": "changelog-update",
-               "format": "semantic",
-               "dump-commits": true
-            }
+            "changelog-update",
+            "changelog-render"
          ],
          "postReleaseActions": [
             "vcs-commit"
