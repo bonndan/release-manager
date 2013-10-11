@@ -5,9 +5,10 @@ namespace Liip\RMT\Action;
 use Liip\RMT\Changelog\Changelog;
 
 /**
- * Update the changelog file.
+ * Renders the changelog file.
  * 
- * The default file name is "changelog.xml".
+ * The default changelog source name is "changelog.xml", the default
+ * target is "changelog.md".
  */
 class ChangelogRenderAction extends BaseAction
 {
@@ -17,7 +18,7 @@ class ChangelogRenderAction extends BaseAction
     {
         $this->options = array_merge(array(
             'changelog' => 'changelog.xml',
-            'file' => 'CHANGELOG',
+            'file' => 'changelog.md',
         ), $options);
     }
 
