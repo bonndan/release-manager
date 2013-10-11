@@ -121,7 +121,7 @@ class Context
     public function getParameter($id)
     {
         if (!isset($this->params[$id])) {
-            throw new \InvalidArgumentException("There is no param define with id [$id]");
+            throw new \InvalidArgumentException("There is no param defined with id [$id]");
         }
         return $this->params[$id];
     }
