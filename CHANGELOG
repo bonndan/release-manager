@@ -3,6 +3,16 @@ VERSION 0  FIRST BETA
 =====================
 
    Version 0.3 - Script execution action
+      11/10/2013 06:29  0.3.0-1  Build test
+         17e9b86 updated the readme
+         b748267 added functional test
+         53ba699 registered the "changes" command
+         677a68f command that shows the last changes
+         dc1bddc code cleanup
+         697d700 Merge branch 'feature/improved_autoloading' into develop
+         045a640 code cleanup
+         db5584d prerequisites are treated like normal actions
+         4ee3469 Merge branch 'release/0.3.0' into develop
       09/10/2013 19:07  0.3.0  initial release
          9679d29 Merge branch 'feature/script_action' into develop
          e666b8b added phpunit as prerelease action

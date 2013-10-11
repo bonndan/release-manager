@@ -39,6 +39,7 @@ class Application extends BaseApplication
                 // Add command that require the config file
                 $this->add($this->createCommand('ReleaseCommand'));
                 $this->add($this->createCommand('CurrentCommand'));
+                $this->add($this->createCommand('ChangesCommand'));
             } catch (NoConfigurationException $exception) {
                 echo $exception->getMessage();
             }

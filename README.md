@@ -56,17 +56,18 @@ RMT will then do the following tasks:
 The `release` command is the main behavior of the tool, but some extra commands are available:
 
 * `current` will show your project current version number
+* `changes` will show the last which would be part of the next release
 * `init` create a config section in your composer.json file
 
 Configuration
 -------------
 
-All RMT configuration have to be done in the `rmt.json`. The file is divided in 5 root elements:
+All RMT configuration have to be done in the `composer.json`. The file is divided in 5 root elements:
 
 * `vcs`: The type of VCS you are using, can be `git`, `svn` or `none`
 * `prerequisites`: A list `[]` of prerequisites that must be matched before starting the release process
 * `preReleaseActions`: A list `[]` of actions that will be executed before the release process
-* `versionPersister`: The persister to use to store the versions (mandatory)
+* `versionPersister`: The persister to use to store the versions
 * `postReleaseActions`: A list `[]` of actions that will be executed after the release
 
 All the entries of this config are working the same way: You have to specify the class you want
