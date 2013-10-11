@@ -110,7 +110,6 @@ class ServiceBuilder
             'postReleaseActions' => 'Action',
             "versionPersister" => 'Persister'
         );
-        $nameSpace = $namespacesByType[$classType];
         $className = str_replace(' ', '', ucwords(str_replace('-', ' ', $name))) . $suffixByType[$classType];
 
         if (class_exists($nameSpace . '\\' . $className)) {
