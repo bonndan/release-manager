@@ -44,3 +44,12 @@
 * code cleanup [045a640]
 * prerequisites are treated like normal actions [db5584d]
 * Merge branch 'release/0.3.0' into develop [4ee3469]
+
+## 0.4.1 - Fixed #3
+
+* Merge branch 'feature/3_changelog_version_vcs' into develop [3be8844]
+* redirected output in prerequisites test [fd864c9]
+* #3 vcs exception is caught, commits not written to changelog [72debc6]
+* Merge branch 'master' into develop [7f39753]
+* Update README.md [84000ec]
+* Merge branch 'release/0.4.0' into develop [dd7af21]
