@@ -37,7 +37,7 @@ class PrerequisitesTest extends RMTFunctionalTestBase
 
         // Release blocked by the check
         exec('touch toto');
-        exec('./RMT release -n', $consoleOutput, $exitCode);
+        exec('./RMT release -n 2>&1', $consoleOutput, $exitCode);
         $this->assertGreaterThan(0, $exitCode);
     }
 
