@@ -19,7 +19,8 @@ class ComposerPersisterTest extends \PHPUnit_Framework_TestCase
         $config = new \Liip\RMT\Helpers\ComposerConfig();
         $file = (__DIR__ . '/../../../../../../../composer.json');
         $config->setComposerFile($file);
-        $this->persister = new \Liip\RMT\Version\Persister\ComposerPersister($config);
+        $this->persister = new \Liip\RMT\Version\Persister\ComposerPersister();
+        $this->persister->setConfig($config);
     }
     
     public function testGetCurrentVersion()

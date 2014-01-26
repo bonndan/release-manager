@@ -20,18 +20,6 @@ class ComposerPersister extends AbstractPersister implements PersisterInterface
     private $helper;
     
     /**
-     * Constructor.
-     * 
-     * @param ComposerConfig $helper
-     */
-    public function __construct(ComposerConfig $helper = null)
-    {
-        if ($helper !== null) {
-            $this->helper = $helper;
-        }
-    }
-    
-    /**
      * Returns the current version as stored in the composer file.
      * 
      * @return string
@@ -54,6 +42,18 @@ class ComposerPersister extends AbstractPersister implements PersisterInterface
         $this->getHelper()->setVersion($version);
     }
 
+    /**
+     * Inject the composer configuration.
+     * 
+     * @param ComposerConfig $config
+     */
+    public function setConfig(ComposerConfig $config)
+    {
+        if ($config !== null) {
+            $this->helper = $config;
+        }
+    }
+    
     /**
      * Returns the composer file helper.
      * 
