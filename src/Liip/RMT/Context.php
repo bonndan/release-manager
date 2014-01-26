@@ -4,6 +4,7 @@ namespace Liip\RMT;
 
 use Liip\RMT\ContextAwareInterface;
 use Liip\RMT\Action\ActionInterface;
+use Liip\RMT\Version;
 
 /**
  * Application context.
@@ -12,7 +13,8 @@ use Liip\RMT\Action\ActionInterface;
  */
 class Context
 {
-
+    const PARAM_NEW_VERSION = 'new-version';
+    
     protected $services = array();
     protected $params = array();
     protected $lists = array();
@@ -228,4 +230,23 @@ class Context
         return $this->get('information-collector');
     }
 
+    /**
+     * Set the new version.
+     * 
+     * @param Version $version
+     */
+    public function setNewVersion(Version $version)
+    {
+        $this->setParameter(self::PARAM_NEW_VERSION, $version);
+    }
+    
+    /**
+     * Return the version if any.
+     * 
+     * @return Version|null
+     */
+    public function getNewVersion()
+    {
+        return $this->getParameter(self::PARAM_NEW_VERSION);
+    }
 }
