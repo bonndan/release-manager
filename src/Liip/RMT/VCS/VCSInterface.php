@@ -2,6 +2,12 @@
 
 namespace Liip\RMT\VCS;
 
+use Liip\RMT\Version;
+
+/**
+ * Interface for version control systems.
+ * s
+ */
 interface VCSInterface
 {
     /**
@@ -12,8 +18,7 @@ interface VCSInterface
     /**
      * Returns the hight valid version.
      * 
-     * @return string
-     * @throws \Liip\RMT\Exception\NoReleaseFoundException
+     * @return Liip\RMT\Version
      */
     public function getCurrentVersion();
     
@@ -28,7 +33,7 @@ interface VCSInterface
      * Create a new tag at the current position
      * @param $tagName
      */
-    public function createTag($tagName);
+    public function createTag(Version $tagName);
 
     /**
      * Publish a new created tag

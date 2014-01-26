@@ -2,6 +2,7 @@
 namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Helpers\TagValidator;
+use Liip\RMT\Version;
 
 /**
  * VCS tag persister.
@@ -18,13 +19,12 @@ class VcsTagPersister extends AbstractPersister implements PersisterInterface
     }
 
     /**
-     * 
-     * @param type $versionNumber
+     * @inheritdoc
      */
-    public function save($versionNumber)
+    public function save(Version $version)
     {
-        $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$versionNumber</yellow>]");
-        $this->getVCS()->createTag($versionNumber);
+        $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$version</yellow>]");
+        $this->getVCS()->createTag($version);
     }
 
     /**

@@ -11,7 +11,6 @@ class GitTest extends RMTFunctionalTestBase
         $this->createJsonConfig('semantic', 'vcs-tag', array('vcs' => 'git'));
         exec('./RMT release -n  --type=patch --confirm-first');
         exec('git tag', $tags);
-//        $this->manualDebug();
         $this->assertEquals(array('0.0.1'), $tags);
     }
 

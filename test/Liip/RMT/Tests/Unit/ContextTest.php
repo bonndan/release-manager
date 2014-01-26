@@ -114,4 +114,11 @@ class ContextTest extends \PHPUnit_Framework_TestCase
         $this->context->createEmptyList('prerequisites');
         $this->assertEquals(array(), $this->context->getList('prerequisites'));
     }
+    
+    public function testNewVersion()
+    {
+        $version = new \Liip\RMT\Version('0.1.1');
+        $this->context->setNewVersion($version);
+        $this->assertSame($version, $this->context->getNewVersion());
+    }
 }

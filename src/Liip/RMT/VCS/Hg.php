@@ -1,7 +1,14 @@
 <?php
-
 namespace Liip\RMT\VCS;
 
+use Liip\RMT\Version;
+
+
+/**
+ * Mecurial implementation of VCSInterface
+ * 
+ * 
+ */
 class Hg extends BaseVCS
 {
     protected $dryRun = false;
@@ -37,7 +44,7 @@ class Hg extends BaseVCS
         return $tags;
     }
 
-    public function createTag($tagName)
+    public function createTag(Version $tagName)
     {
         return $this->executeHgCommand("tag $tagName");
     }

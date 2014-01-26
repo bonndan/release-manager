@@ -128,10 +128,16 @@ class InformationRequest
         return $value;
     }
 
+    /**
+     * Returns the given value or the default.
+     * 
+     * @return string
+     * @throws \Liip\RMT\Exception
+     */
     public function getValue()
     {
         if ( !$this->hasValue() && $this->options['default'] === null ){
-            throw new \Liip\RMT\Exception("No value available");
+            throw new \Liip\RMT\Exception("No value available for information ". $this->name);
         }
 
         return $this->hasValue() ? $this->value : $this->options['default'];

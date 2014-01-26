@@ -27,7 +27,7 @@ class CurrentCommand extends BaseCommand
         $this->getContext();
         $version = $this->context->getVersionPersister()->getCurrentVersion();
         if ($input->getOption('raw') == true) {
-            $output->writeln($version);
+            $output->writeln($version->__toString());
         } else {
             $msg = "Current release is: <green>$version</green>";
             $output->writeln($msg);

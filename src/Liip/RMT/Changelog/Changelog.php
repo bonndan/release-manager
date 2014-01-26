@@ -2,6 +2,8 @@
 
 namespace Liip\RMT\Changelog;
 
+use Liip\RMT\Version;
+
 /**
  * Changelog file representation.
  * 
@@ -73,7 +75,7 @@ class Changelog
     /**
      * Returns the current version.
      * 
-     * @return string|null
+     * @return Version|null
      */
     public function getCurrentVersion()
     {
@@ -83,7 +85,13 @@ class Changelog
             $versions[] = self::getVersionNumberFromVersion($node);
         }
         \usort($versions, '\\vierbergenlars\\SemVer\\version::compare');
-        return array_pop($versions);
+        
+        $versionNumber = array_pop($versions);
+        if (empty($versionNumber)) {
+            $versionNumber = Version::INITIAL;
+        }
+        
+        return new Version($versionNumber);
     }
     
     /**

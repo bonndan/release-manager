@@ -2,10 +2,12 @@
 
 namespace Liip\RMT\Action;
 
+use Liip\RMT\Helpers\ComposerConfig;
+
 /**
  * Update the version in composer.json
  */
-class ComposerUpdateAction extends \Liip\RMT\Action\BaseAction
+class ComposerUpdateAction extends BaseAction
 {
     /**
      * Execute replacement.
@@ -13,8 +15,8 @@ class ComposerUpdateAction extends \Liip\RMT\Action\BaseAction
      */
     public function execute()
     {
-        $helper = new \Liip\RMT\Helpers\ComposerConfig($this->context);
-        $helper->setVersion($this->context->getParam('new-version'));
+        $helper = new ComposerConfig($this->context);
+        $helper->setVersion($this->context->getNewVersion());
         $this->confirmSuccess();
     }
 

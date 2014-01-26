@@ -2,7 +2,7 @@
 
 namespace Liip\RMT\Version\Generator;
 
-use vierbergenlars\SemVer\version as Version;
+use Liip\RMT\Version;
 use vierbergenlars\SemVer\SemVerException;
 
 /**
@@ -38,10 +38,10 @@ class SemanticGenerator
     /**
      * Returns 0.0.0
      * 
-     * @return string
+     * @return vierbergenlars\SemVer\version
      */
     public function getInitialVersion()
     {
-        return '0.0.0';
+        return Version::createInitialVersion();
     }
 }

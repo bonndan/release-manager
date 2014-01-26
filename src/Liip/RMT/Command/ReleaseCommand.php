@@ -40,10 +40,8 @@ class ReleaseCommand extends BaseCommand
         $ic = new InformationCollector();
 
         // Add a specific option if it's the first release
-        try {
-            $this->getContext()->getVersionPersister()->getCurrentVersion();
-        }
-        catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
+        $version = $this->getContext()->getVersionPersister()->getCurrentVersion();
+        if ($version->isInitial()) {
             $ic->registerRequest(
                 new InformationRequest('confirm-first', array(
                     'description' => 'This is the first release for the current branch',
@@ -54,7 +52,6 @@ class ReleaseCommand extends BaseCommand
 
         // Register options of the release tasks
         $ic->registerRequests($this->getContext()->getVersionGenerator()->getInformationRequests());
-        $ic->registerRequests($this->getContext()->getVersionPersister()->getInformationRequests());
 
         // Register options of all lists (prerequistes and actions)
         foreach (array('prerequisites', 'preReleaseActions', 'postReleaseActions') as $listName){
@@ -117,6 +114,8 @@ class ReleaseCommand extends BaseCommand
                 $this->getContext()->getParam('current-version'), $increment
             );
         }
+        if (!$newVersion instanceof \Liip\RMT\Version)
+        throw new \Exception($increment . var_export(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15), true));
         $this->getContext()->setParameter('new-version', $newVersion);
 
         $this->executeActionListIfExist('preReleaseActions');
