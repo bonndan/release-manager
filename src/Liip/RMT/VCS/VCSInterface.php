@@ -18,7 +18,7 @@ interface VCSInterface
     /**
      * Returns the hight valid version.
      * 
-     * @return version
+     * @return Liip\RMT\Version
      */
     public function getCurrentVersion();
     

@@ -2,7 +2,7 @@
 
 namespace Liip\RMT\Helpers;
 
-use vierbergenlars\SemVer\version as SemanticVersion;
+use Liip\RMT\Version;
 use vierbergenlars\SemVer\SemVerException;
 
 /**
@@ -21,7 +21,7 @@ class TagValidator
     public function isValid($tag)
     {
         try {
-            new SemanticVersion($tag);
+            new Version($tag);
         } catch (SemVerException $exception) {
             return false;
         }

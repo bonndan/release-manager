@@ -49,7 +49,9 @@ class RMTFunctionalTestBase extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        exec('rm -rf ' . $this->tempDir);
+        if (!$this->hasFailed()) {
+            exec('rm -rf ' . $this->tempDir);
+        }
     }
 
     protected function initGit()
