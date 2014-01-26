@@ -47,6 +47,7 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
         $file = __DIR__ . '/changelog.xml';
         $changelog = new Changelog($file);
         $current = $changelog->getCurrentVersion();
+        $this->assertInstanceOf("\Liip\RMT\Version", $current);
         $this->assertEquals('0.1.0', $current);
     }
     
@@ -56,7 +57,8 @@ class ChangelogTest extends \PHPUnit_Framework_TestCase
         @unlink($file);
         $changelog = new Changelog($file);
         $current = $changelog->getCurrentVersion();
-        $this->assertNull($current);
+        $this->assertInstanceOf("\Liip\RMT\Version", $current);
+        $this->assertTrue($current->isInitial());
     }
     
     public function testAddVersion()

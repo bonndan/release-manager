@@ -1,6 +1,8 @@
 <?php
 namespace Liip\RMT\Version\Persister;
 
+use Liip\RMT\Helpers\ComposerConfig;
+use Liip\RMT\Version;
 use Liip\RMT\Version\Persister\PersisterInterface;
 
 /**
@@ -13,7 +15,7 @@ class ComposerPersister extends AbstractPersister implements PersisterInterface
     /**
      * composer config helper
      * 
-     * @var \Liip\RMT\Helpers\ComposerConfig
+     * @var ComposerConfig
      */
     private $helper;
     
@@ -24,28 +26,43 @@ class ComposerPersister extends AbstractPersister implements PersisterInterface
      */
     public function getCurrentVersion()
     {
-        return $this->getHelper()->getCurrentVersion();
+        $versionNumber = $this->getHelper()->getCurrentVersion();
+        if ($versionNumber === null) {
+            $versionNumber = Version::INITIAL;
+        }
+        
+        return new Version($versionNumber);
     }
 
     /**
-     * Saves the version to the composer file.
-     * 
-     * @param string $versionNumber
+     * @inheritdoc
      */
-    public function save($versionNumber)
+    public function save(Version $version)
     {
-        $this->getHelper()->setVersion($versionNumber);
+        $this->getHelper()->setVersion($version);
     }
 
+    /**
+     * Inject the composer configuration.
+     * 
+     * @param ComposerConfig $config
+     */
+    public function setConfig(ComposerConfig $config)
+    {
+        if ($config !== null) {
+            $this->helper = $config;
+        }
+    }
+    
     /**
      * Returns the composer file helper.
      * 
-     * @return \Liip\RMT\Helpers\ComposerConfig
+     * @return ComposerConfig
      */
     private function getHelper()
     {
         if ($this->helper === null) {
-            $this->helper = new \Liip\RMT\Helpers\ComposerConfig($this->context);
+            $this->helper = new ComposerConfig($this->context);
         }
         
         return $this->helper;

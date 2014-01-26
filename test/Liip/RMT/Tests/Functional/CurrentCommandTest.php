@@ -10,7 +10,8 @@ class CurrentCommandTest extends RMTFunctionalTestBase
         $this->initGit();
         $this->createJsonConfig('semantic', 'vcs-tag', array('vcs'=>'git'));
         exec('git tag 2.3.4');
-        $this->assertEquals("2.3.4", exec('./RMT current --raw'));
+        $output = exec('./RMT current --raw');
+        $this->assertEquals("2.3.4", $output);
     }
 
     public function testNumericCompare()

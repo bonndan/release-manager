@@ -53,14 +53,14 @@ class HgTest extends \PHPUnit_Framework_TestCase
     public function testCreateTag()
     {
         $vcs = new Hg();
-        $vcs->createTag('2.0.0');
+        $vcs->createTag(new \Liip\RMT\Version('2.0.0'));
         $this->assertEquals(array("tip","2.0.0","1.1.0", "1.0.0"), $vcs->getTags());
     }
 
     public function testSaveWorkingCopy()
     {
         $vcs = new Hg();
-        $vcs->createTag('2.0.0');
+        $vcs->createTag(new \Liip\RMT\Version('2.0.0'));
         $this->assertCount(1, $vcs->getAllModificationsSince('2.0.0'));
         exec('rm file2');
         $vcs->saveWorkingCopy('Remove the second file');

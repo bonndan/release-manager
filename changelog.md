@@ -53,3 +53,17 @@
 * Merge branch 'master' into develop [7f39753]
 * Update README.md [84000ec]
 * Merge branch 'release/0.4.0' into develop [dd7af21]
+
+## 0.4.2 - Bugfix for #5
+
+* Merge branch 'feature/5_no_release_exception' into develop [726ae9c]
+* improved exception message [0527f10]
+* fixed the project description [b4ce76b]
+* fixed the composer persister [6d91e5e]
+* using the version class in other classes [ff170cd]
+* using the version class in other classes [198ddf9]
+* using the version class with vcs [fe4a505]
+* introducing a getter and setter for the new version [b46fbf6]
+* introducing a version class [6598942]
+* fixed indentation [51b9154]
+* Merge branch 'release/0.4.1' into develop [908d65c]
