@@ -2,6 +2,8 @@
 
 namespace Liip\RMT\VCS;
 
+use Liip\RMT\Version;
+
 class Git extends BaseVCS
 {
     protected $dryRun = false;
@@ -32,7 +34,7 @@ class Git extends BaseVCS
         return $this->executeGitCommand("tag");
     }
 
-    public function createTag($tagName)
+    public function createTag(Version $tagName)
     {
         return $this->executeGitCommand("tag $tagName");
     }
