@@ -1,7 +1,7 @@
 {
    "name": "bonndan\/release-manager",
    "version": "0.4.1",
-   "description": "Release Manager for semantic version release of composer packages and projects.",
+   "description": "Release Manager for semantic version releases of composer packages and projects.",
    "keywords": [
       "release",
       "version",
