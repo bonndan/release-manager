@@ -114,9 +114,7 @@ class ReleaseCommand extends BaseCommand
                 $this->getContext()->getParam('current-version'), $increment
             );
         }
-        if (!$newVersion instanceof \Liip\RMT\Version)
-        throw new \Exception($increment . var_export(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15), true));
-        $this->getContext()->setParameter('new-version', $newVersion);
+        $this->getContext()->setNewVersion($newVersion);
 
         $this->executeActionListIfExist('preReleaseActions');
 
