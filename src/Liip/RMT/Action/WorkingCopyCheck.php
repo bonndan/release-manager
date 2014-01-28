@@ -31,8 +31,8 @@ class WorkingCopyCheck extends BaseAction
 
     public function execute()
     {
-        if ($this->context->get('information-collector')->getValueFor($this->ignoreCheckOptionName)) {
-            $this->context->get('output')->writeln('<error>requested to be ignored</error>');
+        if ($this->context->getInformationCollector()->getValueFor($this->ignoreCheckOptionName)) {
+            $this->context->getOutput()->writeln('<error>requested to be ignored</error>');
             return;
         }
 

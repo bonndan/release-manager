@@ -2,7 +2,9 @@
 
 namespace Liip\RMT\VCS;
 
+use Liip\RMT\Exception;
 use Liip\RMT\Version;
+use vierbergenlars\SemVer\SemVerException;
 
 class Git extends BaseVCS
 {
@@ -63,7 +65,38 @@ class Git extends BaseVCS
                 return substr($branch,2);
             }
         }
-        throw new \Liip\RMT\Exception("Not currently on any branch");
+        throw new Exception("Not currently on any branch");
+    }
+    
+    /**
+     * Start a git flow release.
+     * 
+     * @param Version $version
+     * @return array output
+     */
+    public function startRelease(Version $version)
+    {
+        $command = "flow release start " . $version;
+        return $this->executeGitCommand($command);
+    }
+    
+    /**
+     * Finishes the current git flow release.
+     * 
+     * @return array
+     * @throws Exception
+     */
+    public function finishRelease($comment)
+    {
+        $detector = new Version\Detector\GitFlowReleaseBranch($this);
+        $version = $detector->getCurrentVersion();
+        $command = 'flow release finish -F -m "' . $comment . '" ' . $version;
+        return $this->executeGitCommand($command);
+    }
+    
+    public function setDryRun($flag)
+    {
+        $this->dryRun = $flag;
     }
 
     protected function executeGitCommand($cmd)
@@ -71,9 +104,9 @@ class Git extends BaseVCS
         // Avoid using some commands in dry mode
         if ($this->dryRun){
             if ($cmd !== 'tag'){
-                $cmdWords = explode(' ',$cmd);
-                if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit'))){
-                    return;
+                $cmdWords = explode(' ', $cmd);
+                if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit', 'flow'))){
+                    return $cmd;
                 }
             }
         }
@@ -82,7 +115,7 @@ class Git extends BaseVCS
         $cmd = 'git '.$cmd;
         exec($cmd, $result, $exitCode);
         if ($exitCode !== 0){
-            throw new \Liip\RMT\Exception('Error while executing git command: '.$cmd);
+            throw new Exception('Error while executing git command: '.$cmd);
         }
         return $result;
     }

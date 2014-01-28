@@ -96,7 +96,8 @@ class ServiceBuilder
             'prerequisites' => 'Liip\RMT\Action',
             'preReleaseActions' => 'Liip\RMT\Action',
             'postReleaseActions' => 'Liip\RMT\Action',
-            "versionPersister" => 'Liip\RMT\Version\Persister'
+            "versionPersister" => 'Liip\RMT\Version\Persister',
+            "versionDetector" => 'Liip\RMT\Version\Persister', //todo change
         );
         $nameSpace = $namespacesByType[$classType];
 
@@ -108,7 +109,8 @@ class ServiceBuilder
             'prerequisites' => '',
             'preReleaseActions' => 'Action',
             'postReleaseActions' => 'Action',
-            "versionPersister" => 'Persister'
+            "versionPersister" => 'Persister',
+            "versionDetector" => 'Persister', //todo change
         );
         $className = str_replace(' ', '', ucwords(str_replace('-', ' ', $name))) . $suffixByType[$classType];
 

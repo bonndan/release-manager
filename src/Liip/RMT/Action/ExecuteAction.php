@@ -53,7 +53,7 @@ class ExecuteAction extends BaseAction
             throw new \RuntimeException('Execution of script "' . $this->options['script'] . '" failed.');
         }
         
-        $this->context->get('output')->writeln('<info>OK ' . $lastLine . '</info>');
+        $this->context->getOutput()->writeln('<info>OK ' . $lastLine . '</info>');
     }
 
 }

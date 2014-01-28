@@ -30,11 +30,6 @@ class SemanticGenerator
         }
     }
 
-    public function getInformationRequests()
-    {
-        return array('type');
-    }
-
     /**
      * Returns 0.0.0
      * 

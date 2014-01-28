@@ -4,13 +4,14 @@ namespace Liip\RMT\Version\Persister;
 use Liip\RMT\Helpers\ComposerConfig;
 use Liip\RMT\Version;
 use Liip\RMT\Version\Persister\PersisterInterface;
+use Liip\RMT\Version\Detector\DetectorInterface;
 
 /**
  * Persists the version in the composer file.
  * 
  * 
  */
-class ComposerPersister extends AbstractPersister implements PersisterInterface
+class ComposerPersister extends AbstractPersister implements PersisterInterface, DetectorInterface
 {
     /**
      * composer config helper
@@ -20,9 +21,7 @@ class ComposerPersister extends AbstractPersister implements PersisterInterface
     private $helper;
     
     /**
-     * Returns the current version as stored in the composer file.
-     * 
-     * @return string
+     * @inheritdoc
      */
     public function getCurrentVersion()
     {
