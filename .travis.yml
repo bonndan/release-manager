@@ -9,9 +9,13 @@ before_script:
   - php composer.phar install
   - git config --global user.email "test@test.com"
   - git config --global user.name "John Doe"
+  - curl -O https://raw.github.com/nvie/gitflow/develop/contrib/gitflow-installer.sh
+  - chmod u+x gitflow-installer.sh
+  - INSTALL_PREFIX=~/bin ./gitflow-installer.sh
 
 script: phpunit
 
 notifications:
   email:
     - bonndan76@googlemail.com
+

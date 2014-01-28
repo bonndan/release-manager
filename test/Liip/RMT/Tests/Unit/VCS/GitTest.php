@@ -95,6 +95,34 @@ class GitTest extends \PHPUnit_Framework_TestCase
         exec("git checkout 9aca70b --quiet");
         $vcs->getCurrentBranch();
     }
+    
+    public function testStartRelease()
+    {
+        $version = new \Liip\RMT\Version('2.2.2');
+        $vcs = new Git();
+        $vcs->setDryRun(true);
+        $cmd = $vcs->startRelease($version);
+        $this->assertEquals('flow release start 2.2.2', $cmd);
+    }
+    
+    public function testFinishRelease()
+    {
+        $vcs = new Git();
+        system("git flow init -fd");
+        system("git flow release start 2.2.2");
+        $vcs->setDryRun(true);
+        $cmd = $vcs->finishRelease();
+        $this->assertEquals('flow release finish 2.2.2', $cmd);
+    }
+    
+    public function testFinishReleaseException()
+    {
+        $vcs = new Git();
+        system("git flow init -fd");
+        
+        $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
+        $vcs->finishRelease();
+    }
 
     protected function tearDown()
     {

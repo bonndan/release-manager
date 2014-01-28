@@ -76,7 +76,7 @@ class Git extends BaseVCS
      */
     public function startRelease(Version $version)
     {
-        $command = "git flow release start " . $version;
+        $command = "flow release start " . $version;
         return $this->executeGitCommand($command);
     }
     
@@ -99,8 +99,13 @@ class Git extends BaseVCS
             throw new Exception('Cannot finish release: ' . $ex->getMessage());
         }
         
-        $command = "git flow release finish " . $version;
+        $command = "flow release finish " . $version;
         return $this->executeGitCommand($command);
+    }
+    
+    public function setDryRun($flag)
+    {
+        $this->dryRun = $flag;
     }
 
     protected function executeGitCommand($cmd)
@@ -110,7 +115,7 @@ class Git extends BaseVCS
             if ($cmd !== 'tag'){
                 $cmdWords = explode(' ',$cmd);
                 if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit', 'flow'))){
-                    return;
+                    return $cmd;
                 }
             }
         }
