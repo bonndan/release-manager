@@ -35,11 +35,18 @@ class Application extends BaseApplication
             $this->add($this->createCommand('InitCommand'));
             
             try {
-                $this->getConfig();
+                $config = $this->getConfig();
+                $context = Context::create($this);
+                
                 // Add command that require the config file
                 $this->add($this->createCommand('ReleaseCommand'));
                 $this->add($this->createCommand('CurrentCommand'));
                 $this->add($this->createCommand('ChangesCommand'));
+                
+                if ($context->getVCS() instanceof VCS\Git) {
+                    $this->add($this->createCommand("FlowCommand"));
+                }
+                
             } catch (NoConfigurationException $exception) {
                 echo $exception->getMessage();
             }
