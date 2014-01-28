@@ -57,11 +57,6 @@ class ChangelogPersister extends AbstractPersister implements PersisterInterface
         $this->changelog->addVersion($version, $comment, array());
     }
 
-    public function getInformationRequests()
-    {
-        return array('comment');
-    }
-
     /**
      * Creates the changelog manager if necessary.
      * 

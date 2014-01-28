@@ -121,6 +121,11 @@ class InformationCollector
         return $consoleOptions;
     }
 
+    /**
+     * Check if any of the registered requests has missing info.
+     * 
+     * @return boolean
+     */
     public function hasMissingInformation()
     {
         foreach ($this->requests as $request) {

@@ -114,6 +114,12 @@ class Context
         return $this->services[$id];
     }
 
+    /**
+     * Set a parameter.
+     * 
+     * @param string$id
+     * @param mixed $value
+     */
     public function setParameter($id, $value)
     {
         $this->params[$id] = $value;
