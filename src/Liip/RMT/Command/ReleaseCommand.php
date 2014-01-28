@@ -67,7 +67,7 @@ class ReleaseCommand extends BaseCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->getContext()->setService('output', $this->output);
-        $this->getContext()->get('information-collector')->handleCommandInput($input);
+        $this->getContext()->getInformationCollector()->handleCommandInput($input);
 
         $this->writeBigTitle('Welcome to Release Manager');
 
@@ -78,12 +78,13 @@ class ReleaseCommand extends BaseCommand
     protected function interact(InputInterface $input, OutputInterface $output)
     {
         // Fill up questions
-        if ($this->getContext()->get('information-collector')->hasMissingInformation()){
+        $infoCollector = $this->getContext()->getInformationCollector();
+        if ($infoCollector->hasMissingInformation()){
             $this->writeSmallTitle('Information collect');
             $this->getOutput()->indent();
-            foreach($this->getContext()->get('information-collector')->getInteractiveQuestions() as $name => $question) {
+            foreach($infoCollector->getInteractiveQuestions() as $name => $question) {
                 $answer = $this->askQuestion($question);
-                $this->getContext()->get('information-collector')->setValueFor($name, $answer);
+                $infoCollector->setValueFor($name, $answer);
                 $this->writeEmptyLine();
             }
             $this->getOutput()->unIndent();
@@ -98,7 +99,7 @@ class ReleaseCommand extends BaseCommand
             $currentVersion = $this->getContext()->getVersionPersister()->getCurrentVersion();
         }
         catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
-            if ($this->getContext()->get('information-collector')->getValueFor('confirm-first') == false){
+            if ($this->getContext()->getInformationCollector()->getValueFor('confirm-first') == false){
                 throw $e;
             }
             $currentVersion = \Liip\RMT\Version::createInitialVersion();

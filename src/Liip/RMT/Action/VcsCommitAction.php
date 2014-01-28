@@ -9,7 +9,7 @@ class VcsCommitAction extends BaseAction
 {
     public function execute()
     {
-        $this->context->get('vcs')->saveWorkingCopy(
+        $this->context->getVCS()->saveWorkingCopy(
             'Release of new version '. $this->context->getParam('new-version')
         );
         $this->confirmSuccess();

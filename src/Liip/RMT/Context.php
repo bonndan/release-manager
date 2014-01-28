@@ -176,14 +176,6 @@ class Context
     }
 
     /**
-     * Shortcut to retried a service
-     * */
-    public function get($serviceName)
-    {
-        return $this->getService($serviceName);
-    }
-
-    /**
      * Shortcut to retried a parameter
      * */
     public function getParam($name)
@@ -198,7 +190,7 @@ class Context
      */
     public function getVersionPersister()
     {
-        return $this->get('version-persister');
+        return $this->getService('version-persister');
     }
 
     /**
@@ -209,7 +201,7 @@ class Context
      */
     public function getVersionDetector()
     {
-        return $this->get('version-detector');
+        return $this->getService('version-detector');
     }
 
     /**
@@ -219,7 +211,7 @@ class Context
      */
     public function getVCS()
     {
-        return $this->get('vcs');
+        return $this->getService('vcs');
     }
 
     /**
@@ -229,7 +221,7 @@ class Context
      */
     public function getInformationCollector()
     {
-        return $this->get('information-collector');
+        return $this->getService('information-collector');
     }
 
     /**
@@ -252,4 +244,13 @@ class Context
         return $this->getParameter(self::PARAM_NEW_VERSION);
     }
 
+    /**
+     * Returns the output
+     * 
+     * @return Output\Output
+     */
+    public function getOutput()
+    {
+        return $this->getService('output');
+    }
 }

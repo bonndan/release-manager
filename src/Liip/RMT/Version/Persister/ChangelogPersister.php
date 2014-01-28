@@ -52,8 +52,8 @@ class ChangelogPersister extends AbstractPersister implements PersisterInterface
      */
     public function save(Version $version)
     {
-        $comment = $this->context->get('information-collector')->getValueFor('comment');
-        $type = $this->context->get('information-collector')->getValueFor('type', null);
+        $comment = $this->context->getInformationCollector()->getValueFor('comment');
+        $type = $this->context->getInformationCollector()->getValueFor('type', null);
         $this->changelog->addVersion($version, $comment, array());
     }
 

@@ -11,13 +11,13 @@ class VcsPublishAction extends BaseAction
 {
     public function execute()
     {
-        if ($this->context->get('information-collector')->getValueFor('confirm-publish') !== 'y'){
-            $this->context->get('output')->writeln('<error>requested to be ignored</error>');
+        if ($this->context->getInformationCollector()->getValueFor('confirm-publish') !== 'y'){
+            $this->context->getOutput()->writeln('<error>requested to be ignored</error>');
             return;
         }
 
         $this->context->getVCS()->publishChanges();
-        $this->context->getVCS()->publishTag($this->context->getParam('new-version'));
+        $this->context->getVCS()->publishTag($this->context->getNewVersion());
 
         $this->confirmSuccess();
     }

@@ -25,7 +25,7 @@ class VcsTagPersister extends AbstractPersister implements PersisterInterface, D
      */
     public function save(Version $version)
     {
-        $this->context->get('output')->writeln("Creation of a new VCS tag [<yellow>$version</yellow>]");
+        $this->context->getOutput()->writeln("Creation of a new VCS tag [<yellow>$version</yellow>]");
         $this->getVCS()->createTag($version);
     }
 
