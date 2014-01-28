@@ -2,13 +2,15 @@
 namespace Liip\RMT\Version\Persister;
 
 use Liip\RMT\Helpers\TagValidator;
+use Liip\RMT\VCS\VCSInterface;
 use Liip\RMT\Version;
+use Liip\RMT\Version\Detector\DetectorInterface;
 
 /**
  * VCS tag persister.
  * 
  */
-class VcsTagPersister extends AbstractPersister implements PersisterInterface
+class VcsTagPersister extends AbstractPersister implements PersisterInterface, DetectorInterface
 {
     /**
      * @inheritdoc
@@ -41,7 +43,7 @@ class VcsTagPersister extends AbstractPersister implements PersisterInterface
     /**
      * Returns the vcs.
      * 
-     * @return \Liip\RMT\VCS\VCSInterface
+     * @return VCSInterface
      */
     private function getVCS()
     {

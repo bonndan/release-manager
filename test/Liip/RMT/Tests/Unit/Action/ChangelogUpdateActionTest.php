@@ -15,6 +15,8 @@ class ChangelogUpdateActionTest extends \PHPUnit_Framework_TestCase
         $context->setService('vcs', $vcs);
         $persister = $this->getMock("\Liip\RMT\Version\Persister\PersisterInterface");
         $context->setService('version-persister', $persister);
+        $detector = $this->getMock("\Liip\RMT\Version\Detector\DetectorInterface");
+        $context->setService('version-detector', $detector);
         $context->setParameter('new-version', '1.2.3');
         $collector = $this->getMock("\Liip\RMT\Information\InformationCollector");
         $context->setService('information-collector', $collector);
@@ -49,6 +51,8 @@ class ChangelogUpdateActionTest extends \PHPUnit_Framework_TestCase
         $vcs = $this->getMock("\Liip\RMT\VCS\VCSInterface");
         $context->setService('vcs', $vcs);
         $persister = $this->getMock("\Liip\RMT\Version\Persister\PersisterInterface");
+        $detector = $this->getMock("\Liip\RMT\Version\Detector\DetectorInterface");
+        $context->setService('version-detector', $detector);
         $context->setService('version-persister', $persister);
         $context->setParameter('new-version', '1.2.3');
         $collector = $this->getMock("\Liip\RMT\Information\InformationCollector");

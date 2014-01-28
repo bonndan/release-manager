@@ -13,8 +13,10 @@ use Liip\RMT\Version;
  */
 class Context
 {
+
     const PARAM_NEW_VERSION = 'new-version';
-    
+    const PRERELEASE_LIST = "preReleaseActions";
+
     protected $services = array();
     protected $params = array();
     protected $lists = array();
@@ -28,17 +30,12 @@ class Context
     public static function create(Application $application)
     {
         $rootDir = $application->getProjectRootDir();
-        $helper  = new Helpers\ComposerConfig();
+        $helper = new Helpers\ComposerConfig();
         $helper->setComposerFile($rootDir . '/composer.json');
-        $config  = $helper->getRMTConfigSection();
+        $config = $helper->getRMTConfigSection();
         $context = new Context();
         $builder = new Helpers\ServiceBuilder($context);
 
-        /*
-         * Populate the context the version generator
-         */
-        $context->setService("version-generator", new \Liip\RMT\Version\Generator\SemanticGenerator());
-        
         /*
          * The following services are config-dependent
          */
@@ -46,20 +43,24 @@ class Context
             if ($config->getVcs()) {
                 $context->setService('vcs', $builder->getService($config->getVcs(), 'vcs'));
             }
-            
+
             // Store the config for latter usage
             $context->setParameter('config', $config);
+            
             /*
              * populate version persister
              */
             $context->setService(
-                "version-persister", $builder->getService($config->getVersionPersister(), 'versionPersister')
+                    "version-persister", $builder->getService($config->getVersionPersister(), 'versionPersister')
             );
-            
+            $context->setService(
+                    "version-detector", $builder->getService($config->getVersionDetector(), 'versionDetector')
+            );
+
             /*
              * popluate lists
              */
-            foreach (array("prerequisites", "preReleaseActions", "postReleaseActions") as $listName) {
+            foreach (array("prerequisites", self::PRERELEASE_LIST, "postReleaseActions") as $listName) {
                 $context->createEmptyList($listName);
                 foreach ($config->$listName as $service) {
                     $context->addToList($listName, $builder->getService($service, $listName));
@@ -85,15 +86,15 @@ class Context
     public function setService($id, $service, array $options = array())
     {
         if (is_string($service)) {
-            $builder  = new Helpers\ServiceBuilder($this);
-            $config   = array_merge($options, array('name' => $service));
-            $service  = $builder->getService($config, '');
+            $builder = new Helpers\ServiceBuilder($this);
+            $config = array_merge($options, array('name' => $service));
+            $service = $builder->getService($config, '');
         }
 
         if (!is_object($service)) {
             throw new \InvalidArgumentException("setService() only accept an object or a valid class name");
         }
-        
+
         $this->services[$id] = $service;
     }
 
@@ -191,16 +192,6 @@ class Context
     }
 
     /**
-     * Returns the semantic version generator.
-     * 
-     * @return \Liip\RMT\Version\Generator\SemanticGenerator
-     */
-    public function getVersionGenerator()
-    {
-        return $this->get('version-generator');
-    }
-    
-    /**
      * Returns the configured version persister.
      * 
      * @return \Liip\RMT\Version\Persister\PersisterInterface
@@ -208,6 +199,17 @@ class Context
     public function getVersionPersister()
     {
         return $this->get('version-persister');
+    }
+
+    /**
+     * Returns the configured version detector.
+     * 
+     * @return Version\Detector\DetectorInterface
+     * @todo remove persister id, use independend detector
+     */
+    public function getVersionDetector()
+    {
+        return $this->get('version-detector');
     }
 
     /**
@@ -239,7 +241,7 @@ class Context
     {
         $this->setParameter(self::PARAM_NEW_VERSION, $version);
     }
-    
+
     /**
      * Return the version if any.
      * 
@@ -249,4 +251,5 @@ class Context
     {
         return $this->getParameter(self::PARAM_NEW_VERSION);
     }
+
 }

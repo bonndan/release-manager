@@ -2,7 +2,9 @@
 
 namespace Liip\RMT\VCS;
 
+use Liip\RMT\Exception;
 use Liip\RMT\Version;
+use vierbergenlars\SemVer\SemVerException;
 
 class Git extends BaseVCS
 {
@@ -63,7 +65,42 @@ class Git extends BaseVCS
                 return substr($branch,2);
             }
         }
-        throw new \Liip\RMT\Exception("Not currently on any branch");
+        throw new Exception("Not currently on any branch");
+    }
+    
+    /**
+     * Start a git flow release.
+     * 
+     * @param Version $version
+     * @return array output
+     */
+    public function startRelease(Version $version)
+    {
+        $command = "git flow release start " . $version;
+        return $this->executeGitCommand($command);
+    }
+    
+    /**
+     * Finishes the current git flow release.
+     * 
+     * @return array
+     * @throws Exception
+     */
+    public function finishRelease()
+    {
+        $branch = $this->getCurrentBranch();
+        if (strpos($branch, 'release/') !== 0) {
+            throw new Exception('Expected to find "release/" at beginning of branch name.');
+        }
+        
+        try {
+            $version = new Version(str_replace("release/", "", $branch));
+        } catch (SemVerException $ex) {
+            throw new Exception('Cannot finish release: ' . $ex->getMessage());
+        }
+        
+        $command = "git flow release finish " . $version;
+        return $this->executeGitCommand($command);
     }
 
     protected function executeGitCommand($cmd)
@@ -72,7 +109,7 @@ class Git extends BaseVCS
         if ($this->dryRun){
             if ($cmd !== 'tag'){
                 $cmdWords = explode(' ',$cmd);
-                if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit'))){
+                if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit', 'flow'))){
                     return;
                 }
             }
@@ -82,7 +119,7 @@ class Git extends BaseVCS
         $cmd = 'git '.$cmd;
         exec($cmd, $result, $exitCode);
         if ($exitCode !== 0){
-            throw new \Liip\RMT\Exception('Error while executing git command: '.$cmd);
+            throw new Exception('Error while executing git command: '.$cmd);
         }
         return $result;
     }

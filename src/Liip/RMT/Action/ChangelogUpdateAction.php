@@ -44,7 +44,7 @@ class ChangelogUpdateAction extends BaseAction
     private function getCommits()
     {
         $commits = array();
-        $currentVersion = $this->context->getVersionPersister()->getCurrentVersion();
+        $currentVersion = $this->context->getVersionDetector()->getCurrentVersion();
         try {
             $rawCommits = $this->context->getVCS()->getAllModificationsSince(
                 $currentVersion,

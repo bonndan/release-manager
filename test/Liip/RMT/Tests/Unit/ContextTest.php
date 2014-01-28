@@ -121,4 +121,12 @@ class ContextTest extends \PHPUnit_Framework_TestCase
         $this->context->setNewVersion($version);
         $this->assertSame($version, $this->context->getNewVersion());
     }
+    
+    public function testGetVersionDetector()
+    {
+        $application = new \Liip\RMT\Application();
+        $context = Context::create($application);
+        $actual = $context->getVersionDetector();
+        $this->assertInstanceOf("\Liip\RMT\Version\Detector\DetectorInterface", $actual);
+    }
 }

@@ -5,7 +5,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Liip\RMT\Changelog\ChangelogManager;
 use Liip\RMT\Information\InformationCollector;
 use Liip\RMT\Information\InteractiveQuestion;
 use Liip\RMT\Information\InformationRequest;
@@ -30,7 +29,8 @@ class ReleaseCommand extends BaseCommand
         $this->loadInformationCollector();
 
         // Register the command option
-        foreach ($this->getContext()->get('information-collector')->getCommandOptions() as $option) {
+        
+        foreach ($this->getContext()->getInformationCollector()->getCommandOptions() as $option) {
             $this->getDefinition()->addOption($option);
         }
     }
@@ -50,8 +50,8 @@ class ReleaseCommand extends BaseCommand
             );
         }
 
-        // Register options of the release tasks
-        $ic->registerRequests($this->getContext()->getVersionGenerator()->getInformationRequests());
+        // the release task requires the type option
+        $ic->registerStandardRequest('type');
 
         // Register options of all lists (prerequistes and actions)
         foreach (array('prerequisites', 'preReleaseActions', 'postReleaseActions') as $listName){
@@ -101,16 +101,17 @@ class ReleaseCommand extends BaseCommand
             if ($this->getContext()->get('information-collector')->getValueFor('confirm-first') == false){
                 throw $e;
             }
-            $currentVersion = $this->getContext()->getVersionGenerator()->getInitialVersion();
+            $currentVersion = \Liip\RMT\Version::createInitialVersion();
         }
         $this->getContext()->setParameter('current-version', $currentVersion);
 
         // Generate and save the new version number
-        $increment  = $this->getContext()->get('information-collector')->getValueFor('type');
+        $increment  = $this->getContext()->getInformationCollector()->getValueFor('type');
         if ($increment == self::INCREMENT_CURRENT) {
             $newVersion = $this->getContext()->getVCS()->getCurrentVersion();
         } else {
-            $newVersion = $this->getContext()->getVersionGenerator()->generateNextVersion(
+            $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
+            $newVersion = $generator->generateNextVersion(
                 $this->getContext()->getParam('current-version'), $increment
             );
         }

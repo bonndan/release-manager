@@ -5,13 +5,13 @@ namespace Liip\RMT\Version\Persister;
 use Liip\RMT\Version\Persister\PersisterInterface;
 use Liip\RMT\Changelog\Changelog;
 use Liip\RMT\Version;
-
+use Liip\RMT\Version\Detector\DetectorInterface;
 
 /**
  * Persists the changelog.
  * 
  */
-class ChangelogPersister extends AbstractPersister implements PersisterInterface
+class ChangelogPersister extends AbstractPersister implements PersisterInterface, DetectorInterface
 {
     /**
      * changelog manager instance.
