@@ -88,17 +88,8 @@ class Git extends BaseVCS
      */
     public function finishRelease($comment)
     {
-        $branch = $this->getCurrentBranch();
-        if (strpos($branch, 'release/') !== 0) {
-            throw new Exception('Expected to find "release/" at beginning of branch name.');
-        }
-        
-        try {
-            $version = new Version(str_replace("release/", "", $branch));
-        } catch (SemVerException $ex) {
-            throw new Exception('Cannot finish release: ' . $ex->getMessage());
-        }
-        
+        $detector = new Version\Detector\GitFlowReleaseBranch($this);
+        $version = $detector->getCurrentVersion();
         $command = 'flow release finish -F -m "' . $comment . '" ' . $version;
         return $this->executeGitCommand($command);
     }
@@ -113,7 +104,7 @@ class Git extends BaseVCS
         // Avoid using some commands in dry mode
         if ($this->dryRun){
             if ($cmd !== 'tag'){
-                $cmdWords = explode(' ',$cmd);
+                $cmdWords = explode(' ', $cmd);
                 if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit', 'flow'))){
                     return $cmd;
                 }
