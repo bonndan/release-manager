@@ -68,8 +68,6 @@ class Context
             }
         }
 
-
-
         // Provide the root dir as a context parameter
         $context->setParameter('project-root', $rootDir);
         return $context;
@@ -105,7 +103,7 @@ class Context
      * @return object
      * @throws \InvalidArgumentException
      */
-    public function getService($id)
+    private function getService($id)
     {
         if (!isset($this->services[$id])) {
             throw new \InvalidArgumentException("There is no service defined with id [$id]");
@@ -121,6 +119,13 @@ class Context
         $this->params[$id] = $value;
     }
 
+    /**
+     * Returns a parameter by name.
+     * 
+     * @param string $id
+     * @return string
+     * @throws \InvalidArgumentException
+     */
     public function getParameter($id)
     {
         if (!isset($this->params[$id])) {
@@ -129,7 +134,7 @@ class Context
         return $this->params[$id];
     }
 
-    public function createEmptyList($id)
+    private function createEmptyList($id)
     {
         $this->lists[$id] = array();
     }
@@ -158,7 +163,7 @@ class Context
     public function getList($id)
     {
         if (!isset($this->lists[$id])) {
-            throw new \InvalidArgumentException("There is no list define with id [$id]");
+            throw new \InvalidArgumentException("There is no list defined with id [$id]");
         }
 
         return $this->lists[$id];
