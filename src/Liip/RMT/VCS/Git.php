@@ -86,7 +86,7 @@ class Git extends BaseVCS
      * @return array
      * @throws Exception
      */
-    public function finishRelease()
+    public function finishRelease($comment)
     {
         $branch = $this->getCurrentBranch();
         if (strpos($branch, 'release/') !== 0) {
@@ -99,7 +99,7 @@ class Git extends BaseVCS
             throw new Exception('Cannot finish release: ' . $ex->getMessage());
         }
         
-        $command = "flow release finish " . $version;
+        $command = 'flow release finish -F -m "' . $comment . '" ' . $version;
         return $this->executeGitCommand($command);
     }
     
