@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command the eases interaction with "git flow".
+ * Command that eases releasing with "git flow".
  *
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
@@ -38,14 +38,14 @@ class FlowCommand extends ReleaseCommand
             $newVersion = $detector->getCurrentVersion();
             $this->getContext()->setNewVersion($newVersion);
             $action = new GitFlowFinishReleaseAction();
+            $action->setContext($this->getContext());
+            $this->getContext()->addToList(Context::PRERELEASE_LIST, $action);
         } catch (Exception $ex) {
             $action = new GitFlowStartReleaseAction();
-            
+            $action->setContext($this->getContext());
+            $this->context->getList(Context::PRERELEASE_LIST)->unshift($action);
         }
         
-        $action->setContext($this->getContext());
-        $this->getContext()->addToList(Context::PRERELEASE_LIST, $action);
-            
         parent::execute($input, $output);
     }
 }

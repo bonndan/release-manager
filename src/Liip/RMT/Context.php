@@ -19,6 +19,12 @@ class Context
 
     protected $services = array();
     protected $params = array();
+    
+    /**
+     * action lists
+     * 
+     * @var \SplDoublyLinkedList[]
+     */
     protected $lists = array();
 
     /**
@@ -142,7 +148,7 @@ class Context
 
     private function createEmptyList($id)
     {
-        $this->lists[$id] = array();
+        $this->lists[$id] = new \SplDoublyLinkedList();
     }
 
     /**
@@ -156,7 +162,7 @@ class Context
         if (!isset($this->lists[$id])) {
             $this->createEmptyList($id);
         }
-        $this->lists[$id][] = $action;
+        $this->lists[$id]->push($action);
     }
 
     /**
