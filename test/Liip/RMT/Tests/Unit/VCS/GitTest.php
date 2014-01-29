@@ -108,8 +108,9 @@ class GitTest extends \PHPUnit_Framework_TestCase
     public function testFinishRelease()
     {
         $vcs = new Git();
-        system("git flow init -fd");
-        system("git flow release start 2.2.2");
+        
+        system("git flow init -fd 1>/dev/null 2>&1");
+        system("git flow release start 2.2.2 1>/dev/null 2>&1");
         $vcs->setDryRun(true);
         $cmd = $vcs->finishRelease('test');
         $this->assertEquals('flow release finish -F -m "test" 2.2.2', $cmd);
@@ -118,7 +119,7 @@ class GitTest extends \PHPUnit_Framework_TestCase
     public function testFinishReleaseException()
     {
         $vcs = new Git();
-        system("git flow init -fd");
+        system("git flow init -fd 1>/dev/null 2>&1");
         
         $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
         $vcs->finishRelease('test');
