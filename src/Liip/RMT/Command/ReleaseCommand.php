@@ -18,7 +18,7 @@ class ReleaseCommand extends BaseCommand
     const INCREMENT_MAJOR   = 'major';
     const INCREMENT_MINOR   = 'minor';
     const INCREMENT_PATCH   = 'patch';
-    const INCREMENT_CURRENT = 'current-vcs';
+    const INCREMENT_BUILD   = 'build';
     
     protected function configure()
     {
@@ -108,14 +108,10 @@ class ReleaseCommand extends BaseCommand
     {
         // Generate and save the new version number
         $increment  = $this->getContext()->getInformationCollector()->getValueFor('type');
-        if ($increment == self::INCREMENT_CURRENT) {
-            $newVersion = $this->getContext()->getVCS()->getCurrentVersion();
-        } else {
-            $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
-            $newVersion = $generator->generateNextVersion(
-                $this->getContext()->getParam('current-version'), $increment
-            );
-        }
+        $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
+        $newVersion = $generator->generateNextVersion(
+            $this->getContext()->getParam('current-version'), $increment
+        );
         $this->getContext()->setNewVersion($newVersion);
 
         $this->executeActionListIfExist('preReleaseActions');
