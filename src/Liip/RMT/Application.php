@@ -44,7 +44,8 @@ class Application extends BaseApplication
                 $this->add($this->createCommand('ChangesCommand'));
                 
                 if ($context->getVCS() instanceof VCS\Git) {
-                    $this->add($this->createCommand("FlowCommand"));
+                    $this->add($this->createCommand("StartCommand"));
+                    $this->add($this->createCommand("FinishCommand"));
                 }
                 
             } catch (NoConfigurationException $exception) {

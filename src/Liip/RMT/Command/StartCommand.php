@@ -14,13 +14,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
-class FlowCommand extends ReleaseCommand
+class StartCommand extends ReleaseCommand
 {
     protected function configure()
     {
-        $this->setName('flow');
+        $this->setName('start');
         $this->setDescription('Release with the flow.');
-        $this->setHelp('The <comment>flow</comment> interactive task must be used with git flow');
+        $this->setHelp('The <comment>start</comment> interactive task must be used with git flow');
 
         $this->loadInformationCollector();
 
@@ -36,16 +36,14 @@ class FlowCommand extends ReleaseCommand
         $detector = new GitFlowReleaseBranch($this->getContext()->getVCS());
         try {
             $newVersion = $detector->getCurrentVersion();
-            $this->getContext()->setNewVersion($newVersion);
-            $action = new GitFlowFinishReleaseAction();
-            $action->setContext($this->getContext());
-            $this->getContext()->addToList(Context::PRERELEASE_LIST, $action);
         } catch (Exception $ex) {
             $action = new GitFlowStartReleaseAction();
             $action->setContext($this->getContext());
             $this->context->getList(Context::PRERELEASE_LIST)->unshift($action);
+            parent::execute($input, $output);
+            return;
         }
         
-        parent::execute($input, $output);
+        throw new Exception("Detected a git flow release branch. Finish the current release first.");
     }
 }
