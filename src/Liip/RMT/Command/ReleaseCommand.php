@@ -68,9 +68,21 @@ class ReleaseCommand extends BaseCommand
     {
         $this->getContext()->setService('output', $this->output);
         $this->getContext()->getInformationCollector()->handleCommandInput($input);
+        
+        // Get the current version or generate a new one if the user has confirm that this is required
+        try {
+            $currentVersion = $this->getContext()->getVersionPersister()->getCurrentVersion();
+        }
+        catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
+            if ($this->getContext()->getInformationCollector()->getValueFor('confirm-first') == false){
+                throw $e;
+            }
+            $currentVersion = \Liip\RMT\Version::createInitialVersion();
+        }
+        $this->getContext()->setParameter('current-version', $currentVersion);
+        
 
-        $this->writeBigTitle('Welcome to Release Manager');
-
+        $this->writeBigTitle('New release (current is ' . $currentVersion . ')');
         $this->executeActionListIfExist('prerequisites');
     }
 
@@ -94,18 +106,6 @@ class ReleaseCommand extends BaseCommand
     // Always executed, but first initialize and interact have already been called
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get the current version or generate a new one if the user has confirm that this is required
-        try {
-            $currentVersion = $this->getContext()->getVersionPersister()->getCurrentVersion();
-        }
-        catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
-            if ($this->getContext()->getInformationCollector()->getValueFor('confirm-first') == false){
-                throw $e;
-            }
-            $currentVersion = \Liip\RMT\Version::createInitialVersion();
-        }
-        $this->getContext()->setParameter('current-version', $currentVersion);
-
         // Generate and save the new version number
         $increment  = $this->getContext()->getInformationCollector()->getValueFor('type');
         if ($increment == self::INCREMENT_CURRENT) {
