@@ -24,7 +24,7 @@ class ChangelogUpdateAction extends BaseAction
     {
         $changelog = new Changelog($this->options['file']);
         $changelog->addVersion(
-            $this->context->getParam('new-version'),
+            $this->context->getNewVersion(),
             $this->context->getInformationCollector()->getValueFor('comment'),
             $this->getCommits()
         );
