@@ -110,6 +110,19 @@ class ComposerConfigTest extends \PHPUnit_Framework_TestCase
         
         $this->assertNull($this->helper->getCurrentVersion());
     }
-    
+ 
+    /**
+     * 
+     */
+    public function testSavePreventsReplacementOfEmptyProperties()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), '');
+        copy(__DIR__ .'/testdata/empty.json', $tmpFile);
+        $this->helper->setComposerFile($tmpFile);
+        $this->helper->setVersion(new \Liip\RMT\Version('1.2.3'));
+        
+        $contents = file_get_contents($tmpFile);
+        $this->assertNotContains('_empty_', $contents);
+    }
 }
 
