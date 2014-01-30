@@ -124,7 +124,8 @@ class ComposerConfig
     private function save($json)
     {
         $serialized = JSONHelper::format(json_encode($json));
-        file_put_contents($this->composerFile, $serialized);
+        $fixed = str_replace('"_empty_":', '"":', $serialized);
+        file_put_contents($this->composerFile, $fixed);
         return $serialized;
     }
 }
