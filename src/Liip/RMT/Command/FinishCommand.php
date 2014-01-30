@@ -2,7 +2,6 @@
 namespace Liip\RMT\Command;
 
 use Liip\RMT\Action\GitFlowFinishReleaseAction;
-use Liip\RMT\Action\GitFlowStartReleaseAction;
 use Liip\RMT\Context;
 use Liip\RMT\Version\Detector\GitFlowReleaseBranch;
 use Symfony\Component\Console\Input\InputInterface;
