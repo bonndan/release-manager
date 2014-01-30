@@ -67,3 +67,7 @@
 * introducing a version class [6598942]
 * fixed indentation [51b9154]
 * Merge branch 'release/0.4.1' into develop [908d65c]
+
+## 0.4.3 - fixed #9
+
+* fixed #9 [43765f8]

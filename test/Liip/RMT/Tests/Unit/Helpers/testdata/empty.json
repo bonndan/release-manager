@@ -1,0 +1,11 @@
+{
+    "autoload": {
+            "psr-0": {
+                "test": "library",
+                "": [
+                        "library",
+                        "library\/AAA\/BBB"
+                ]
+            }
+    }
+}
