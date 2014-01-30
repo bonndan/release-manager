@@ -16,6 +16,7 @@ class Context
 
     const PARAM_NEW_VERSION = 'new-version';
     const PRERELEASE_LIST = "preReleaseActions";
+    const POSTRELEASE_LIST = "postReleaseActions";
 
     protected $services = array();
     protected $params = array();
