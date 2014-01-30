@@ -15,6 +15,11 @@ class Version extends SemVerVersion
      * @var string
      */
     const INITIAL = '0.0.0';
+    
+    const TYPE_BUILD = 'build';
+    const TYPE_PATCH = 'patch';
+    const TYPE_MINOR = 'minor';
+    const TYPE_MAJOR = 'major';
 
     /**
      * Factory method to create an initial version.
@@ -47,4 +52,29 @@ class Version extends SemVerVersion
         return new static(parent::inc($what)->__toString());
     }
 
+    /**
+     * Returns the "type" of increment.
+     * 
+     * @param Version $higherVersion
+     */
+    public function getDifferenceType(Version $higherVersion)
+    {
+        if ($higherVersion->getMajor() > $this->getMajor()) {
+            return self::TYPE_MAJOR;
+        }
+        
+        if ($higherVersion->getMinor() > $this->getMinor()) {
+            return self::TYPE_MINOR;
+        }
+        
+        if ($higherVersion->getPatch() > $this->getPatch()) {
+            return self::TYPE_PATCH;
+        }
+        
+        if ($higherVersion->getBuild() > $this->getBuild()) {
+            return self::TYPE_BUILD;
+        }
+        
+        return null;
+    }
 }
