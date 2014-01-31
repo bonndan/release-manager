@@ -1,55 +1,61 @@
 {
-   "name": "bonndan\/release-manager",
-   "version": "0.4.3",
-   "description": "Release Manager for semantic version releases of composer packages and projects.",
-   "keywords": [
-      "release",
-      "version",
-      "semantic versioning",
-      "vcs tag"
-   ],
-   "homepage": "http:\/\/github.com\/bonndan\/release-manager",
-   "license": "MIT",
-   "authors": [
-      {
-         "name": "Daniel Pozzi",
-         "email": "bonndan76@googlemail.com",
-         "role": "Developer"
-      }
-   ],
-   "require": {
-      "php": ">=5.3.3",
-      "symfony\/console": "~2.0",
-      "vierbergenlars\/php-semver": "~2.0"
-   },
-   "autoload": {
-      "psr-0": {
-         "Liip": "src"
-      }
-   },
-   "minimum-stability": "stable",
-   "extra": {
-      "rmt": {
-         "vcs": "git",
-         "prerequisites": [
-            "working-copy-check",
-            "display-last-changes"
-         ],
-         "preReleaseActions": [
-            {
-               "name": "execute",
-               "script": "phpunit test"
-            },
-            {
-               "name": "version-stamp",
-               "const": "RMT_VERSION"
-            },
-            "changelog-update",
-            "changelog-render"
-         ],
-         "postReleaseActions": [
-            "vcs-commit"
-         ]
-      }
-   }
+    "name": "bonndan/release-manager",
+    "version": "0.4.3",
+    "type": "composer-plugin",
+    "description": "Release Manager for semantic version releases of composer packages and projects.",
+    "keywords": [
+        "release",
+        "version",
+        "semantic versioning",
+        "vcs tag"
+    ],
+    "homepage": "http:\/\/github.com\/bonndan\/release-manager",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Pozzi",
+            "email": "bonndan76@googlemail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony\/console": "~2.0",
+        "vierbergenlars\/php-semver": "~2.0",
+        "composer-plugin-api": "1.0.0"
+    },
+    "require-dev": {
+        "composer/composer": "1.0.*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Liip": "src"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "class": "Liip\\RMT\\ComposerPlugin",
+        "rmt": {
+            "vcs": "git",
+            "prerequisites": [
+                "working-copy-check",
+                "display-last-changes"
+            ],
+            "preReleaseActions": [
+                {
+                    "name": "execute",
+                    "script": "phpunit test"
+                },
+                {
+                    "name": "version-stamp",
+                    "const": "RMT_VERSION"
+                },
+                "changelog-update",
+                "changelog-render"
+            ],
+            "postReleaseActions": [
+                "vcs-commit"
+            ]
+        }
+    }
 }
