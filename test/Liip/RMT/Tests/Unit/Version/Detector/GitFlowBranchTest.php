@@ -3,7 +3,7 @@
 namespace Liip\RMT\Tests\Version\Detector;
 
 use Liip\RMT\VCS\Git;
-use Liip\RMT\Version\Detector\GitFlowReleaseBranch;
+use Liip\RMT\Version\Detector\GitFlowBranch;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -18,7 +18,7 @@ class GitFlowBranchTest extends PHPUnit_Framework_TestCase
 
     /**
      * system under test
-     * @var GitFlowReleaseBranch 
+     * @var GitFlowBranch 
      */
     protected $detector;
 
@@ -36,13 +36,23 @@ class GitFlowBranchTest extends PHPUnit_Framework_TestCase
         $this->testDir = $tempDir;
 
         $git = new Git();
-        $this->detector = new GitFlowReleaseBranch($git);
+        $this->detector = new GitFlowBranch($git, GitFlowBranch::RELEASE);
     }
 
-    public function testGetCurrentVersion()
+    public function testGetCurrentReleaseVersion()
     {
-        system("git flow init -fd");
-        system("git flow release start 2.2.2");
+        system("git flow init -fd 1>/dev/null 2>&1");
+        system("git flow release start 2.2.2 1>/dev/null 2>&1");
+        $version = $this->detector->getCurrentVersion();
+
+        $this->assertEquals('2.2.2', $version->getVersion());
+    }
+    
+    public function testGetCurrentHotfixVersion()
+    {
+        $this->detector = new GitFlowBranch(new Git(), GitFlowBranch::HOTFIX);
+        system("git flow init -fd 1>/dev/null 2>&1");
+        system("git flow hotfix start 2.2.2 1>/dev/null 2>&1");
         $version = $this->detector->getCurrentVersion();
 
         $this->assertEquals('2.2.2', $version->getVersion());
@@ -50,7 +60,7 @@ class GitFlowBranchTest extends PHPUnit_Framework_TestCase
 
     public function testFinishReleaseException()
     {
-        system("git flow init -fd");
+        system("git flow init -fd 1>/dev/null 2>&1");
 
         $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
         $this->detector->getCurrentVersion();

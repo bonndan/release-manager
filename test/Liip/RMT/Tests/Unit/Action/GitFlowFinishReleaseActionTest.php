@@ -16,7 +16,7 @@ class GitFlowFinishReleaseActionTest extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        $this->git = $this->getMock("\Liip\RMT\VCS\Git");
+        $this->git = $this->getMock("\Liip\RMT\VCS\GitFlow");
         
         $this->context = new \Liip\RMT\Context();
         $this->context->setService('vcs', $this->git);
@@ -39,6 +39,20 @@ class GitFlowFinishReleaseActionTest extends \PHPUnit_Framework_TestCase
                 ->with($comment)
                 ->will($this->returnValue('release/1.2.3'));
         
+        $this->action->execute();
+    }
+    
+    public function testFinishReleaseWorksWithDefaultGit()
+    {
+        $this->git = $this->getMock("\Liip\RMT\VCS\Git");
+        $this->context->setService('vcs', $this->git);
+        
+        $comment = 'test';
+        $this->informationCollector->expects($this->once())
+                ->method('getValueFor')
+                ->will($this->returnValue($comment));
+
+        $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
         $this->action->execute();
     }
     

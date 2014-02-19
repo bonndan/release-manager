@@ -3,7 +3,7 @@ namespace Liip\RMT\Command;
 
 use Liip\RMT\Action\GitFlowStartReleaseAction;
 use Liip\RMT\Exception;
-use Liip\RMT\Version\Detector\GitFlowReleaseBranch;
+use Liip\RMT\Version\Detector\GitFlowBranch;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Liip\RMT\Information\InformationCollector;
@@ -57,7 +57,7 @@ class StartCommand extends BaseCommand
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $detector = new GitFlowReleaseBranch($this->getContext()->getVCS());
+        $detector = new GitFlowBranch($this->getContext()->getVCS());
         try {
             $detector->getCurrentVersion();
         } catch (Exception $ex) {

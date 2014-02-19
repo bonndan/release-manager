@@ -14,7 +14,7 @@ class GitFlowStartReleaseActionTest extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        $this->git = $this->getMock("\Liip\RMT\VCS\Git");
+        $this->git = $this->getMock("\Liip\RMT\VCS\GitFlow");
         
         $this->context = new \Liip\RMT\Context();
         $this->context->setService('vcs', $this->git);
