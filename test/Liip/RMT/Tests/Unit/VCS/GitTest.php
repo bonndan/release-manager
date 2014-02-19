@@ -96,35 +96,6 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $vcs->getCurrentBranch();
     }
     
-    public function testStartRelease()
-    {
-        $version = new \Liip\RMT\Version('2.2.2');
-        $vcs = new Git();
-        $vcs->setDryRun(true);
-        $cmd = $vcs->startRelease($version);
-        $this->assertEquals('flow release start 2.2.2', $cmd);
-    }
-    
-    public function testFinishRelease()
-    {
-        $vcs = new Git();
-        
-        system("git flow init -fd 1>/dev/null 2>&1");
-        system("git flow release start 2.2.2 1>/dev/null 2>&1");
-        $vcs->setDryRun(true);
-        $cmd = $vcs->finishRelease('test');
-        $this->assertEquals('flow release finish -F -m "test" 2.2.2', $cmd);
-    }
-    
-    public function testFinishReleaseException()
-    {
-        $vcs = new Git();
-        system("git flow init -fd 1>/dev/null 2>&1");
-        
-        $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
-        $vcs->finishRelease('test');
-    }
-
     protected function tearDown()
     {
         // Remove the test folder

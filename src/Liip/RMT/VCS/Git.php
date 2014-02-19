@@ -1,14 +1,17 @@
 <?php
-
 namespace Liip\RMT\VCS;
 
 use Liip\RMT\Exception;
 use Liip\RMT\Version;
-use vierbergenlars\SemVer\SemVerException;
 
+/**
+ * Git VCS
+ * 
+ */
 class Git extends BaseVCS
 {
     protected $dryRun = false;
+    protected $dryRunCommandWords = array('tag', 'push', 'add', 'commit');
 
     public function getAllModificationsSince($tag, $color=true)
     {
@@ -69,31 +72,10 @@ class Git extends BaseVCS
     }
     
     /**
-     * Start a git flow release.
+     * Enable the dry-run mode
      * 
-     * @param Version $version
-     * @return array output
+     * @param boolean $flag
      */
-    public function startRelease(Version $version)
-    {
-        $command = "flow release start " . $version;
-        return $this->executeGitCommand($command);
-    }
-    
-    /**
-     * Finishes the current git flow release.
-     * 
-     * @return array
-     * @throws Exception
-     */
-    public function finishRelease($comment)
-    {
-        $detector = new Version\Detector\GitFlowReleaseBranch($this);
-        $version = $detector->getCurrentVersion();
-        $command = 'flow release finish -F -m "' . $comment . '" ' . $version;
-        return $this->executeGitCommand($command);
-    }
-    
     public function setDryRun($flag)
     {
         $this->dryRun = $flag;
@@ -105,7 +87,7 @@ class Git extends BaseVCS
         if ($this->dryRun){
             if ($cmd !== 'tag'){
                 $cmdWords = explode(' ', $cmd);
-                if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit', 'flow'))){
+                if (in_array($cmdWords[0], $this->dryRunCommandWords)){
                     return $cmd;
                 }
             }
