@@ -65,5 +65,20 @@ class GitFlowBranchTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
         $this->detector->getCurrentVersion();
     }
+    
+    public function testIsInTheFlow()
+    {
+        system("git flow init -fd 1>/dev/null 2>&1");
+        system("git flow hotfix start 2.2.2 1>/dev/null 2>&1");
+
+        $this->assertTrue($this->detector->isInTheFlow());
+    }
+    
+    public function testIsNotInTheFlow()
+    {
+        system("git flow init -fd 1>/dev/null 2>&1");
+
+        $this->assertFalse($this->detector->isInTheFlow());
+    }
 
 }

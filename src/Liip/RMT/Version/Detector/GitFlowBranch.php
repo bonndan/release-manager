@@ -58,4 +58,14 @@ class GitFlowBranch implements DetectorInterface
         return $version;
     }
 
+    /**
+     * Checks if the current branch is a release or hotfix branch.
+     * 
+     * @return boolean
+     */
+    public function isInTheFlow()
+    {
+        $branch = $this->git->getCurrentBranch();
+        return (strpos($branch, self::RELEASE . '/') === 0 || strpos($branch, self::HOTFIX . '/') === 0);
+    }
 }
