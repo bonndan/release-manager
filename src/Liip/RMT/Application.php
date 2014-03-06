@@ -43,10 +43,7 @@ class Application extends BaseApplication
                 $this->add($this->createCommand('CurrentCommand'));
                 $this->add($this->createCommand('ChangesCommand'));
                 
-                if ($context->getVCS() instanceof VCS\Git) {
-                    $this->add($this->createCommand("StartCommand"));
-                    $this->add($this->createCommand("FinishCommand"));
-                }
+                $this->addGitFlowCommands($context);
                 
             } catch (NoConfigurationException $exception) {
                 echo $exception->getMessage();
@@ -57,6 +54,18 @@ class Application extends BaseApplication
             $this->renderException($e, $output);
             exit(1);
         }
+    }
+    
+    private function addGitFlowCommands(Context $context)
+    {
+        if (!$context->getVCS() instanceof VCS\Git) {
+            return;
+        }
+        
+        $this->add($this->createCommand("StartCommand"));
+        $this->add($this->createCommand("HotfixCommand"));
+        $this->add($this->createCommand("FinishCommand"));
+       
     }
 
     public function run(InputInterface $input = null, OutputInterface $output = null)

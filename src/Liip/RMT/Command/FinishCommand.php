@@ -1,9 +1,9 @@
 <?php
 namespace Liip\RMT\Command;
 
-use Liip\RMT\Action\GitFlowFinishReleaseAction;
+use Liip\RMT\Action\GitFlowFinishAction;
 use Liip\RMT\Context;
-use Liip\RMT\Version\Detector\GitFlowReleaseBranch;
+use Liip\RMT\Version\Detector\GitFlowBranch;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Liip\RMT\Information\InformationCollector;
@@ -18,8 +18,8 @@ class FinishCommand extends ReleaseCommand
     protected function configure()
     {
         $this->setName('finish');
-        $this->setDescription('Finishes what has begun with the "start" command');
-        $this->setHelp('The <comment>finish</comment> interactive task must be used with git flow after "start".');
+        $this->setDescription('Finishes a start or hotfix command.');
+        $this->setHelp('The <comment>finish</comment> interactive task must be used with git flow after "start" or "hotfix".');
 
         $this->loadInformationCollector();
 
@@ -45,7 +45,7 @@ class FinishCommand extends ReleaseCommand
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $detector = new GitFlowReleaseBranch($this->getContext()->getVCS());
+        $detector = new GitFlowBranch($this->getContext()->getVCS());
         $newVersion = $detector->getCurrentVersion();
         $this->getContext()->setNewVersion($newVersion);
         
@@ -57,7 +57,7 @@ class FinishCommand extends ReleaseCommand
         $this->getContext()->getInformationCollector()->registerStandardRequest('type');
         $this->getContext()->getInformationCollector()->setValueFor('type', $type);
         
-        $action = new GitFlowFinishReleaseAction();
+        $action = new GitFlowFinishAction($detector->getBranchType());
         $action->setContext($this->getContext());
         $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
         parent::execute($input, $output);

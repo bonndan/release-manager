@@ -2,7 +2,7 @@
 namespace Liip\RMT\Tests\Unit\Changelog;
 
 
-class GitFlowStartReleaseActionTest extends \PHPUnit_Framework_TestCase
+class GitFlowStartHotfixActionTest extends \PHPUnit_Framework_TestCase
 {
     private $context;
     private $git;
@@ -19,15 +19,16 @@ class GitFlowStartReleaseActionTest extends \PHPUnit_Framework_TestCase
         $this->context = new \Liip\RMT\Context();
         $this->context->setService('vcs', $this->git);
         $this->context->setService('output', $this->getMock("\Liip\RMT\Output\Output"));
-        $this->action = new \Liip\RMT\Action\GitFlowStartReleaseAction();
+        
+        $this->action = new \Liip\RMT\Action\GitFlowStartHotfixAction();
         $this->action->setContext($this->context);
     }
     
-    public function testStartRelease()
+    public function testStartHotfix()
     {
         $version = new \Liip\RMT\Version('1.2.3');
         $this->git->expects($this->once())
-                ->method('startRelease')
+                ->method('startHotfix')
                 ->with($version);
         $this->context->setParameter('new-version', $version);
         $this->action->execute();

@@ -6,12 +6,12 @@ namespace Liip\RMT\Action;
  *
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
-class GitFlowStartReleaseAction extends GitFlowAction
+class GitFlowStartHotfixAction extends GitFlowAction
 {
     public function execute()
     {
         $newVersion = $this->context->getNewVersion();
-        $this->getVCS()->startRelease($newVersion);
-        $this->context->getOutput()->writeln('Created a new git flow release ' . $newVersion);
+        $this->getVCS()->startHotfix($newVersion);
+        $this->context->getOutput()->writeln('Created a new git flow hotfix ' . $newVersion);
     }
 }
