@@ -124,5 +124,10 @@ class ComposerConfigTest extends \PHPUnit_Framework_TestCase
         $contents = file_get_contents($tmpFile);
         $this->assertNotContains('_empty_', $contents);
     }
+    
+    public function testGetProjectName()
+    {
+        $this->assertEquals('bonndan/ReleaseManager', $this->helper->getProjectName());
+    }
 }
 
