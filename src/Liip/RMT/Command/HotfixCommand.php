@@ -20,7 +20,7 @@ class HotfixCommand extends BaseCommand
     protected function configure()
     {
         $this->setName('hotfix');
-        $this->setDescription('Hotfix with the flow.');
+        $this->setDescription('Hotfix with git flow.');
         $this->setHelp('The <comment>hotfix</comment> interactive task must be used with git flow');
     }
     
