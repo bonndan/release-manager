@@ -20,8 +20,7 @@ class ListCommand extends BaseCommand
         $this->setHelp('The <comment>list</comment> shows all commands and options.');
     }
     
-    // Always executed
-    protected function initialize($input, $output)
+    protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $helper = new ComposerConfig();
         $file   = $this->getApplication()->getProjectRootDir() . '/composer.json';
@@ -35,7 +34,6 @@ class ListCommand extends BaseCommand
         $this->writeEmptyLine();
     }
  
-    // Always executed, but first initialize and interact have already been called
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $command = new SFListCommand();
