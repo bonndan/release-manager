@@ -1,7 +1,7 @@
 <?php
 namespace Liip\RMT\Command;
 
-use Liip\RMT\Action\GitFlowFinishReleaseAction;
+use Liip\RMT\Action\GitFlowFinishAction;
 use Liip\RMT\Context;
 use Liip\RMT\Version\Detector\GitFlowBranch;
 use Symfony\Component\Console\Input\InputInterface;
