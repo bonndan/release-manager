@@ -57,25 +57,22 @@ class StartCommand extends BaseCommand
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $detector = new GitFlowBranch($this->getContext()->getVCS());
-        try {
-            $detector->getCurrentVersion();
-        } catch (Exception $ex) {
-            
-            // Generate and save the new version number
-            $increment  = $this->getContext()->getInformationCollector()->getValueFor('type');
-            $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
-            $newVersion = $generator->generateNextVersion(
-                $this->getContext()->getParam('current-version'), $increment
-            );
-            $this->getContext()->setNewVersion($newVersion);
+        $detector = new GitFlowBranch($this->getContext()->getVCS(), GitFlowBranch::RELEASE);
         
-            $action = new GitFlowStartReleaseAction();
-            $action->setContext($this->getContext());
-            $action->execute();
-            return;
+        if ($detector->isInTheFlow()) {
+            throw new Exception("Detected a git flow branch. Finish it first.");
         }
         
-        throw new Exception("Detected a git flow release branch. Finish the current release first.");
+        // Generate and save the new version number
+        $increment  = $this->getContext()->getInformationCollector()->getValueFor('type');
+        $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
+        $newVersion = $generator->generateNextVersion(
+            $this->getContext()->getParam('current-version'), $increment
+        );
+        $this->getContext()->setNewVersion($newVersion);
+
+        $action = new GitFlowStartReleaseAction();
+        $action->setContext($this->getContext());
+        $action->execute();
     }
 }
