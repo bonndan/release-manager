@@ -57,6 +57,35 @@ class GitFlowBranchTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('2.2.2', $version->getVersion());
     }
+    
+    public function testGetCurrentHotfixVersionWithoutDefinedBranchType()
+    {
+        $this->detector = new GitFlowBranch(new Git());
+        system("git flow init -fd 1>/dev/null 2>&1");
+        system("git flow hotfix start 2.2.2 1>/dev/null 2>&1");
+        $version = $this->detector->getCurrentVersion();
+
+        $this->assertEquals('2.2.2', $version->getVersion());
+        $this->assertEquals(GitFlowBranch::HOTFIX, $this->detector->getBranchType());
+    }
+    
+    public function testGetCurrentReleaseVersionWithoutDefinedBranchType()
+    {
+        $this->detector = new GitFlowBranch(new Git());
+        system("git flow init -fd 1>/dev/null 2>&1");
+        system("git flow release start 2.2.2 1>/dev/null 2>&1");
+        $version = $this->detector->getCurrentVersion();
+
+        $this->assertEquals('2.2.2', $version->getVersion());
+        $this->assertEquals(GitFlowBranch::RELEASE, $this->detector->getBranchType());
+    }
+    
+    public function testGetCurrentVersionWithoutDefinedBranchTypeFails()
+    {
+        $this->detector = new GitFlowBranch(new Git());
+        $this->setExpectedException("\Liip\RMT\Exception", "Cannot detect release or hotfix branch.");
+        $this->detector->getCurrentVersion();
+    }
 
     public function testFinishReleaseException()
     {
@@ -80,5 +109,4 @@ class GitFlowBranchTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->detector->isInTheFlow());
     }
-
 }

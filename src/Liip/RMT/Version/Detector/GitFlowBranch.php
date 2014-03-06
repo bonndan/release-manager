@@ -34,25 +34,67 @@ class GitFlowBranch implements DetectorInterface
     /**
      * Constructor.
      * 
-     * @param Git $git
+     * @param Git    $git
+     * @param string $branchType limit detection to a branch type
      */
-    public function __construct(Git $git, $branchType)
+    public function __construct(Git $git, $branchType = null)
     {
         $this->git = $git;
         $this->branchType = $branchType;
     }
 
+    /**
+     * Detects the current version based on branch name.
+     * 
+     * @return \Liip\RMT\Version
+     * @throws Exception
+     */
     public function getCurrentVersion()
     {
-        $branch = $this->git->getCurrentBranch();
-        if (strpos($branch, $this->branchType . '/') !== 0) {
-            throw new Exception('Expected to find "' . $this->branchType . '/" at beginning of branch name.');
+        /*
+         * exception is not caught if a branch type is defined. 
+         */
+        if ($this->branchType !== null) {
+            return $this->detect($this->branchType);
         }
-
+        
         try {
-            $version = new Version(str_replace($this->branchType . "/", "", $branch));
+            $version = $this->detect(self::RELEASE);
+            $this->branchType = self::RELEASE;
+            return $version;
+        } catch (Exception $ex) {
+
+        }
+        
+        try {
+            $version = $this->detect(self::HOTFIX);
+            $this->branchType = self::HOTFIX;
+            return $version;
+        } catch (Exception $ex) {
+
+        }
+        
+        throw new Exception('Cannot detect release or hotfix branch.');
+    }
+    
+    /**
+     * Detects a version based on branch type.
+     * 
+     * @param string $branchType
+     * @return \Liip\RMT\Version
+     * @throws Exception
+     */
+    private function detect($branchType)
+    {
+        $branch = $this->git->getCurrentBranch();
+        if (strpos($branch, $branchType . '/') !== 0) {
+            throw new Exception('Expected to find "' . $branchType . '/" at beginning of branch name.');
+        }
+        
+        try {
+            $version = new Version(str_replace($branchType . "/", "", $branch));
         } catch (SemVerException $ex) {
-            throw new Exception('Cannot detect version: ' . $ex->getMessage());
+            throw new Exception('Cannot detect version in branch name: ' . $ex->getMessage());
         }
         
         return $version;
@@ -67,5 +109,15 @@ class GitFlowBranch implements DetectorInterface
     {
         $branch = $this->git->getCurrentBranch();
         return (strpos($branch, self::RELEASE . '/') === 0 || strpos($branch, self::HOTFIX . '/') === 0);
+    }
+    
+    /**
+     * Returns the set or autodetected branch type.
+     * 
+     * @return string
+     */
+    public function getBranchType()
+    {
+        return $this->branchType;
     }
 }
