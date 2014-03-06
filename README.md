@@ -1,10 +1,13 @@
-Release Manager
-===============
+Release with the flow.
+======================
 
 [![Build Status](https://secure.travis-ci.org/bonndan/release-manager.png?branch=master)](https://travis-ci.org/bonndan/release-manager)
 
-Release Manager is a simple PHP tool to help releasing new semantic versions. It uses your composer
-file to store and retrieve information.
+Release Manager is a PHP command line tool to help you keeping track of release versions. 
+
+* It uses your composer file to store and retrieve information.
+* It enforces [semantic versions] (http://semver.org).
+* Works closely together with [git flow](http://nvie.com/posts/a-successful-git-branching-model/).
 
 You can define a list of actions that will be executed and before or after the release of a new version
  and where you want to store the version (in a changelog file, as a VCS tag, etc…).
@@ -21,7 +24,7 @@ Installation
 
 In order to use RMT your project should use [Composer](http://getcomposer.org/) as RMT will be installed as a dev-dependency. Just go on your project root directory and execute:
 
-    php composer.phar require --dev bonndan/release-manager 0.2.*         # lastest stable
+    php composer.phar require --dev bonndan/release-manager 0.5.*         # lastest stable
     # or
     php composer.phar require --dev bonndan/release-manager dev-develop    # lastest unstable
 
@@ -37,9 +40,20 @@ From that point on you can start using it, just execute it:
 
     ./RMT
 
+Usage with git-flow
+-------------------
 
-Usage
------
+    ./RMT release
+    ./RMT finish
+
+or to hotfix (patch-bump version based on master branch)
+
+    ./RMT hotfix 
+    ./RMT finish
+
+Usage with manual workflow
+--------------------------
+
 Using RMT is very straightforward, you just have to run the command:
 
     ./RMT release
