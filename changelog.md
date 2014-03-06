@@ -75,3 +75,10 @@
 ## 0.4.4 - fixed type hints
 
 * fixed type hints [af13316]
+
+## 0.4.5 - build fix
+
+* added composer-update action [728a931]
+* Build fix [b95f938]
+* Merge branch 'master' into develop [14d49fb]
+* Merge branch 'release/0.5.1' into develop [4625bb5]
