@@ -18,15 +18,15 @@ class DisplayLastChanges extends BaseAction
     public function execute()
     {
         try {
-            $this->context->get('output')->writeln('');
-            $this->context->get('output')->writeln(
-                $this->context->get('vcs')->getAllModificationsSince(
+            $this->context->getOutput()->writeln('');
+            $this->context->getOutput()->writeln(
+                $this->context->getVCS()->getAllModificationsSince(
                     $this->context->getVersionPersister()->getCurrentVersion()
                 )
             );
         }
         catch (\Exception $e){
-            $this->context->get('output')->writeln('<error>No modification found: '.$e->getMessage().'</error>');
+            $this->context->getOutput()->writeln('<error>No modification found: '.$e->getMessage().'</error>');
         }
     }
 }

@@ -5,13 +5,13 @@ namespace Liip\RMT\Version\Persister;
 use Liip\RMT\Version\Persister\PersisterInterface;
 use Liip\RMT\Changelog\Changelog;
 use Liip\RMT\Version;
-
+use Liip\RMT\Version\Detector\DetectorInterface;
 
 /**
  * Persists the changelog.
  * 
  */
-class ChangelogPersister extends AbstractPersister implements PersisterInterface
+class ChangelogPersister extends AbstractPersister implements PersisterInterface, DetectorInterface
 {
     /**
      * changelog manager instance.
@@ -52,14 +52,9 @@ class ChangelogPersister extends AbstractPersister implements PersisterInterface
      */
     public function save(Version $version)
     {
-        $comment = $this->context->get('information-collector')->getValueFor('comment');
-        $type = $this->context->get('information-collector')->getValueFor('type', null);
+        $comment = $this->context->getInformationCollector()->getValueFor('comment');
+        $type = $this->context->getInformationCollector()->getValueFor('type', null);
         $this->changelog->addVersion($version, $comment, array());
-    }
-
-    public function getInformationRequests()
-    {
-        return array('comment');
     }
 
     /**

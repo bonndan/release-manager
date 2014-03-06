@@ -24,7 +24,7 @@ class ChangelogUpdateAction extends BaseAction
     {
         $changelog = new Changelog($this->options['file']);
         $changelog->addVersion(
-            $this->context->getParam('new-version'),
+            $this->context->getNewVersion(),
             $this->context->getInformationCollector()->getValueFor('comment'),
             $this->getCommits()
         );
@@ -44,7 +44,7 @@ class ChangelogUpdateAction extends BaseAction
     private function getCommits()
     {
         $commits = array();
-        $currentVersion = $this->context->getVersionPersister()->getCurrentVersion();
+        $currentVersion = $this->context->getVersionDetector()->getCurrentVersion();
         try {
             $rawCommits = $this->context->getVCS()->getAllModificationsSince(
                 $currentVersion,
@@ -56,7 +56,7 @@ class ChangelogUpdateAction extends BaseAction
                 $commits[$hash] = trim(implode(' ', $tmp));
             }
         } catch (\Liip\RMT\Exception $exception) {
-            $output = $this->context->get('output'); /* @var $output \Liip\RMT\Output\Output */
+            $output = $this->context->getOutput();
             $output->writeln('<error>Error fetching commits since version ' . $currentVersion . '. Version not in VCS?</error>');
         }
         

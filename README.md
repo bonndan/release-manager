@@ -1,19 +1,29 @@
-Release Manager
-===============
+Release with the flow.
+======================
 
 [![Build Status](https://secure.travis-ci.org/bonndan/release-manager.png?branch=master)](https://travis-ci.org/bonndan/release-manager)
 
-Release Manager is a simple PHP tool to help releasing new semantic versions. It uses your composer
-file to store and retrieve information.
+Release Manager is a PHP command line tool to help you keeping track of release versions. 
 
-You can define a list of actions that will be executed and before or after the release of a new version
- and where you want to store the version (in a changelog file, as a VCS tag, etc…).
+* It uses your composer file to store and retrieve information.
+* It enforces [semantic versions] (http://semver.org).
+* Works closely together with [git flow](http://nvie.com/posts/a-successful-git-branching-model/).
 
 ![screenshot](https://github.com/bonndan/release-manager/raw/master/docs/screen.png "In-Dev Screenshot")
 
 
 This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). Kudos to the original authors for this tool.
 
+Use with git-flow
+------------------
+
+    ./RMT release
+    ./RMT finish
+
+or to hotfix (patch-bump version based on master branch)
+
+    ./RMT hotfix 
+    ./RMT finish
 
 
 Installation
@@ -21,7 +31,7 @@ Installation
 
 In order to use RMT your project should use [Composer](http://getcomposer.org/) as RMT will be installed as a dev-dependency. Just go on your project root directory and execute:
 
-    php composer.phar require --dev bonndan/release-manager 0.2.*         # lastest stable
+    php composer.phar require --dev bonndan/release-manager 0.5.*         # lastest stable
     # or
     php composer.phar require --dev bonndan/release-manager dev-develop    # lastest unstable
 
@@ -38,8 +48,9 @@ From that point on you can start using it, just execute it:
     ./RMT
 
 
-Usage
------
+Usage with manual workflow
+--------------------------
+
 Using RMT is very straightforward, you just have to run the command:
 
     ./RMT release
@@ -64,7 +75,8 @@ The `release` command is the main behavior of the tool, but some extra commands 
 Configuration
 -------------
 
-All RMT configuration have to be done in the `composer.json`. The file is divided in 5 root elements:
+All RMT configuration have to be done in the `composer.json`. You can optionally define a list of actions that will be executed and before or after the release of a new version
+ and where you want to store the version (in a changelog file, as a VCS tag, etc…). The file is divided in 5 root elements:
 
 * `vcs`: The type of VCS you are using, can be `git`, `svn` or `none`
 * `prerequisites`: A list `[]` of prerequisites that must be matched before starting the release process

@@ -30,6 +30,6 @@ abstract class AbstractPersister implements ContextAwareInterface
     
     public function getInformationRequests()
     {
-        return array();
+        return array('comment');
     }
 }

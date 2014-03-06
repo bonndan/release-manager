@@ -16,10 +16,10 @@ class InformationCollector
             'type' => 'text'
         ),
         'type' => array(
-            'description' => 'Release type, can be major, minor, patch, build or current vcs tag.',
+            'description' => 'Release type, can be major, minor, patch or build.',
             'type' => 'choice',
-            'choices' => array('major', 'minor', 'patch', 'build', 'current-vcs'),
-            'choices_shortcuts' => array('m' => 'major', 'i' => 'minor', 'p' => 'patch', 'b' => 'build', 'c' => 'current-vcs'),
+            'choices' => array('major', 'minor', 'patch', 'build'),
+            'choices_shortcuts' => array('m' => 'major', 'i' => 'minor', 'p' => 'patch', 'b' => 'build'),
             'default' => 'patch'
         )
     );
@@ -121,6 +121,11 @@ class InformationCollector
         return $consoleOptions;
     }
 
+    /**
+     * Check if any of the registered requests has missing info.
+     * 
+     * @return boolean
+     */
     public function hasMissingInformation()
     {
         foreach ($this->requests as $request) {

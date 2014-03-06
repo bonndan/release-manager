@@ -95,7 +95,7 @@ class GitTest extends \PHPUnit_Framework_TestCase
         exec("git checkout 9aca70b --quiet");
         $vcs->getCurrentBranch();
     }
-
+    
     protected function tearDown()
     {
         // Remove the test folder

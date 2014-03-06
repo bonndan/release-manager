@@ -5,7 +5,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Liip\RMT\Changelog\ChangelogManager;
 use Liip\RMT\Information\InformationCollector;
 use Liip\RMT\Information\InteractiveQuestion;
 use Liip\RMT\Information\InformationRequest;
@@ -19,7 +18,7 @@ class ReleaseCommand extends BaseCommand
     const INCREMENT_MAJOR   = 'major';
     const INCREMENT_MINOR   = 'minor';
     const INCREMENT_PATCH   = 'patch';
-    const INCREMENT_CURRENT = 'current-vcs';
+    const INCREMENT_BUILD   = 'build';
     
     protected function configure()
     {
@@ -30,7 +29,8 @@ class ReleaseCommand extends BaseCommand
         $this->loadInformationCollector();
 
         // Register the command option
-        foreach ($this->getContext()->get('information-collector')->getCommandOptions() as $option) {
+        
+        foreach ($this->getContext()->getInformationCollector()->getCommandOptions() as $option) {
             $this->getDefinition()->addOption($option);
         }
     }
@@ -50,8 +50,8 @@ class ReleaseCommand extends BaseCommand
             );
         }
 
-        // Register options of the release tasks
-        $ic->registerRequests($this->getContext()->getVersionGenerator()->getInformationRequests());
+        // the release task requires the type option
+        $ic->registerStandardRequest('type');
 
         // Register options of all lists (prerequistes and actions)
         foreach (array('prerequisites', 'preReleaseActions', 'postReleaseActions') as $listName){
@@ -67,10 +67,22 @@ class ReleaseCommand extends BaseCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->getContext()->setService('output', $this->output);
-        $this->getContext()->get('information-collector')->handleCommandInput($input);
+        $this->getContext()->getInformationCollector()->handleCommandInput($input);
+        
+        // Get the current version or generate a new one if the user has confirm that this is required
+        try {
+            $currentVersion = $this->getContext()->getVersionPersister()->getCurrentVersion();
+        }
+        catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
+            if ($this->getContext()->getInformationCollector()->getValueFor('confirm-first') == false){
+                throw $e;
+            }
+            $currentVersion = \Liip\RMT\Version::createInitialVersion();
+        }
+        $this->getContext()->setParameter('current-version', $currentVersion);
+        
 
-        $this->writeBigTitle('Welcome to Release Manager');
-
+        $this->writeBigTitle('New release (current is ' . $currentVersion . ')');
         $this->executeActionListIfExist('prerequisites');
     }
 
@@ -78,12 +90,13 @@ class ReleaseCommand extends BaseCommand
     protected function interact(InputInterface $input, OutputInterface $output)
     {
         // Fill up questions
-        if ($this->getContext()->get('information-collector')->hasMissingInformation()){
+        $infoCollector = $this->getContext()->getInformationCollector();
+        if ($infoCollector->hasMissingInformation()){
             $this->writeSmallTitle('Information collect');
             $this->getOutput()->indent();
-            foreach($this->getContext()->get('information-collector')->getInteractiveQuestions() as $name => $question) {
+            foreach($infoCollector->getInteractiveQuestions() as $name => $question) {
                 $answer = $this->askQuestion($question);
-                $this->getContext()->get('information-collector')->setValueFor($name, $answer);
+                $infoCollector->setValueFor($name, $answer);
                 $this->writeEmptyLine();
             }
             $this->getOutput()->unIndent();
@@ -93,30 +106,13 @@ class ReleaseCommand extends BaseCommand
     // Always executed, but first initialize and interact have already been called
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get the current version or generate a new one if the user has confirm that this is required
-        try {
-            $currentVersion = $this->getContext()->getVersionPersister()->getCurrentVersion();
-        }
-        catch (\Liip\RMT\Exception\NoReleaseFoundException $e){
-            if ($this->getContext()->get('information-collector')->getValueFor('confirm-first') == false){
-                throw $e;
-            }
-            $currentVersion = $this->getContext()->getVersionGenerator()->getInitialVersion();
-        }
-        $this->getContext()->setParameter('current-version', $currentVersion);
-
         // Generate and save the new version number
-        $increment  = $this->getContext()->get('information-collector')->getValueFor('type');
-        if ($increment == self::INCREMENT_CURRENT) {
-            $newVersion = $this->getContext()->getVCS()->getCurrentVersion();
-        } else {
-            $newVersion = $this->getContext()->getVersionGenerator()->generateNextVersion(
-                $this->getContext()->getParam('current-version'), $increment
-            );
-        }
-        if (!$newVersion instanceof \Liip\RMT\Version)
-        throw new \Exception($increment . var_export(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15), true));
-        $this->getContext()->setParameter('new-version', $newVersion);
+        $increment  = $this->getContext()->getInformationCollector()->getValueFor('type');
+        $generator = new \Liip\RMT\Version\Generator\SemanticGenerator();
+        $newVersion = $generator->generateNextVersion(
+            $this->getContext()->getParam('current-version'), $increment
+        );
+        $this->getContext()->setNewVersion($newVersion);
 
         $this->executeActionListIfExist('preReleaseActions');
 

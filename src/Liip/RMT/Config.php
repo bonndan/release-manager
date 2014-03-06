@@ -33,6 +33,12 @@ class Config
     private $preReleaseActions = array();
     
     /**
+     * post-release actions
+     * @var array
+     */
+    private $postReleaseActions  = array();
+    
+    /**
      * version persister name
      * 
      * @var string
@@ -40,10 +46,11 @@ class Config
     private $versionPersister = 'composer';
     
     /**
-     * post-release actions
-     * @var array
+     * version persister name
+     * 
+     * @var string
      */
-    private $postReleaseActions  = array();
+    private $versionDetector = 'vcs-tag';
     
     /**
      * Factory method.
@@ -86,6 +93,11 @@ class Config
     public function getVersionPersister()
     {
         return $this->versionPersister;
+    }
+    
+    public function getVersionDetector()
+    {
+        return $this->versionDetector;
     }
 
     public function getPostReleaseActions()

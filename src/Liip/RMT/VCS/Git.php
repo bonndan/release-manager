@@ -1,12 +1,17 @@
 <?php
-
 namespace Liip\RMT\VCS;
 
+use Liip\RMT\Exception;
 use Liip\RMT\Version;
 
+/**
+ * Git VCS
+ * 
+ */
 class Git extends BaseVCS
 {
     protected $dryRun = false;
+    protected $dryRunCommandWords = array('tag', 'push', 'add', 'commit');
 
     public function getAllModificationsSince($tag, $color=true)
     {
@@ -63,7 +68,17 @@ class Git extends BaseVCS
                 return substr($branch,2);
             }
         }
-        throw new \Liip\RMT\Exception("Not currently on any branch");
+        throw new Exception("Not currently on any branch");
+    }
+    
+    /**
+     * Enable the dry-run mode
+     * 
+     * @param boolean $flag
+     */
+    public function setDryRun($flag)
+    {
+        $this->dryRun = $flag;
     }
 
     protected function executeGitCommand($cmd)
@@ -71,9 +86,9 @@ class Git extends BaseVCS
         // Avoid using some commands in dry mode
         if ($this->dryRun){
             if ($cmd !== 'tag'){
-                $cmdWords = explode(' ',$cmd);
-                if (in_array($cmdWords[0], array('tag', 'push', 'add', 'commit'))){
-                    return;
+                $cmdWords = explode(' ', $cmd);
+                if (in_array($cmdWords[0], $this->dryRunCommandWords)){
+                    return $cmd;
                 }
             }
         }
@@ -82,7 +97,7 @@ class Git extends BaseVCS
         $cmd = 'git '.$cmd;
         exec($cmd, $result, $exitCode);
         if ($exitCode !== 0){
-            throw new \Liip\RMT\Exception('Error while executing git command: '.$cmd);
+            throw new Exception('Error while executing git command: '.$cmd);
         }
         return $result;
     }
