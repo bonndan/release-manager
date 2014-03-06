@@ -9,7 +9,7 @@ Release Manager is a PHP command line tool to help you keeping track of release 
 * It enforces [semantic versions] (http://semver.org).
 * Works closely together with [git flow](http://nvie.com/posts/a-successful-git-branching-model/).
 
-![screenshot](https://github.com/bonndan/release-manager/raw/master/docs/screen.png "In-Dev Screenshot")
+![screenshot](https://github.com/bonndan/release-manager/raw/develop/docs/screen-flow.png "Using git flow")
 
 
 This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). Kudos to the original authors for this tool.
@@ -63,6 +63,8 @@ RMT will then do the following tasks:
 * Execute the pre-release actions
 * Persist the new version number
 * Execute the post-release actions
+
+![screenshot](https://github.com/bonndan/release-manager/raw/master/docs/screen.png "In-Dev Screenshot")
 
 ### Additional commands
 
