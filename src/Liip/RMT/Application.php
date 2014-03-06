@@ -22,7 +22,7 @@ class Application extends BaseApplication
     public function __construct()
     {
         // Creation
-        parent::__construct('Release Manager', RMT_VERSION);
+        parent::__construct('This is release-manager', RMT_VERSION);
 
         // Change the current directory in favor of the project root folder,
         // this allow to run the task from outside the project like:
@@ -39,6 +39,7 @@ class Application extends BaseApplication
                 $context = Context::create($this);
                 
                 // Add command that require the config file
+                $this->add($this->createCommand('ListCommand'));
                 $this->add($this->createCommand('ReleaseCommand'));
                 $this->add($this->createCommand('CurrentCommand'));
                 $this->add($this->createCommand('ChangesCommand'));
