@@ -71,6 +71,15 @@ class GitFlowFinishActionTest extends PHPUnit_Framework_TestCase
     
     public function testFinishReleaseWorksWithDefaultGit()
     {
+        $tempDir = tempnam(sys_get_temp_dir(),'');
+        if (file_exists($tempDir)) {
+            unlink($tempDir);
+        }
+        mkdir($tempDir);
+        chdir($tempDir);
+        exec('git init');
+        $this->testDir = $tempDir;
+        
         $this->git = $this->getMock("\Liip\RMT\VCS\Git");
         $this->context->setService('vcs', $this->git);
         
@@ -79,7 +88,8 @@ class GitFlowFinishActionTest extends PHPUnit_Framework_TestCase
                 ->method('getValueFor')
                 ->will($this->returnValue($comment));
 
-        $this->setExpectedException("\Liip\RMT\Exception", "Expected to find");
+        //Expects that the mock is replaced.
+        $this->setExpectedException("\Liip\RMT\Exception", "Not currently on any branch");
         $this->action->execute();
     }
     
