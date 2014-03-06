@@ -71,3 +71,7 @@
 ## 0.4.3 - fixed #9
 
 * fixed #9 [43765f8]
+
+## 0.4.4 - fixed type hints
+
+* fixed type hints [af13316]
