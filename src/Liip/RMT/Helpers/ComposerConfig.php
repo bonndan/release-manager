@@ -61,6 +61,21 @@ class ComposerConfig
         $config = \Liip\RMT\Config::create($json->extra->rmt);
         return $config;
     }
+    
+    /**
+     * Returns the project name.
+     * 
+     * @return string|null
+     */
+    public function getProjectName()
+    {
+        $json = $this->getJson();
+        if (!isset($json->name)) {
+            return null;
+        }
+        
+        return $json->name;
+    }
 
     /**
      * Writes the passed config into the composer file.
