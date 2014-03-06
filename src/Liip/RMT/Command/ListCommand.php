@@ -2,6 +2,9 @@
 namespace Liip\RMT\Command;
 
 use Liip\RMT\Helpers\ComposerConfig;
+use Symfony\Component\Console\Command\ListCommand as SFListCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Description of ListCommand
@@ -33,9 +36,9 @@ class ListCommand extends BaseCommand
     }
  
     // Always executed, but first initialize and interact have already been called
-    protected function execute($input, $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = new \Symfony\Component\Console\Command\ListCommand();
+        $command = new SFListCommand();
         $this->getApplication()->add($command);
         $command->run($input, $output);
     }
