@@ -9,14 +9,21 @@ Release Manager is a PHP command line tool to help you keeping track of release 
 * It enforces [semantic versions] (http://semver.org).
 * Works closely together with [git flow](http://nvie.com/posts/a-successful-git-branching-model/).
 
-You can define a list of actions that will be executed and before or after the release of a new version
- and where you want to store the version (in a changelog file, as a VCS tag, etc…).
-
 ![screenshot](https://github.com/bonndan/release-manager/raw/master/docs/screen.png "In-Dev Screenshot")
 
 
 This is a fork of Liip's Relase Management Tool [RMT](https://github.com/liip/RMT). Kudos to the original authors for this tool.
 
+Use with git-flow
+------------------
+
+    ./RMT release
+    ./RMT finish
+
+or to hotfix (patch-bump version based on master branch)
+
+    ./RMT hotfix 
+    ./RMT finish
 
 
 Installation
@@ -40,16 +47,6 @@ From that point on you can start using it, just execute it:
 
     ./RMT
 
-Usage with git-flow
--------------------
-
-    ./RMT release
-    ./RMT finish
-
-or to hotfix (patch-bump version based on master branch)
-
-    ./RMT hotfix 
-    ./RMT finish
 
 Usage with manual workflow
 --------------------------
@@ -78,7 +75,8 @@ The `release` command is the main behavior of the tool, but some extra commands 
 Configuration
 -------------
 
-All RMT configuration have to be done in the `composer.json`. The file is divided in 5 root elements:
+All RMT configuration have to be done in the `composer.json`. You can optionally define a list of actions that will be executed and before or after the release of a new version
+ and where you want to store the version (in a changelog file, as a VCS tag, etc…). The file is divided in 5 root elements:
 
 * `vcs`: The type of VCS you are using, can be `git`, `svn` or `none`
 * `prerequisites`: A list `[]` of prerequisites that must be matched before starting the release process
