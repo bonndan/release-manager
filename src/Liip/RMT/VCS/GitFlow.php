@@ -35,7 +35,7 @@ class GitFlow extends Git
     {
         $detector = new GitFlowBranch($this, GitFlowBranch::RELEASE);
         $version = $detector->getCurrentVersion();
-        $command = 'flow release finish -F -m "' . $comment . '" ' . $version;
+        $command = 'flow release finish -m "' . $comment . '" ' . $version;
         return $this->executeGitCommand($command);
     }
     
@@ -61,7 +61,7 @@ class GitFlow extends Git
     {
         $detector = new GitFlowBranch($this, GitFlowBranch::HOTFIX);
         $version = $detector->getCurrentVersion();
-        $command = 'flow hotfix finish -F -m "' . $comment . '" ' . $version;
+        $command = 'flow hotfix finish -m "' . $comment . '" ' . $version;
         return $this->executeGitCommand($command);
     }
 }
