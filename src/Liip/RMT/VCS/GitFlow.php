@@ -26,17 +26,18 @@ class GitFlow extends Git
     }
     
     /**
-     * Finishes the current git flow release.
+     * Finishes the current git flow release without tagging.
      * 
-     * @return array
+     * @return Version
      * @throws Exception
      */
-    public function finishRelease($comment)
+    public function finishRelease()
     {
         $detector = new GitFlowBranch($this, GitFlowBranch::RELEASE);
         $version = $detector->getCurrentVersion();
-        $command = 'flow release finish -m "' . $comment . '" ' . $version;
-        return $this->executeGitCommand($command);
+        $command = 'flow release finish -n ' . $version;
+        $this->executeGitCommand($command);
+        return $version;
     }
     
     /**
@@ -52,16 +53,17 @@ class GitFlow extends Git
     }
     
     /**
-     * Finishes the current git flow release.
+     * Finishes the current git flow hotfix without tagging.
      * 
-     * @return array
+     * @return Version
      * @throws Exception
      */
-    public function finishHotfix($comment)
+    public function finishHotfix()
     {
         $detector = new GitFlowBranch($this, GitFlowBranch::HOTFIX);
         $version = $detector->getCurrentVersion();
-        $command = 'flow hotfix finish -m "' . $comment . '" ' . $version;
-        return $this->executeGitCommand($command);
+        $command = 'flow hotfix finish -n ' . $version;
+        $this->executeGitCommand($command);
+        return $version;
     }
 }

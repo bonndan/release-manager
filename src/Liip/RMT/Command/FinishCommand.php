@@ -79,9 +79,16 @@ class FinishCommand extends ReleaseCommand
         $this->getContext()->getInformationCollector()->registerStandardRequest('type');
         $this->getContext()->getInformationCollector()->setValueFor('type', $type);
         
+        //push a git flow finish action to the post release list
         $action = new GitFlowFinishAction($detector->getBranchType());
         $action->setContext($this->getContext());
         $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
+        
+        //push a vcs-tag action (see #11)
+        $tagAction = new \Liip\RMT\Action\VcsTagAction();
+        $tagAction->setContext($this->getContext());
+        $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
+        
         parent::execute($input, $output);
     }
 }

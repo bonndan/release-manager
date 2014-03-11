@@ -12,6 +12,12 @@ class Git extends BaseVCS
 {
     protected $dryRun = false;
     protected $dryRunCommandWords = array('tag', 'push', 'add', 'commit');
+    
+    /**
+     * the last executed command (for testing purposes)
+     * @var string|null
+     */
+    public $lastCommand;
 
     public function getAllModificationsSince($tag, $color=true)
     {
@@ -88,6 +94,7 @@ class Git extends BaseVCS
             if ($cmd !== 'tag'){
                 $cmdWords = explode(' ', $cmd);
                 if (in_array($cmdWords[0], $this->dryRunCommandWords)){
+                    $this->lastCommand = $cmd;
                     return $cmd;
                 }
             }
@@ -99,6 +106,8 @@ class Git extends BaseVCS
         if ($exitCode !== 0){
             throw new Exception('Error while executing git command: '.$cmd);
         }
+        
+        $this->lastCommand = $cmd;
         return $result;
     }
 }
