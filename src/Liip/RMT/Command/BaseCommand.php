@@ -2,29 +2,31 @@
 
 namespace Liip\RMT\Command;
 
+use Liip\RMT\Application;
+use Liip\RMT\Context;
+use Liip\RMT\ContextAwareInterface;
+use Liip\RMT\Information\InteractiveQuestion;
+use Liip\RMT\Output\Output;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Liip\RMT\Context;
-use Liip\RMT\Application;
-use Liip\RMT\Information\InteractiveQuestion;
 
 /**
  * Wrapper/helper around sf2 command
  */
-abstract class BaseCommand extends Command
+abstract class BaseCommand extends Command implements ContextAwareInterface
 {
     /**
      * console input
      * 
-     * @var \Symfony\Component\Console\Input\InputInterface
+     * @var InputInterface
      */
     protected $input;
     
     /**
      * console output
      * 
-     * @var \Liip\RMT\Output\Output 
+     * @var Output 
      */
     protected $output;
 
@@ -39,7 +41,7 @@ abstract class BaseCommand extends Command
      * Constructor requires the application instance.
      * 
      * @param string $name any name
-     * @param \Liip\RMT\Application $application
+     * @param Application $application
      */
     public function __construct($name, Application $application)
     {
@@ -83,6 +85,11 @@ abstract class BaseCommand extends Command
         }
         
         return $this->context;
+    }
+    
+    public function setContext(Context $context)
+    {
+        $this->context = $context;
     }
 
     protected function writeBigTitle($title)

@@ -19,11 +19,15 @@ class Application extends BaseApplication
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(Context $context = null)
     {
         // Creation
         parent::__construct('This is release-manager', RMT_VERSION);
 
+        if ($context === null) {
+            $context = Context::create($this);
+        }
+        
         // Change the current directory in favor of the project root folder,
         // this allow to run the task from outside the project like:
         //     $/home/www> myproject/RMT release
@@ -36,8 +40,6 @@ class Application extends BaseApplication
             
             try {
                 $config = $this->getConfig();
-                $context = Context::create($this);
-                
                 // Add command that require the config file
                 $this->add($this->createCommand('ListCommand'));
                 $this->add($this->createCommand('ReleaseCommand'));
