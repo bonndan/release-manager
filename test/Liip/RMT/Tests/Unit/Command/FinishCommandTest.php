@@ -1,36 +1,43 @@
 <?php
 namespace Liip\RMT\Tests\Unit;
 
+use Exception;
+use Liip\RMT\Action\VcsCommitAction;
+use Liip\RMT\Application;
+use Liip\RMT\Command\FinishCommand;
+use Liip\RMT\Context;
+use PHPUnit_Framework_TestCase;
+
 
 /**
  * Description of FinishCommandTest
  *
  * @author daniel
  */
-class FinishCommandTest extends \PHPUnit_Framework_TestCase
+class FinishCommandTest extends PHPUnit_Framework_TestCase
 {
     /**
      * system under test
-     * @var \Liip\RMT\Command\FinishCommand
+     * @var FinishCommand
      */
     private $command;
     
     /**
-     * @var \Liip\RMT\Application
+     * @var Application
      */
     private $application;
     
     /**
-     * @var \Liip\RMT\Context
+     * @var Context
      */
     private $context;
     
     public function setUp()
     {
-        $this->application = new \Liip\RMT\Application();
-        $this->context = \Liip\RMT\Context::create($this->application);
+        $this->application = new Application();
+        $this->context = Context::create($this->application);
         $this->context->setService('information-collector', $this->getMock("\Liip\RMT\Information\InformationCollector"));
-        $this->command = new \Liip\RMT\Command\FinishCommand('finish', $this->application);
+        $this->command = new FinishCommand('finish', $this->application);
         $this->command->setContext($this->context);
     }
     
@@ -40,13 +47,18 @@ class FinishCommandTest extends \PHPUnit_Framework_TestCase
         $output = $this->getMock("\Liip\RMT\Output\Output");
         try {
             $this->command->run($input, $output);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
 
         }
         
-        $postList = $this->context->getList(\Liip\RMT\Context::POSTRELEASE_LIST);
+        $postList = $this->context->getList(Context::POSTRELEASE_LIST);
         $this->assertNotEmpty($postList);
-        $action = $postList->pop();
-        $this->assertInstanceOf("\Liip\RMT\Action\VcsCommitAction", $action);
+        foreach ($postList as $action) {
+            if ($action instanceof VcsCommitAction) {
+                return;
+            }
+        }
+        
+        $this->fail("No VCS commit action added to pst release list.");
     }
 }
