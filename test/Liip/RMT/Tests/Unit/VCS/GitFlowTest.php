@@ -50,7 +50,7 @@ class GitFlowTest extends \PHPUnit_Framework_TestCase
         system("git flow release start 2.2.2 1>/dev/null 2>&1");
         
         $cmd = $this->gitFlow->finishRelease('test');
-        $this->assertEquals('flow release finish -F -m "test" 2.2.2', $cmd);
+        $this->assertEquals('flow release finish -m "test" 2.2.2', $cmd);
     }
     
     public function testFinishReleaseException()
@@ -75,7 +75,7 @@ class GitFlowTest extends \PHPUnit_Framework_TestCase
         system("git flow hotfix start 2.2.2 1>/dev/null 2>&1");
         
         $cmd = $this->gitFlow->finishHotfix('test');
-        $this->assertEquals('flow hotfix finish -F -m "test" 2.2.2', $cmd);
+        $this->assertEquals('flow hotfix finish -m "test" 2.2.2', $cmd);
     }
     
     public function testFinishHotfixException()
