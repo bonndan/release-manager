@@ -40,14 +40,8 @@ class GitFlowFinishActionTest extends PHPUnit_Framework_TestCase
     
     public function testFinishRelease()
     {
-        $comment = 'test';
-        $this->informationCollector->expects($this->once())
-                ->method('getValueFor')
-                ->will($this->returnValue($comment));
-        
         $this->git->expects($this->once())
                 ->method('finishRelease')
-                ->with($comment)
                 ->will($this->returnValue('release/1.2.3'));
         
         $this->action->execute();
@@ -56,14 +50,9 @@ class GitFlowFinishActionTest extends PHPUnit_Framework_TestCase
     public function testFinishHotfix()
     {
         $this->prepareAction(GitFlowBranch::HOTFIX);
-        $comment = 'test';
-        $this->informationCollector->expects($this->once())
-                ->method('getValueFor')
-                ->will($this->returnValue($comment));
         
         $this->git->expects($this->once())
                 ->method('finishHotfix')
-                ->with($comment)
                 ->will($this->returnValue('hotfix/1.2.3'));
         
         $this->action->execute();
@@ -83,11 +72,6 @@ class GitFlowFinishActionTest extends PHPUnit_Framework_TestCase
         $this->git = $this->getMock("\Liip\RMT\VCS\Git");
         $this->context->setService('vcs', $this->git);
         
-        $comment = 'test';
-        $this->informationCollector->expects($this->once())
-                ->method('getValueFor')
-                ->will($this->returnValue($comment));
-
         //Expects that the mock is replaced.
         $this->setExpectedException("\Liip\RMT\Exception", "Not currently on any branch");
         $this->action->execute();
@@ -95,14 +79,8 @@ class GitFlowFinishActionTest extends PHPUnit_Framework_TestCase
     
     public function testFinishReleaseException()
     {
-        $comment = 'test';
-        $this->informationCollector->expects($this->once())
-                ->method('getValueFor')
-                ->will($this->returnValue($comment));
-        
         $this->git->expects($this->once())
                 ->method('finishRelease')
-                ->with($comment)
                 ->will($this->throwException(new Exception('test')));
         
         $this->setExpectedException("\Liip\RMT\Exception");

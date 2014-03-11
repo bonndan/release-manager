@@ -33,14 +33,12 @@ class GitFlowFinishAction extends GitFlowAction
     
     public function execute()
     {
-        $comment = $this->context->getInformationCollector()->getValueFor('comment');
-        
         if ($this->branchType == GitFlowBranch::RELEASE) {
-            $this->getVCS()->finishRelease($comment);
+            $this->getVCS()->finishRelease();
         } else {
-            $this->getVCS()->finishHotfix($comment);
+            $this->getVCS()->finishHotfix();
         }
         
-        $this->context->getOutput()->writeln('Finish the git flow ' . $this->branchType . '.');
+        $this->confirmSuccess('Finished the ' . $this->branchType . '.');
     }
 }
