@@ -82,3 +82,16 @@
 * Build fix [b95f938]
 * Merge branch 'master' into develop [14d49fb]
 * Merge branch 'release/0.5.1' into develop [4625bb5]
+
+## 0.5.4 - Workaround for #11
+
+* Attempt to hide git flow output [cb0903b]
+* #11 removed vcs-tag-action workaround, omitting tag message instead [4d1ee52]
+* fixed finish command [3138a2b]
+* #11 getopt bug workaround [6384119]
+* version stamp action confirms success [fb8e003]
+* improved a test [0daf13a]
+* Merge branch 'feature/vcs_commit_check' into develop [b188910]
+* Removed the -F option from release/hotfix finishing actions [a784337]
+* fixed test [260dc6a]
+* finish command test [73a3a20]
