@@ -3,6 +3,7 @@ namespace Liip\RMT\Tests\Unit;
 
 use Exception;
 use Liip\RMT\Action\VcsCommitAction;
+use Liip\RMT\Action\VcsTagAction;
 use Liip\RMT\Application;
 use Liip\RMT\Command\FinishCommand;
 use Liip\RMT\Context;
@@ -43,13 +44,7 @@ class FinishCommandTest extends PHPUnit_Framework_TestCase
     
     public function testAutomaticallyAddsVcsCommitAction()
     {
-        $input = $this->getMock("\Symfony\Component\Console\Input\InputInterface");
-        $output = $this->getMock("\Liip\RMT\Output\Output");
-        try {
-            $this->command->run($input, $output);
-        } catch (Exception $ex) {
-
-        }
+        $this->runCommand();
         
         $postList = $this->context->getList(Context::POSTRELEASE_LIST);
         $this->assertNotEmpty($postList);
@@ -60,5 +55,17 @@ class FinishCommandTest extends PHPUnit_Framework_TestCase
         }
         
         $this->fail("No VCS commit action added to pst release list.");
+    }
+    
+    
+    protected function runCommand()
+    {
+        $input = $this->getMock("\Symfony\Component\Console\Input\InputInterface");
+        $output = $this->getMock("\Liip\RMT\Output\Output");
+        try {
+            $this->command->run($input, $output);
+        } catch (Exception $ex) {
+
+        }
     }
 }

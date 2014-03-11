@@ -87,7 +87,7 @@ class FinishCommand extends ReleaseCommand
         //push a vcs-tag action (see #11)
         $tagAction = new \Liip\RMT\Action\VcsTagAction();
         $tagAction->setContext($this->getContext());
-        $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
+        $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($tagAction);
         
         parent::execute($input, $output);
     }
