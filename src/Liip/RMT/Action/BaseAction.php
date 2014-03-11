@@ -53,10 +53,12 @@ abstract class BaseAction implements ContextAwareInterface, ActionInterface
 
     /**
      * A common method to confirm success to the user
+     * 
+     * @param string $msg
      */
-    public function confirmSuccess()
+    public function confirmSuccess($msg = 'OK')
     {
-        $this->context->getOutput()->writeln('<info>OK</info>');
+        $this->context->getOutput()->writeln('<info>' . $msg . '</info>');
     }
 }
 

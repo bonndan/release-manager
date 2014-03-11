@@ -50,7 +50,7 @@ class GitFlowTest extends \PHPUnit_Framework_TestCase
         system("git flow release start 2.2.2 1>/dev/null 2>&1");
         
         $version = $this->gitFlow->finishRelease('test');
-        $this->assertEquals('flow release finish -m "2.2.2" 2.2.2', $this->gitFlow->lastCommand);
+        $this->assertContains('flow release finish -m "2.2.2" 2.2.2', $this->gitFlow->lastCommand);
         $this->assertInstanceOf("\Liip\RMT\Version", $version);
         $this->assertEquals("2.2.2", (string)$version);
     }
@@ -77,7 +77,7 @@ class GitFlowTest extends \PHPUnit_Framework_TestCase
         system("git flow hotfix start 2.2.2 1>/dev/null 2>&1");
         
         $version = $this->gitFlow->finishHotfix('test');
-        $this->assertEquals('flow hotfix finish -m "2.2.2" 2.2.2', $this->gitFlow->lastCommand);
+        $this->assertContains('flow hotfix finish -m "2.2.2" 2.2.2', $this->gitFlow->lastCommand);
         $this->assertInstanceOf("\Liip\RMT\Version", $version);
     }
     

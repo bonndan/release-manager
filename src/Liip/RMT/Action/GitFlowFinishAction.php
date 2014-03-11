@@ -39,6 +39,6 @@ class GitFlowFinishAction extends GitFlowAction
             $this->getVCS()->finishHotfix();
         }
         
-        $this->context->getOutput()->writeln('Finished the git flow ' . $this->branchType . '.');
+        $this->confirmSuccess('Finished the ' . $this->branchType . '.');
     }
 }
