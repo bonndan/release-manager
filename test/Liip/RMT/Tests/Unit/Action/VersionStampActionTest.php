@@ -22,6 +22,7 @@ class VersionStampActionTest extends \PHPUnit_Framework_TestCase
         
         $context = new \Liip\RMT\Context();
         $context->setParameter('new-version', 'XYZ');
+        $context->setService('output', $this->getMock("\Liip\RMT\Output\Output"));
         $this->action->setContext($context);
     }
 

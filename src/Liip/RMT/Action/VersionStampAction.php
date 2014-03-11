@@ -63,5 +63,6 @@ class VersionStampAction extends BaseAction
         $template = "<?php\ndefine('$const', '%s');\n";
 
         file_put_contents($this->options['file'], sprintf($template, $version));
+        $this->confirmSuccess();
     }
 }
