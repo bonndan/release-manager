@@ -54,6 +54,7 @@ class FinishCommand extends ReleaseCommand
         $postRelease = $this->getContext()->getList(Context::POSTRELEASE_LIST);
         foreach ($postRelease as $action) {
             if ($action instanceof VcsCommitAction) {
+                $action->setFailsGracefully(true);
                 return;
             }
         }
