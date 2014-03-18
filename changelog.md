@@ -95,3 +95,8 @@
 * Removed the -F option from release/hotfix finishing actions [a784337]
 * fixed test [260dc6a]
 * finish command test [73a3a20]
+
+## 0.5.5 - bugfix
+
+* #12 an existing post-release commit action is toggled to fail gracefully [bd222bd]
+* #12 the automatically added post - release commit action fails gracefully [dc2325b]
