@@ -30,8 +30,6 @@ class FinishCommandTest extends CommandTestCase
     
     public function testAutomaticallyAddsVcsCommitAction()
     {
-        $this->context->setParameter('type', 'patch');
-        $this->context->getInformationCollector()->setValueFor('type', 'patch');
         $this->runCommand();
         
         $postList = $this->context->getList(Context::POSTRELEASE_LIST);
@@ -44,5 +42,4 @@ class FinishCommandTest extends CommandTestCase
         
         $this->fail("No VCS commit action added to post release list.");
     }
-    
 }

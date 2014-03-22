@@ -23,16 +23,25 @@ class CommandTestCase extends PHPUnit_Framework_TestCase
      */
     protected $context;
     
+    /**
+     * @var \Liip\RMT\Information\InformationCollector 
+     */
+    protected $informationCollector;
+    
     public function setUp()
     {
         $this->application = new Application();
         $this->context = Context::create($this->application);
-        $this->context->setService('information-collector', $this->getMock("\Liip\RMT\Information\InformationCollector"));
+        $this->informationCollector = $this->getMock("\Liip\RMT\Information\InformationCollector");
+        $this->context->setService('information-collector', $this->informationCollector);
     }
     
     protected function runCommand()
     {
         $input = $this->getMock("\Symfony\Component\Console\Input\InputInterface");
+        $input->expects($this->any())
+                ->method('getOptions')
+                ->will($this->returnValue(array()));
         $output = $this->getMock("\Liip\RMT\Output\Output");
         try {
             $this->command->run($input, $output);
