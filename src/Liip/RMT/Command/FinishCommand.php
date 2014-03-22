@@ -73,35 +73,9 @@ class FinishCommand extends ReleaseCommand
         $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
     }
     
-    /**
-     * Removes VcsTagAction instances from the given list.
-     * 
-     * @param SplDoublyLinkedList $list
-     */
-    private function findTagAction(SplDoublyLinkedList $list)
-    {
-        foreach ($list as $index => $action) {
-            if ($action instanceof VcsTagAction) {
-                throw new \Liip\RMT\Config\Exception('Vcs-Tag actions (i.e. manual tagging) must not be used with git-flow.');
-            }
-        }
-    }
-    
-    /**
-     * Removes vcs-tag actions from pre- and post-release action lists.
-     * 
-     * 
-     */
-    private function assertTaggingIsDisabled()
-    {
-        $this->findTagAction($this->getContext()->getList(Context::PRERELEASE_LIST));
-        $this->findTagAction($this->getContext()->getList(Context::POSTRELEASE_LIST));
-    }
-    
     // Always executed
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->assertTaggingIsDisabled();
         $this->ensureVcsCommitFailsGracefully($this->getContext()->getList(Context::PRERELEASE_LIST));
         $this->ensureVcsCommitFailsGracefully($this->getContext()->getList(Context::POSTRELEASE_LIST));
         $this->ensureVCSCommitIsPostReleaseAction();

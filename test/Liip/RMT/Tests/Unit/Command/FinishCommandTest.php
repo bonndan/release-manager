@@ -43,22 +43,4 @@ class FinishCommandTest extends CommandTestCase
         $this->fail("No VCS commit action added to pst release list.");
     }
     
-    public function testChecksTagActionsInPreReleaseList()
-    {
-        $this->context->getList(Context::PRERELEASE_LIST)->push(new VcsTagAction());
-        
-        $this->setExpectedException("Liip\RMT\Config\Exception");
-        $this->runCommand();
-        
-    }
-    
-    public function testChecksTagActionsInPostReleaseList()
-    {
-        $this->context->getList(Context::POSTRELEASE_LIST)->push(new VcsTagAction());
-        
-        $this->setExpectedException("Liip\RMT\Config\Exception");
-        $this->runCommand();
-        
-    } 
-   
 }
