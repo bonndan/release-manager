@@ -91,6 +91,9 @@ class FinishCommand extends ReleaseCommand
         
         $currentVersion = $this->getContext()->getVersionDetector()->getCurrentVersion();
         $type = $currentVersion->getDifferenceType($newVersion);
+        if ($type === null) {
+            throw new Exception('Could not detect a version difference.', 404);
+        }
         $this->getContext()->setParameter('type', $type);
         
         //in case the type information is needed...
