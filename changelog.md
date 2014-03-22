@@ -100,3 +100,18 @@
 
 * #12 an existing post-release commit action is toggled to fail gracefully [bd222bd]
 * #12 the automatically added post - release commit action fails gracefully [dc2325b]
+
+## 0.5.6 - bugfixes
+
+* Skipped a test [1b70bc4]
+* Fixed a test mock issue [f21debc]
+* test fix [8c993b0]
+* Finish command throws exception of no difference can be detected [c89dcab]
+* Fixed a test that sometimes fails [9b23f5f]
+* fixed typo [7b79977]
+* #15 start and hotfix commands throw exceptions if manual tagging is configured [de5fdd5]
+* finish commands throws exceptions when manual tagging is active [7da81d4]
+* extraced a command test case [06f0664]
+* #12 all vcs-commit actions are set to fail gracefully [8f3b8f3]
+* Merge branch 'hotfix/0.5.5' into develop [ee36938]
+* Merge branch 'release/0.5.4' into develop [b2c12a7]
