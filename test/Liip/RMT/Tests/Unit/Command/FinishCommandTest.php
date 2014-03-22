@@ -30,6 +30,7 @@ class FinishCommandTest extends CommandTestCase
     
     public function testAutomaticallyAddsVcsCommitAction()
     {
+        $this->context->setParameter('type', 'patch');
         $this->context->getInformationCollector()->setValueFor('type', 'patch');
         $this->runCommand();
         
