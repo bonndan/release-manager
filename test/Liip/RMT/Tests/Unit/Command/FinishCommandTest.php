@@ -1,13 +1,10 @@
 <?php
-namespace Liip\RMT\Tests\Unit;
+namespace Liip\RMT\Tests\Unit\Command;
 
-use Exception;
 use Liip\RMT\Action\VcsCommitAction;
 use Liip\RMT\Action\VcsTagAction;
-use Liip\RMT\Application;
 use Liip\RMT\Command\FinishCommand;
 use Liip\RMT\Context;
-use PHPUnit_Framework_TestCase;
 
 
 /**
@@ -15,29 +12,18 @@ use PHPUnit_Framework_TestCase;
  *
  * @author daniel
  */
-class FinishCommandTest extends PHPUnit_Framework_TestCase
+class FinishCommandTest extends CommandTestCase
 {
     /**
      * system under test
      * @var FinishCommand
      */
-    private $command;
+    protected $command;
     
-    /**
-     * @var Application
-     */
-    private $application;
-    
-    /**
-     * @var Context
-     */
-    private $context;
     
     public function setUp()
     {
-        $this->application = new Application();
-        $this->context = Context::create($this->application);
-        $this->context->setService('information-collector', $this->getMock("\Liip\RMT\Information\InformationCollector"));
+        parent::setUp();
         $this->command = new FinishCommand('finish', $this->application);
         $this->command->setContext($this->context);
     }
@@ -57,15 +43,22 @@ class FinishCommandTest extends PHPUnit_Framework_TestCase
         $this->fail("No VCS commit action added to pst release list.");
     }
     
-    
-    protected function runCommand()
+    public function testChecksTagActionsInPreReleaseList()
     {
-        $input = $this->getMock("\Symfony\Component\Console\Input\InputInterface");
-        $output = $this->getMock("\Liip\RMT\Output\Output");
-        try {
-            $this->command->run($input, $output);
-        } catch (Exception $ex) {
-
-        }
+        $this->context->getList(Context::PRERELEASE_LIST)->push(new VcsTagAction());
+        
+        $this->setExpectedException("Liip\RMT\Config\Exception");
+        $this->runCommand();
+        
     }
+    
+    public function testChecksTagActionsInPostReleaseList()
+    {
+        $this->context->getList(Context::POSTRELEASE_LIST)->push(new VcsTagAction());
+        
+        $this->setExpectedException("Liip\RMT\Config\Exception");
+        $this->runCommand();
+        
+    } 
+   
 }
