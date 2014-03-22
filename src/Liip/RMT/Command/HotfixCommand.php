@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
-class HotfixCommand extends BaseCommand
+class HotfixCommand extends FlowBeginCommand
 {
     protected function configure()
     {
@@ -26,6 +26,8 @@ class HotfixCommand extends BaseCommand
     
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
+        $this->assertTaggingIsDisabled();
+        
         $ic = new InformationCollector();
         $ic->registerStandardRequest('type');
         $this->getContext()->setService('information-collector', $ic);

@@ -3,9 +3,11 @@ namespace Liip\RMT\Command;
 
 use Liip\RMT\Action\GitFlowFinishAction;
 use Liip\RMT\Action\VcsCommitAction;
+use Liip\RMT\Action\VcsTagAction;
 use Liip\RMT\Context;
 use Liip\RMT\Information\InformationCollector;
 use Liip\RMT\Version\Detector\GitFlowBranch;
+use SplDoublyLinkedList;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -43,6 +45,20 @@ class FinishCommand extends ReleaseCommand
         
         $this->getContext()->setService('information-collector', $ic);
     }
+
+    /**
+     * Ensures a vcs-commit action in the given list fails gracefully.
+     * 
+     * @param SplDoublyLinkedList $list
+     */
+    private function ensureVcsCommitFailsGracefully(SplDoublyLinkedList $list)
+    {
+        foreach ($list as $action) {
+            if ($action instanceof VcsCommitAction) {
+                $action->setFailsGracefully(true);
+            }
+        }
+    }
     
     /**
      * Adds the vcs-commit action to the post-release action list if not present.
@@ -51,29 +67,33 @@ class FinishCommand extends ReleaseCommand
      */
     private function ensureVCSCommitIsPostReleaseAction()
     {
-        $postRelease = $this->getContext()->getList(Context::POSTRELEASE_LIST);
-        foreach ($postRelease as $action) {
-            if ($action instanceof VcsCommitAction) {
-                $action->setFailsGracefully(true);
-                return;
-            }
-        }
-        
         $action = new VcsCommitAction();
+        $action->setFailsGracefully(true);
         $action->setContext($this->getContext());
-        $postRelease->push($action);
+        $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
+    }
+    
+    // Always executed
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->ensureVcsCommitFailsGracefully($this->getContext()->getList(Context::PRERELEASE_LIST));
+        $this->ensureVcsCommitFailsGracefully($this->getContext()->getList(Context::POSTRELEASE_LIST));
+        $this->ensureVCSCommitIsPostReleaseAction();
+        
+        parent::initialize($input, $output);
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->ensureVCSCommitIsPostReleaseAction();
-        
         $detector = new GitFlowBranch($this->getContext()->getVCS());
         $newVersion = $detector->getCurrentVersion();
         $this->getContext()->setNewVersion($newVersion);
         
         $currentVersion = $this->getContext()->getVersionDetector()->getCurrentVersion();
         $type = $currentVersion->getDifferenceType($newVersion);
+        if ($type === null) {
+            throw new Exception('Could not detect a version difference.', 404);
+        }
         $this->getContext()->setParameter('type', $type);
         
         //in case the type information is needed...

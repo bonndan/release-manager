@@ -13,7 +13,7 @@ use Liip\RMT\Information\InformationCollector;
  *
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
-class StartCommand extends BaseCommand
+class StartCommand extends FlowBeginCommand
 {
     protected function configure()
     {
@@ -25,6 +25,8 @@ class StartCommand extends BaseCommand
     // Always executed
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
+        $this->assertTaggingIsDisabled();
+        
         $ic = new InformationCollector();
         $ic->registerStandardRequest('type');
         $this->getContext()->setService('information-collector', $ic);
