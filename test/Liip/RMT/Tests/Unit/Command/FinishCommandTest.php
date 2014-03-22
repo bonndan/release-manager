@@ -40,7 +40,7 @@ class FinishCommandTest extends CommandTestCase
             }
         }
         
-        $this->fail("No VCS commit action added to pst release list.");
+        $this->fail("No VCS commit action added to post release list.");
     }
     
 }
