@@ -43,6 +43,20 @@ class FinishCommand extends ReleaseCommand
         
         $this->getContext()->setService('information-collector', $ic);
     }
+
+    /**
+     * Ensures a vcs-commit action in the given list fails gracefully.
+     * 
+     * @param \SplDoublyLinkedList $list
+     */
+    private function ensureVcsCommitFailsGracefully(\SplDoublyLinkedList $list)
+    {
+        foreach ($list as $action) {
+            if ($action instanceof VcsCommitAction) {
+                $action->setFailsGracefully(true);
+            }
+        }
+    }
     
     /**
      * Adds the vcs-commit action to the post-release action list if not present.
@@ -51,21 +65,16 @@ class FinishCommand extends ReleaseCommand
      */
     private function ensureVCSCommitIsPostReleaseAction()
     {
-        $postRelease = $this->getContext()->getList(Context::POSTRELEASE_LIST);
-        foreach ($postRelease as $action) {
-            if ($action instanceof VcsCommitAction) {
-                $action->setFailsGracefully(true);
-                return;
-            }
-        }
-        
         $action = new VcsCommitAction();
+        $action->setFailsGracefully(true);
         $action->setContext($this->getContext());
-        $postRelease->push($action);
+        $this->getContext()->getList(Context::POSTRELEASE_LIST)->push($action);
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->ensureVcsCommitFailsGracefully($this->getContext()->getList(Context::PRERELEASE_LIST));
+        $this->ensureVcsCommitFailsGracefully($this->getContext()->getList(Context::POSTRELEASE_LIST));
         $this->ensureVCSCommitIsPostReleaseAction();
         
         $detector = new GitFlowBranch($this->getContext()->getVCS());
